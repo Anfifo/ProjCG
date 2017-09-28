@@ -35,7 +35,6 @@ function BasicCar(x,y,z){
     var wheelRadius = (carBlockHeight*2)/3;
     var car = this.car;
 
-    material = new THREE.MeshBasicMaterial({ color: 0xff1a8c, wireframe: false });
 
     addLowerBody(car, x, y, z, carLength, carBlockHeight, carWidth);
 
@@ -72,28 +71,30 @@ function createTriangularPrism(side, length){
 
 function addLowerBody(obj, x, y, z, carLength, carBlockHeight, carWidth){
 
+    var carMaterial = new THREE.MeshBasicMaterial({ color: 0xff1a8c, wireframe: false });
+
     //lower bottom
     var carGeometry = new THREE.CubeGeometry(carLength, carBlockHeight, carWidth);
-    var bottom = new THREE.Mesh(carGeometry, material);
+    var bottom = new THREE.Mesh(carGeometry, carMaterial);
     bottom.position.set(x,y,z);
     obj.add(bottom);
 
 
     //lower top
     carGeometry = new THREE.CubeGeometry(carLength - 2*carBlockHeight, carBlockHeight, carWidth);
-    var top = new THREE.Mesh(carGeometry, material);
+    var top = new THREE.Mesh(carGeometry, carMaterial);
     top. position.set(x, y+carBlockHeight, z);
     obj.add(top);
 
     //top prism ending positive
     carGeometry = createTriangularPrism(carBlockHeight, carWidth);
-    var carFront = new THREE.Mesh(carGeometry, material);
+    var carFront = new THREE.Mesh(carGeometry, carMaterial);
     carFront.position.set(x + ((carLength - carBlockHeight)/2), y + carBlockHeight , z);
     obj.add(carFront);
 
     //top prism ending negative
     carGeometry = createTriangularPrism(carBlockHeight,carWidth);
-    var carBack = new THREE.Mesh(carGeometry, material);
+    var carBack = new THREE.Mesh(carGeometry, carMaterial);
     carBack.rotateY(Math.PI);
     carBack.position.set( x - ((carLength - carBlockHeight)/2) , y + carBlockHeight , z);
     obj.add(carBack);
@@ -104,9 +105,11 @@ function addLowerBody(obj, x, y, z, carLength, carBlockHeight, carWidth){
 
 function addCarRoof(obj, x, y, z, carBlockHeight, carWidth, roofLength, roofHeight, windowPosition){
 
+    var carMaterial = new THREE.MeshBasicMaterial({ color: 0xff1a8c, wireframe: false });
+
     //roof
     var carGeometry = new THREE.CubeGeometry( roofLength , 2*carBlockHeight, carWidth);
-    var roof = new THREE.Mesh(carGeometry, material);
+    var roof = new THREE.Mesh(carGeometry, carMaterial);
     roof.position.set(x, y + roofHeight, z);
     obj.add(roof);
 
