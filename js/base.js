@@ -1,23 +1,23 @@
 var scene, camera, renderer;
-var material, geometry, mesh;
+var table, car;
 
 
 function createTorus(x, y, z) {		
-	geometry = new THREE.TorusGeometry(10,3, 16, 100, Math.PI * 2);
-	material = new THREE.MeshBasicMaterial({color: 0x00ff00, wireframe: false});
+	geometry = new THREE.TorusGeometry(8,3, 16, 100, Math.PI * 2);
+	material = new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff, wireframe: false});
 	mesh = new THREE.Mesh(geometry, material);
 
-	mesh.position.set(0,30,0);
+	mesh.position.set(x,y,z);
 	mesh.rotation.x = Math.PI/2;
 	scene.add(mesh);
 }
 
-function createTable(){
+function createTable(x,y,z){
 	geometry = new THREE.BoxGeometry(1000, 20, 500);
 	material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: false});
 	mesh = new THREE.Mesh(geometry, material);
 
-	mesh.position.set(0,0,0);
+	mesh.position.set(x,y,z);
 	scene.add(mesh);
 }
 
@@ -81,9 +81,16 @@ function init(){
 
 	createCamera();
 
-	createTable();
+	table = createTable(0,0,0);
 
-	createTorus(0,0,0);
+	/**createTorus(0,20,0);
+	createTorus(10,20,0);*/
+
+	car = createBasicCar(0,6.5,0);
+	car.scale.set(5,5,5);
+	scene.add(car);
+
+	placeCheerios();
 
 	render();
 
