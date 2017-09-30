@@ -10,9 +10,21 @@ function fibonacci(number) {
     return next;
 };
 
+function drawStraightLine(dx,dz){
+   for (var i = -485; i<=425; i+=30){
+        createTorus(i+dx,20,-30+dz);
+        createTorus(i+dx,20,30+dz); 
+    }
+}
+
+function drawCurve(dx,dz) {
+    createTorus(-3+dx,20,0+dz);
+    createTorus(20+dx,20,-8+dz);
+    createTorus(32+dx,20,-24+dz);
+}
 function placeCheerios(){
-	for (var i = -485; i<=485; i+=30){
-		createTorus(i,20,-30);
-        createTorus(i,20,30);
-	}
+	
+	drawCurve(450,230);
+    drawStraightLine(0,200);
+
 }
