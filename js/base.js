@@ -73,12 +73,9 @@ function init(){
 
 	table = createTable(0,0,0);
 
-	/**createTorus(0,20,0);
-	createTorus(10,20,0);*/
-
-	car = createBasicCar(0,6.5,0);
+	/*car = createBasicCar(0,6.5,0);
 	car.scale.set(5,5,5);
-	scene.add(car);
+	scene.add(car);*/
 
 	placeCheerios();
 

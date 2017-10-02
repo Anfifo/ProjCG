@@ -1,29 +1,45 @@
-function fibonacci(number) {
+function rotate(cx, cy, x, y, angle) {
+    var radians = (Math.PI / 180) * angle,
+        cos = Math.cos(radians),
+        sin = Math.sin(radians),
+        nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+        ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+    return [nx, ny];
+}
 
-    var previous_first = 0, previous_second = 1, next = 1;
-
-    for(var i = 2; i <= number; i++) {
-        next = previous_first + previous_second;
-        previous_first = previous_second;
-        previous_second = next;
-    }
-    return next;
-};
-
-function drawStraightLine(dx,dz){
-   for (var i = -485; i<=485; i+=30){
-        createTorus(i+dx,20,-30+dz);
-        createTorus(i+dx,20,30+dz); 
+function drawStraightLine(x1,x2){
+   for (var i = x1; i<=x2; i+=25){
+        createTorus(i,20,-30);
+        createTorus(i,20,30); 
     }
 }
 
-function drawCurve(dx,dz) {
-    createTorus(-3+dx,20,0+dz);
-    createTorus(20+dx,20,-8+dz);
-    createTorus(32+dx,20,-24+dz);
+function drawCurvedLine(cx,cy,x,y,delta_a,a1,a2) {
+   var pos;
+   for (var i = a1; i < a2; i+=delta_a) {
+        pos = rotate(cx,cy,x,y,i);
+        createTorus(pos[0],20,pos[1]);
+    }
 }
+
 function placeCheerios(){
 	
-    drawStraightLine(0,0);
+    drawCurvedLine(0,0,30,30,30,-180,180);
+    drawCurvedLine(0,0,72,72,12,-180,150);
 
+
+    var pos = rotate(0,0,87,87,-180);
+    createTorus(pos[0],20,pos[1]);
+
+    pos = rotate(0,0,87,87,150);
+    createTorus(pos[0],20,pos[1]);
+
+    drawCurvedLine(0,0,102,102,9,-180,154);
+    drawCurvedLine(0,0,144,144,6,-180,180);
+
+    drawCurvedLine(-352,0,-300,0,25,-180,170);
+    drawCurvedLine(-352,0,-258,0,13,-180,180);
+
+    drawCurvedLine(352,0,300,0,25,-180,170);
+    drawCurvedLine(352,0,258,0,13,-180,180);
 }
