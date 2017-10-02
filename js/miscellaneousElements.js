@@ -14,7 +14,7 @@ function createTorus(x, y, z) {
 
 function createTable(x,y,z){
 	geometry = new THREE.BoxGeometry(1000, 20, 500);
-	material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: false});
+	material = new THREE.MeshBasicMaterial({color: 0x9da4a8, wireframe: false});
 	mesh = new THREE.Mesh(geometry, material);
 
 	mesh.position.set(x,y,z);

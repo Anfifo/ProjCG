@@ -11,7 +11,7 @@ function fibonacci(number) {
 };
 
 function drawStraightLine(dx,dz){
-   for (var i = -485; i<=425; i+=30){
+   for (var i = -485; i<=485; i+=30){
         createTorus(i+dx,20,-30+dz);
         createTorus(i+dx,20,30+dz); 
     }
@@ -24,7 +24,6 @@ function drawCurve(dx,dz) {
 }
 function placeCheerios(){
 	
-	drawCurve(450,230);
-    drawStraightLine(0,200);
+    drawStraightLine(0,0);
 
 }

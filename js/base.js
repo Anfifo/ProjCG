@@ -2,25 +2,6 @@ var scene, camera, renderer;
 var table, car;
 
 
-function createTorus(x, y, z) {		
-	geometry = new THREE.TorusGeometry(8,3, 16, 100, Math.PI * 2);
-	material = new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff, wireframe: false});
-	mesh = new THREE.Mesh(geometry, material);
-
-	mesh.position.set(x,y,z);
-	mesh.rotation.x = Math.PI/2;
-	scene.add(mesh);
-}
-
-function createTable(x,y,z){
-	geometry = new THREE.BoxGeometry(1000, 20, 500);
-	material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: false});
-	mesh = new THREE.Mesh(geometry, material);
-
-	mesh.position.set(x,y,z);
-	scene.add(mesh);
-}
-
 function render(){
 	renderer.render(scene, camera);
 }
@@ -31,7 +12,14 @@ function createScene(){
 }
 
 function createCamera(){
-	camera = new THREE.OrthographicCamera(-window.innerWidth/2, window.innerWidth/2, window.innerHeight/2, -window.innerHeight/2, 0.1, 100000);
+	
+	var width = window.innerWidth;
+	var height = window.innerHeight;
+	var aspect_ratio = height/width;
+
+	
+	camera = new THREE.OrthographicCamera(-500, 500, 500*aspect_ratio/2, -500*aspect_ratio/2, 0.1, 100000);
+	//camera = new THREE.OrthographicCamera(-window.innerWidth/2, window.innerWidth/2, window.innerHeight/2, -window.innerHeight/2, 0.1, 100000);
 	
 	camera.position.x = 0;
 	camera.position.y = 50;
