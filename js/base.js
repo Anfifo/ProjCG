@@ -11,6 +11,13 @@ function createScene(){
 	scene.add(new THREE.AxisHelper(10));
 }
 
+function animate(){
+
+    updateCarMovement();
+    render();
+    requestAnimationFrame(animate);
+}
+
 function createCamera(){
 
 	var width = window.innerWidth;
@@ -48,19 +55,6 @@ function onResize() {
 	render();
 }
 
-function onKeyDown(e) {
-	switch(e.keyCode){
-		case 97: //a
-		case 65: //A
-			scene.traverse(function (node){
-				if (node instanceof THREE.Mesh && node.geometry.type == 'BoxGeometry'){
-					node.material.wireframe = !node.material.wireframe;
-				}
-			});
-			break;
-	}
-	render();
-}
 
 function init(){
 	renderer = new THREE.WebGLRenderer();
@@ -73,9 +67,10 @@ function init(){
 
 	table = createTable(0,0,0);
 
-	/*car = createBasicCar(0,6.5,0);
+	car = createBasicCar(0,6.5,0);
 	car.scale.set(5,5,5);
-	scene.add(car);*/
+	scene.add(car);
+	carControls = new CarControls(car);
 
 	placeCheerios();
 
@@ -83,4 +78,7 @@ function init(){
 
 	window.addEventListener("resize", onResize);
 	window.addEventListener("keydown", onKeyDown);
+	window.addEventListener("keyup", onKeyRelease);
+
+	animate();
 }
