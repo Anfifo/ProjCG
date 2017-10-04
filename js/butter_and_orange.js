@@ -18,52 +18,71 @@ function createCamera()
 function createScene()
 {
     scene = new THREE.Scene();
-    //scene.add(new THREE.AxisHelper(10));
-    createButter();
-    createOrange();
+
+    var butter = new Butter(0, 0, 0);
+    var orange = new Orange(25, 0, 0, 8);
+
+    scene.add(butter);
+    scene.add(orange);
 
 }
 
-function createButter()
+
+function Orange(x, y, z, radius)
 {
     'use strict';
 
-    var butterBaseMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
-    var butterBaseGeometry = new THREE.BoxGeometry(15, 0.5, 20);
-    var butterBase = new THREE.Mesh(butterBaseGeometry, butterBaseMaterial);
+    this.type = 'Orange';
+    this.geometry = new THREE.SphereGeometry(radius,
+                                            20,                         /* widthSegments */
+                                            25,                         /* heightSegments */
+                                            0,                          /* phiStart */
+                                            2 * Math.PI,                /* phiLength */
+                                            0,                          /* thetaStart */
+                                            2 * Math.PI);               /* thetaLength */
+    this.material = new THREE.MeshBasicMaterial({color: 0xa75715});
+    var orange = new THREE.Mesh(this.geometry, this.material);
 
+    THREE.Object3D.call(this);
+    this.add(orange);
+
+    this.position.set(x, y, z);
+
+
+}
+
+Orange.prototype.constructor = Orange;
+Orange.prototype = Object.create(THREE.Object3D.prototype);
+
+
+function Butter(x, y, z)
+{
+    'use strict';
+
+    this.type = 'Butter';
+
+    var baseMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
+    var baseGeometry = new THREE.BoxGeometry(15, 0.5, 20);
+    var base = new THREE.Mesh(baseGeometry, baseMaterial);
 
     var butterMaterial = new THREE.MeshBasicMaterial({color: 0xffd830})
     var butterGeometry = new THREE.BoxGeometry(10, 5, 15);
     var butterBar = new THREE.Mesh(butterGeometry, butterMaterial);
 
-
-    butterBase.position.set(-2, -5, -2);
+    base.position.set(-2, -5, -2);
     butterBar.position.set(0, 0, 0);
 
-    var butter = new THREE.Object3D();
-    butter.add(butterBar);
-    butter.add(butterBase);
+    THREE.Object3D.call(this);
+    this.add(base);
+    this.add(butterBar);
 
-    butter.position.set(0, 0, 0);
-
-    scene.add(butter);
+    this.position.set(x, y, z);
 
 }
 
-function createOrange()
-{
-    'use strict';
+Butter.prototype.constructor = Butter;
+Butter.prototype = Object.create(THREE.Object3D.prototype);
 
-    var orangeMaterial = new THREE.MeshBasicMaterial({color: 0xa75715});
-    var orangeGeometry = new THREE.SphereGeometry(8, 20, 25, 0, 2 * Math.PI, 0, 2 * Math.PI);
-    var orange = new THREE.Mesh(orangeGeometry, orangeMaterial);
-
-    orange.position.set(25, 0, 0);
-
-    scene.add(orange);
-
-}
 
 function onResize()
 {
