@@ -118,8 +118,8 @@ function init(){
 	draw_half_loop(-200,0,-200,-100,25,cheerioProperties);
 
 	//STRAIGHT PART
-	draw_line(-200, 200, 0.5, 0, cheerioProperties);
-	draw_line(-200, 200, -0.5, 0, cheerioProperties);
+	draw_line(-150, 150, 0.5, 0, cheerioProperties);
+	draw_line(-150, 150, -0.5, 0, cheerioProperties);
 
 
 	/*var track = new InfinityTrack( cheerioProperties );
