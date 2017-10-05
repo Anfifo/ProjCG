@@ -40,3 +40,24 @@ function draw_line(xi, xf, m, b, properties){
 	}
 }
 
+function draw_infinity_track(cheerioProperties) {
+
+	/////////////////// OUTTER LOOP //////////////////
+	draw_half_loop(200,0,200,200,13,cheerioProperties);
+	draw_half_loop(-200,0,-200,-200,13,cheerioProperties);
+	
+	//STRAIGHT PART 
+	draw_line(-200, 0, -0.5, 100, cheerioProperties);
+	draw_line(-200, 0, 0.5, -100, cheerioProperties);
+	draw_line(0, 200, -0.5, -100, cheerioProperties);
+	draw_line(0, 200, 0.5, 100, cheerioProperties);
+	
+	/////////////////// INNER LOOP ///////////////////
+	draw_half_loop(200,0,200,100,25,cheerioProperties);
+	draw_half_loop(-200,0,-200,-100,25,cheerioProperties);
+
+	//STRAIGHT PART
+	draw_line(-150, 150, 0.5, 0, cheerioProperties);
+	draw_line(-150, 150, -0.5, 0, cheerioProperties);
+
+}

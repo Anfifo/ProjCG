@@ -63,13 +63,6 @@ Table.prototype.getDimensions = function() {
 }
 
 
-/*
-Table.prototype.getMesh = function() {
-
-    return this.mesh;
-
-};*/
-
 
 /**
  * Class Cheerio
@@ -121,9 +114,3 @@ Cheerio.prototype = Object.create( THREE.Mesh.prototype );
  * prevents issues with isInstance after Cheerio inheritance from THREE.Mesh
  */
 Cheerio.prototype.constructor = Cheerio;
-/*
-Cheerio.prototype.getMesh = function() {
-
-    return this.mesh;
-
-};*/
