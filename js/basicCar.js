@@ -31,8 +31,8 @@ function showCar(x, y, z) {
  * @param z axis position
  * @returns {BasicCar}
  */
-function createBasicCar(x,y,z){
-    return new BasicCar(x,y,z);
+function createBasicCar(x,y,z, properties){
+    return new BasicCar(x,y,z, properties);
 }
 
 
@@ -43,7 +43,7 @@ function createBasicCar(x,y,z){
  * @param z "
  * @constructor
  */
-function BasicCar(x,y,z){
+function BasicCar(x,y,z, properties){
 
     'use strict';
 
@@ -55,6 +55,12 @@ function BasicCar(x,y,z){
     this.x = x;
     this.z = z;
     this.y = y;
+
+    if (properties != undefined)
+        this.carColor = properties.color;
+
+    if (this.carColor === undefined)
+        this.carColor = 0xff1a8c;
 
     /**
      * car base properties
@@ -71,7 +77,7 @@ function BasicCar(x,y,z){
     this.wheelWidth = this.carBlockHeight/3;
     this.wheelRadius = (this.carBlockHeight*2)/3;
 
-    this.material = new THREE.MeshBasicMaterial({ color: 0xff1a8c, wireframe: false });
+    this.material = new THREE.MeshBasicMaterial({ color: this.carColor, wireframe: false });
 
 
     this.addLowerBody();

@@ -130,7 +130,7 @@ function CarControls(car) {
      */
     this.stopMovement = function(){
 
-        this.speed = this.speed/3;
+        this.speed = this.speed/2;
         this.acceleration = 0;
         this.moveChangeTime = 0;
 
