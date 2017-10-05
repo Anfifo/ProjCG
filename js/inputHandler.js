@@ -6,37 +6,41 @@
 var carControls;
 var car2Controls;
 
-var wKey = 87;
-var sKey = 83;
-var aKey = 65;
-var dKey = 68;
-var tKey = 84;
 
-var upKey = 38;
-var leftKey = 37;
-var rightKey = 39;
-var downKey = 40;
+var keyCodes ={
+    a: 65,
+    d: 68,
+    p: 80,
+    s: 83,
+    t: 84,
+    w: 87,
+    up: 38,
+    left:37,
+    right: 39,
+    down: 40
+};
 
-var pKey = 80;
+
 
 /**
  * buffer with pressed keys so more than 1 key can be counted and active at the time
- * @type {{wKey: boolean, sKey: boolean, aKey: boolean, dKey: boolean}}
+ * @type {{keyCodes.w: boolean, keyCodes.s: boolean, keyCodes.a: boolean, keyCodes.d: boolean}}
  */
-var pressedKeys = {
-    wKey: false,
-    sKey: false,
-    aKey: false,
-    dKey: false,
 
-    tKey: false,
-    pKey:false,
+var pressedKeys = {};
+pressedKeys[keyCodes.a] = false;
+pressedKeys[keyCodes.d] = false;
+pressedKeys[keyCodes.p] = false;
+pressedKeys[keyCodes.s] = false;
+pressedKeys[keyCodes.t] = false;
+pressedKeys[keyCodes.w] = false;
+pressedKeys[keyCodes.up] = false;
+pressedKeys[keyCodes.down] = false;
+pressedKeys[keyCodes.left] = false;
+pressedKeys[keyCodes.right] = false;
 
-    upKey:false,
-    leftKey:false,
-    rightKey:false,
-    downKey:false
-};
+
+
 
 
 function updateCarMovement(){
@@ -61,7 +65,7 @@ function onKeyDown(e){
         executeCar2Controls();
     }
 
-    if(pressedKeys[tKey]){
+    if(pressedKeys[keyCodes.t]){
         scene.traverse(function (node){
             if (node instanceof THREE.Mesh && node.geometry.type === 'BoxGeometry'){
                 node.material.wireframe = !node.material.wireframe;
@@ -70,7 +74,7 @@ function onKeyDown(e){
         render();
     }
 
-    if(pressedKeys[pKey]){
+    if(pressedKeys[keyCodes.p]){
         var car2 = createBasicCar(0,6.5,0, {color:0x42f44b});
         car2.scale.set(5,5,5);
         scene.add(car2);
@@ -94,48 +98,48 @@ function onKeyRelease(e){
 
 function executeCarControls(){
 
-    if (pressedKeys[wKey]){
+    if (pressedKeys[keyCodes.w]){
         carControls.moveForward();
     }
-    if (pressedKeys[sKey]){
+    if (pressedKeys[keyCodes.s]){
         carControls.moveBackwards();
     }
-    if (pressedKeys[aKey]){
+    if (pressedKeys[keyCodes.a]){
         carControls.turnLeft();
     }
-    if (pressedKeys[dKey]){
+    if (pressedKeys[keyCodes.d]){
         carControls.turnRight();
     }
 
-    if ( !pressedKeys[wKey] && !pressedKeys[sKey]){
+    if ( !pressedKeys[keyCodes.w] && !pressedKeys[keyCodes.s]){
         carControls.slowDown();
     }
 
-    if (!pressedKeys[aKey] && !pressedKeys[dKey]){
+    if (!pressedKeys[keyCodes.a] && !pressedKeys[keyCodes.d]){
         carControls.stopCurve();
     }
 
 }
 
 function executeCar2Controls(){
-    if (pressedKeys[upKey]){
+    if (pressedKeys[keyCodes.up]){
         car2Controls.moveForward();
     }
-    if (pressedKeys[downKey]){
+    if (pressedKeys[keyCodes.down]){
         car2Controls.moveBackwards();
     }
-    if (pressedKeys[leftKey]){
+    if (pressedKeys[keyCodes.left]){
         car2Controls.turnLeft();
     }
-    if (pressedKeys[rightKey]){
+    if (pressedKeys[keyCodes.right]){
         car2Controls.turnRight();
     }
 
-    if ( !pressedKeys[upKey] && !pressedKeys[downKey]){
+    if ( !pressedKeys[keyCodes.up] && !pressedKeys[keyCodes.down]){
         car2Controls.slowDown();
     }
 
-    if (!pressedKeys[leftKey] && !pressedKeys[rightKey]){
+    if (!pressedKeys[keyCodes.left] && !pressedKeys[keyCodes.right]){
         car2Controls.stopCurve();
     }
 }
