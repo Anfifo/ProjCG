@@ -1,5 +1,5 @@
 var scene, camera, renderer;
-var table, car;
+var car;
 
 
 function render(){
@@ -18,14 +18,14 @@ function animate(){
     requestAnimationFrame(animate);
 }
 
-function createCamera(){
+function createCamera( dimensions ){
 
-	var width = window.innerWidth;
-	var height = window.innerHeight;
-	var aspect_ratio = height/width;
+	var width = dimensions[0]/2 + 100;
+	console.log(width);
+	var aspect_ratio = window.innerHeight/window.innerWidth;
 
 
-	camera = new THREE.OrthographicCamera(-600, 600, 600*aspect_ratio, -600*aspect_ratio, 0.1, 100000);
+	camera = new THREE.OrthographicCamera(-width, width, width*aspect_ratio, -width*aspect_ratio, 0.1, 100000);
 	//camera = new THREE.OrthographicCamera(-window.innerWidth/2, window.innerWidth/2, window.innerHeight/2, -window.innerHeight/2, 0.1, 100000);
 
 	camera.position.x = 0;
@@ -38,18 +38,18 @@ function createCamera(){
 	scene.add(cameraHelper);
 }
 
-function onResize() {
+function onResize(dimensions) {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
-	var aspect_ratio = window.innerHeight/window.innerWidth;
+	var aspect_ratio = renderer.getSize().height/renderer.getSize().width;
+	var width = dimensions[0]/2 + 100;
+	console.log(width);
 
 	if(window.innerHeight > 0 && window.innerWidth > 0){
-		var width = renderer.getSize().width;
-		var height = renderer.getSize().height;
-		camera.left = -600;
-		camera.right = 600;
-		camera.top = 600 * aspect_ratio;
-		camera.bottom = -600 * aspect_ratio;
+		camera.left = -width;
+		camera.right = width;
+		camera.top = width * aspect_ratio;
+		camera.bottom = -width * aspect_ratio;
 		camera.updateProjectionMatrix();
 	}
 	render();
@@ -63,22 +63,88 @@ function init(){
 
 	createScene();
 
-	createCamera();
+	var properties = {
+        width: 1000,
+        height: 20,
+        depth: 500,
+        color: 0x9da4a8,
+        wireframe: false,
+        position: {
+            x: 0,
+            y: 0,
+            z: 0
+        }
+    };
+	
+    var table = new Table( properties );
+	scene.add(table);
 
-	table = createTable(0,0,0);
+	createCamera(table.getDimensions());
+
+	var cheerioProperties = {
+        radius: 7,
+		tube: 2.7,
+		radialSegments: 16,
+		tubularSegments: 100,
+		arc: Math.PI * 2,
+        color: 0xffffff,
+        wireframe: false,
+        position: {
+            x: 0,
+            y: 20,
+            z: 0
+        },
+        rotation: {
+        	x: Math.PI/2
+        }
+    };
+	
+    var cheerio = new Cheerio( cheerioProperties );
+    scene.add(cheerio);
+	
+
+	/////////////////// OUTTER LOOP //////////////////
+	draw_half_loop(200,0,200,200,13,cheerioProperties);
+	draw_half_loop(-200,0,-200,-200,13,cheerioProperties);
+	
+	//STRAIGHT PART 
+	draw_line(-200, 0, -0.5, 100, cheerioProperties);
+	draw_line(-200, 0, 0.5, -100, cheerioProperties);
+	draw_line(0, 200, -0.5, -100, cheerioProperties);
+	draw_line(0, 200, 0.5, 100, cheerioProperties);
+	
+	/////////////////// INNER LOOP ///////////////////
+	draw_half_loop(200,0,200,100,25,cheerioProperties);
+	draw_half_loop(-200,0,-200,-100,25,cheerioProperties);
+
+	//STRAIGHT PART
+	draw_line(-200, 200, 0.5, 0, cheerioProperties);
+	draw_line(-200, 200, -0.5, 0, cheerioProperties);
+
+
+	/*var track = new InfinityTrack( cheerioProperties );
+	scene.add(track);*/
+	
+
+	/*
 
 	car = createBasicCar(0,6.5,0);
 	car.scale.set(5,5,5);
 	scene.add(car);
 	carControls = new CarControls(car);
 
-	placeCheerios();
+	*/
 
 	render();
 
-	window.addEventListener("resize", onResize);
-	window.addEventListener("keydown", onKeyDown);
+	var dim = table.getDimensions();
+	window.addEventListener("resize", function(dim){
+   											return function(){onResize(dim)}
+									  }(dim));
+
+	/*window.addEventListener("keydown", onKeyDown);
 	window.addEventListener("keyup", onKeyRelease);
 
-	animate();
+	animate();*/
+	
 }
