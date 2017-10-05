@@ -26,8 +26,7 @@ function createCamera( dimensions ){
 
 
 	camera = new THREE.OrthographicCamera(-width, width, width*aspect_ratio, -width*aspect_ratio, 0.1, 100000);
-	//camera = new THREE.OrthographicCamera(-window.innerWidth/2, window.innerWidth/2, window.innerHeight/2, -window.innerHeight/2, 0.1, 100000);
-
+	
 	camera.position.x = 0;
 	camera.position.y = 50;
 	camera.position.z = 0;
@@ -91,7 +90,7 @@ function init(){
         wireframe: false,
         position: {
             x: 0,
-            y: 20,
+            y: 10,
             z: 0
         },
         rotation: {
@@ -111,11 +110,16 @@ function init(){
 	/*
 
 	car = createBasicCar(0,6.5,0);
-	car.scale.set(5,5,5);
 	scene.add(car);
 	carControls = new CarControls(car);
 
 	*/
+	
+	/*var butter = new Butter(0, 10, 0);
+    var orange = new Orange(25, 10, 0, 8);
+    
+    scene.add(butter);
+    scene.add(orange);*/
 
 	render();
 

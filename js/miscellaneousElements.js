@@ -114,3 +114,106 @@ Cheerio.prototype = Object.create( THREE.Mesh.prototype );
  * prevents issues with isInstance after Cheerio inheritance from THREE.Mesh
  */
 Cheerio.prototype.constructor = Cheerio;
+
+
+
+/**
+ * Class Orange
+ *
+ * This orange "inherits" from THREE.Object3D;
+ * It is an 3D object with a SphereGeometry and a MeshBasicMaterial
+ *
+ * For more information on Object 3D check three.js documentation
+ */
+
+
+ /**
+ * Class Constructor
+ * @param properties {radius, widthSegments, heightSegments, phiStart, 
+ 					phiLength, thethaStart, thetaLength, wireframe, position {x,y,z}}
+ * @constructor
+ */
+
+function Orange(x, y, z, radius)
+{
+    'use strict';
+
+    this.type = 'Orange';
+    this.geometry = new THREE.SphereGeometry(radius,
+                                            20,                         /* widthSegments */
+                                            25,                         /* heightSegments */
+                                            0,                          /* phiStart */
+                                            2 * Math.PI,                /* phiLength */
+                                            0,                          /* thetaStart */
+                                            2 * Math.PI);               /* thetaLength */
+    this.material = new THREE.MeshBasicMaterial({color: 0xa75715});
+    var orange = new THREE.Mesh(this.geometry, this.material);
+
+    THREE.Object3D.call(this);
+    this.add(orange);
+
+    this.position.set(x, y, z);
+
+
+}
+/**
+ * prevents issues with isInstance after Orange inheritance from THREE.Object3D
+ */
+Orange.prototype.constructor = Orange;
+
+ /**
+ * adds to Orange class all method and attributes from THRE.Object3D
+ */
+Orange.prototype = Object.create(THREE.Object3D.prototype);
+
+
+
+/**
+ * Class Butter
+ *Butterhis Butter "inherits" from THREE.Object3D;
+ * It is an 3D object with a BoxGeometry and a MeshBasicMaterial
+ *
+ * For more information on Object 3D check three.js documentation
+ */
+
+
+ /**
+ * Class Constructor
+ * @param properties {butterBar{width, height, depth}, base{width, height, depth}, position{x,y,z}}
+ * @constructor
+ */
+function Butter(x, y, z)
+{
+    'use strict';
+
+    this.type = 'Butter';
+
+    var baseMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
+    var baseGeometry = new THREE.BoxGeometry(15, 0.5, 20);
+    var base = new THREE.Mesh(baseGeometry, baseMaterial);
+
+    var butterMaterial = new THREE.MeshBasicMaterial({color: 0xffd830})
+    var butterGeometry = new THREE.BoxGeometry(10, 5, 15);
+    var butterBar = new THREE.Mesh(butterGeometry, butterMaterial);
+
+    base.position.set(-2, -5, -2);
+    butterBar.position.set(0, 0, 0);
+
+    THREE.Object3D.call(this);
+    this.add(base);
+    this.add(butterBar);
+
+    this.position.set(x, y, z);
+
+}
+
+
+/**
+ * prevents issues with isInstance after Butter inheritance from THREE.Object3D
+ */
+Butter.prototype.constructor = Butter;
+
+/**
+ * adds to Butter class all method and attributes from THRE.Object3D
+ */
+Butter.prototype = Object.create(THREE.Object3D.prototype);
