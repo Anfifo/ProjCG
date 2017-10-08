@@ -106,7 +106,10 @@ function init(){
 	var track = new InfinityTrack(cheerioProperties);
 	scene.add(track);
 
-	var butter = new Butter(20, 20, 0);
+	var orange = new Orange(60, 60, 0);
+	scene.add(orange);
+
+	var butter = new Butter(-30, 30, 0);
 	scene.add(butter);
 
 
