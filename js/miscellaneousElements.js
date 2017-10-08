@@ -146,7 +146,7 @@ function Orange(x, y, z)
                                             2 * Math.PI,                /* phiLength */
                                             0,                          /* thetaStart */
                                             2 * Math.PI);               /* thetaLength */
-    this.material = new THREE.MeshBasicMaterial({color: 0xa75715});
+    this.material = new THREE.MeshBasicMaterial({color: 0xe38416});
     var orange = new THREE.Mesh(this.geometry, this.material);
 
     THREE.Object3D.call(this);
