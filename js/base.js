@@ -74,7 +74,7 @@ function init(){
             z: 0
         }
     };
-	
+
     var table = new Table( properties );
 	scene.add(table);
 
@@ -97,16 +97,17 @@ function init(){
         	x: Math.PI/2
         }
     };
-	
+
     var cheerio = new Cheerio( cheerioProperties );
     scene.add(cheerio);
-	
+
 
 	//draw_infinity_track(cheerioProperties);
 	var track = new InfinityTrack(cheerioProperties);
 	scene.add(track);
 
-
+	var butter = new Butter(20, 20, 0);
+	scene.add(butter);
 
 
 	//Car handling
@@ -136,5 +137,5 @@ function init(){
 	window.addEventListener("keyup", inputHandler.onKeyRelease);
 
 	animate(animatables);
-	
+
 }
