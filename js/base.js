@@ -121,10 +121,10 @@ function init(){
 
 	scene.add(car);
 
-	var carControls = new CarControls(car);
+	/*var carControls = new CarControls(car);
 
 	inputHandler.addCarControls(carControls);
-	animatables.push(carControls);
+	animatables.push(carControls);*/
 
 
 
@@ -137,8 +137,8 @@ function init(){
 									  }(dim));
 
 	window.addEventListener("keydown", inputHandler.onKeyDown);
-	window.addEventListener("keyup", inputHandler.onKeyRelease);
+	//window.addEventListener("keyup", inputHandler.onKeyRelease);
 
-	animate(animatables);
+	//animate(animatables);
 
 }

@@ -64,7 +64,7 @@ function InputHandler(){
         // toggle wireframe
         if(pressedKeys[keyCodes.t]){
             scene.traverse(function (node){
-                if (node instanceof THREE.Mesh && node.geometry.type === 'BoxGeometry'){
+                if (node instanceof BasicCar || node instanceof Orange || node instanceof Butter){
                     node.material.wireframe = !node.material.wireframe;
                 }
             });
