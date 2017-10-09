@@ -20,12 +20,17 @@ function animate(){
 function createCamera( dimensions ){
 
 	var width = dimensions[0]/2 + 100;
+	var height = dimensions[2]/2 + 100;
 	console.log(width);
-	var aspect_ratio = window.innerHeight/window.innerWidth;
+	var window_ratio = window.innerHeight/window.innerWidth;
+	var table_ratio = (dimensions[1]+200)/(dimensions[0]+200);
 
-
-	camera = new THREE.OrthographicCamera(-width, width, width*aspect_ratio, -width*aspect_ratio, 0.1, 100000);
-	//camera = new THREE.OrthographicCamera(-window.innerWidth/2, window.innerWidth/2, window.innerHeight/2, -window.innerHeight/2, 0.1, 100000);
+	if(window_ratio-0.3 > table_ratio)
+		camera = new THREE.OrthographicCamera(-width, width, width*window_ratio, -width*window_ratio, 0.1, 100000);
+	else{
+		window_ratio = 1 / window_ratio;
+		camera = new THREE.OrthographicCamera(-height*window_ratio, height*window_ratio, height, -height, 0.1, 100000);
+	}
 
 	camera.position.x = 0;
 	camera.position.y = 50;
@@ -33,24 +38,40 @@ function createCamera( dimensions ){
 
 	camera.lookAt(scene.position);
 
-	var cameraHelper = new THREE.CameraHelper(camera);
-	scene.add(cameraHelper);
+	/*var cameraHelper = new THREE.CameraHelper(camera);
+	scene.add(cameraHelper);*/
 }
 
 function onResize(dimensions) {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
-	var aspect_ratio = renderer.getSize().height/renderer.getSize().width;
+	var window_ratio = renderer.getSize().height/renderer.getSize().width;
+	var table_ratio = (dimensions[1]+200)/(dimensions[0]+200);
 	var width = dimensions[0]/2 + 100;
+	var height = dimensions[2]/2 + 100;
 	console.log(width);
+	console.log(dimensions[2]);
+	console.log(window_ratio);
+	console.log(table_ratio);
 
 	if(window.innerHeight > 0 && window.innerWidth > 0){
-		camera.left = -width;
-		camera.right = width;
-		camera.top = width * aspect_ratio;
-		camera.bottom = -width * aspect_ratio;
-		camera.updateProjectionMatrix();
+		if(window_ratio-0.3 > table_ratio){
+			camera.left = -width;
+			camera.right = width;
+			camera.top = width * window_ratio;
+			camera.bottom = -width * window_ratio;
+			camera.updateProjectionMatrix();
+		}
+		else{
+			window_ratio = 1 / window_ratio;
+			camera.left = -height * window_ratio;
+			camera.right = height * window_ratio;;
+			camera.top = height;
+			camera.bottom = -height;
+			camera.updateProjectionMatrix();
+		}
 	}
+
 	render();
 }
 

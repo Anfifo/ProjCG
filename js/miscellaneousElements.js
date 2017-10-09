@@ -129,8 +129,9 @@ Cheerio.prototype.constructor = Cheerio;
 
  /**
  * Class Constructor
- * @param properties {radius, widthSegments, heightSegments, phiStart,
- 					phiLength, thethaStart, thetaLength, wireframe, position {x,y,z}}
+ * @param x position
+ * @param y position
+ * @param z position
  * @constructor
  */
 
@@ -153,8 +154,6 @@ function Orange(x, y, z)
     this.add(orange);
 
     this.position.set(x, y, z);
-
-
 }
 /**
  * prevents issues with isInstance after Orange inheritance from THREE.Object3D
@@ -179,7 +178,9 @@ Orange.prototype = Object.create(THREE.Object3D.prototype);
 
  /**
  * Class Constructor
- * @param properties {butterBar{width, height, depth}, base{width, height, depth}, position{x,y,z}}
+ * @param x position
+ * @param y position
+ * @param z position
  * @constructor
  */
 function Butter(x, y, z)
