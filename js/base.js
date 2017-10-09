@@ -140,20 +140,20 @@ function init(){
 	scene.add(butter);
 
 	butter = new Butter(0, 15, -150);
-	butter.rotation.y = Math.PI/3
+	butter.rotation.y = Math.PI/3;
 	scene.add(butter);
 
 	butter = new Butter(400, 15, -150);
-	butter.rotation.y = Math.PI/6
+	butter.rotation.y = Math.PI/6;
 	scene.add(butter);
 
 	butter = new Butter(-80, 15, 200);
-	butter.rotation.y = -Math.PI/3
+	butter.rotation.y = -Math.PI/3;
 	scene.add(butter);
 
 
 	butter = new Butter(-440, 15, -60);
-	butter.rotation.y = -Math.PI/12
+	butter.rotation.y = -Math.PI/12;
 	scene.add(butter);
 
 	//Car handling
@@ -164,10 +164,10 @@ function init(){
 
 	scene.add(car);
 
-	/*var carControls = new CarControls(car);
+	var carControls = new CarControls(car);
 
 	inputHandler.addCarControls(carControls);
-	animatables.push(carControls);*/
+	animatables.push(carControls);
 
 
 
@@ -180,8 +180,8 @@ function init(){
 									  }(dim));
 
 	window.addEventListener("keydown", inputHandler.onKeyDown);
-	//window.addEventListener("keyup", inputHandler.onKeyRelease);
+	window.addEventListener("keyup", inputHandler.onKeyRelease);
 
-	//animate(animatables);
+	animate(animatables);
 
 }
