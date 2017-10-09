@@ -16,6 +16,8 @@ function InputHandler(){
     var keyCodes = {
         a: 65,
         d: 68,
+        e: 69,
+        f: 70,
         p: 80,
         s: 83,
         t: 84,
@@ -30,6 +32,8 @@ function InputHandler(){
 
     pressedKeys[keyCodes.a] = false;
     pressedKeys[keyCodes.d] = false;
+    pressedKeys[keyCodes.e] = false;
+    pressedKeys[keyCodes.f] = false;
     pressedKeys[keyCodes.p] = false;
     pressedKeys[keyCodes.s] = false;
     pressedKeys[keyCodes.t] = false;
@@ -61,15 +65,15 @@ function InputHandler(){
         }
 
         // toggle wireframe
-        if(pressedKeys[keyCodes.t]){
+        if(pressedKeys[keyCodes.a]){
             scene.traverse( function(node) {
                 if(node instanceof THREE.Mesh &&
                     !(node instanceof Table || node instanceof Cheerio) ){
                     node.material.wireframe = !node.material.wireframe;
-                    if (node.geometry.type == 'TorusGeometry'){
+                    if (node.geometry.type === 'TorusGeometry'){
                         console.log("Rodas");
                     }
-                    if (node.geometry.type == "ExtrudeGeometry"){
+                    if (node.geometry.type === "ExtrudeGeometry"){
                         console.log("Vidros");
                     }
                 }
@@ -130,24 +134,24 @@ function InputHandler(){
 
     this.executeCar2Controls = function(){
 
-        if (pressedKeys[keyCodes.w]){
+        if (pressedKeys[keyCodes.e]){
             car2Controls.moveForward();
         }
-        if (pressedKeys[keyCodes.s]){
+        if (pressedKeys[keyCodes.d]){
             car2Controls.moveBackwards();
         }
-        if (pressedKeys[keyCodes.a]){
+        if (pressedKeys[keyCodes.s]){
             car2Controls.turnLeft();
         }
-        if (pressedKeys[keyCodes.d]){
+        if (pressedKeys[keyCodes.f]){
             car2Controls.turnRight();
         }
 
-        if ( !pressedKeys[keyCodes.w] && !pressedKeys[keyCodes.s]){
+        if ( !pressedKeys[keyCodes.e] && !pressedKeys[keyCodes.d]){
             car2Controls.slowDown();
         }
 
-        if (!pressedKeys[keyCodes.a] && !pressedKeys[keyCodes.d]){
+        if (!pressedKeys[keyCodes.s] && !pressedKeys[keyCodes.f]){
             car2Controls.stopCurve();
         }
 
