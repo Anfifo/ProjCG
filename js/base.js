@@ -83,8 +83,8 @@ function init(){
 	var cheerioProperties = {
         radius: 7,
 		tube: 2.7,
-		radialSegments: 16,
-		tubularSegments: 100,
+		radialSegments: 5,
+		tubularSegments: 10,
 		arc: Math.PI * 2,
         color: 0xffffff,
         wireframe: false,
@@ -106,12 +106,34 @@ function init(){
 	var track = new InfinityTrack(cheerioProperties);
 	scene.add(track);
 
-	var orange = new Orange(60, 60, 0);
+	var orange = new Orange(80, 23, 200 );
 	scene.add(orange);
 
-	var butter = new Butter(-30, 30, 0);
+	orange = new Orange(400,23,125);
+	scene.add(orange);
+
+	orange = new Orange(-370,23, -180);
+	scene.add(orange);
+
+	var butter = new Butter(-400, 15, 150);
 	scene.add(butter);
 
+	butter = new Butter(0, 15, -150);
+	butter.rotation.y = Math.PI/3
+	scene.add(butter);
+
+	butter = new Butter(400, 15, -150);
+	butter.rotation.y = Math.PI/6
+	scene.add(butter);
+
+	butter = new Butter(-80, 15, 200);
+	butter.rotation.y = -Math.PI/3
+	scene.add(butter);
+
+
+	butter = new Butter(-440, 15, -60);
+	butter.rotation.y = -Math.PI/12
+	scene.add(butter);
 
 	//Car handling
 	var inputHandler = new InputHandler();

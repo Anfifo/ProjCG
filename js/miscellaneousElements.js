@@ -139,7 +139,7 @@ function Orange(x, y, z)
     'use strict';
 
     this.type = 'Orange';
-    this.geometry = new THREE.SphereGeometry(25,						/* radius */
+    this.geometry = new THREE.SphereGeometry(23,						/* radius */
                                             20,                         /* widthSegments */
                                             25,                         /* heightSegments */
                                             0,                          /* phiStart */

@@ -161,7 +161,7 @@ BasicCar.prototype.addCarRoof = function (){
 BasicCar.prototype.addCarWheels = function(){
 
 	var wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-	var carGeometry = new THREE.TorusGeometry( this.wheelRadius , this.wheelWidth, 16,100);
+	var carGeometry = new THREE.TorusGeometry( this.wheelRadius , this.wheelWidth, 5,10);
 	var wheel;
 
 	wheel = new THREE.Mesh(carGeometry, wheelMaterial);

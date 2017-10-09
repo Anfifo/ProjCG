@@ -5,7 +5,6 @@
  */
 
 
-
 function InputHandler(){
 
     /**
@@ -63,9 +62,16 @@ function InputHandler(){
 
         // toggle wireframe
         if(pressedKeys[keyCodes.t]){
-            scene.traverse(function (node){
-                if (node instanceof BasicCar || node instanceof Orange || node instanceof Butter){
+            scene.traverse( function(node) {
+                if(node instanceof THREE.Mesh &&
+                    !(node instanceof Table || node instanceof Cheerio) ){
                     node.material.wireframe = !node.material.wireframe;
+                    if (node.geometry.type == 'TorusGeometry'){
+                        console.log("Rodas");
+                    }
+                    if (node.geometry.type == "ExtrudeGeometry"){
+                        console.log("Vidros");
+                    }
                 }
             });
             render();
