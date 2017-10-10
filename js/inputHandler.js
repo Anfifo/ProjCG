@@ -78,7 +78,7 @@ function InputHandler(){
                     }
                 }
             });
-            render();
+            // render();
         }
 
         //EASTER EGG create 2nd player car

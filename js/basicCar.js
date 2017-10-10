@@ -140,16 +140,17 @@ BasicCar.prototype.addCarRoof = function (){
 	var windowMaterial = new THREE.MeshBasicMaterial({ color: 0xcce6ff, wireframe: false });
 
 	//front window
-	carGeometry = createTriangularPrism(this.carBlockHeight*2, this.carWidth);
-	var frontWindow = new THREE.Mesh(carGeometry, windowMaterial);
+	var windowGeometry = createTriangularPrism(this.carBlockHeight*2, this.carWidth);
+	var frontWindow = new THREE.Mesh(windowGeometry, windowMaterial);
 	frontWindow.position.set(this.x + this.windowPosition , this.y + this.roofHeight , this.z);
 	this.add(frontWindow);
+
 
 	//back window
     windowMaterial = new THREE.MeshBasicMaterial({ color: 0xcce6ff, wireframe: false });
 
-	carGeometry = createTriangularPrism(this.carBlockHeight*2,this.carWidth);
-	var backWindow = new THREE.Mesh(carGeometry, windowMaterial);
+	windowGeometry = createTriangularPrism(this.carBlockHeight*2,this.carWidth);
+	var backWindow = new THREE.Mesh(windowGeometry, windowMaterial);
 	backWindow.rotateY(Math.PI);
 	backWindow.position.set(this.x - this.windowPosition, this.y + this.roofHeight , this.z);
 	this.add(backWindow);
@@ -162,34 +163,41 @@ BasicCar.prototype.addCarRoof = function (){
 BasicCar.prototype.addCarWheels = function(){
 
 	var wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-	var carGeometry = new THREE.TorusGeometry( this.wheelRadius , this.wheelWidth, 5,10);
+	var wheelGeometry = new THREE.TorusGeometry( this.wheelRadius , this.wheelWidth, 5,10);
 	var wheel;
 
-	wheel = new THREE.Mesh(carGeometry, wheelMaterial);
-	wheel.position.set(this.x + this.wheelPosition +this.carBlockHeight, this.y - this.carBlockHeight/2, this.z + this.carWidth/2 + this.wheelWidth);
+	var wheelX = this.wheelPosition +this.carBlockHeight;
+	var wheelY = this.carBlockHeight/2;
+	var wheelZ = + this.carWidth/2 + this.wheelWidth;
+
+	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+	wheel.position.set(this.x + wheelX, this.y - wheelY, this.z + wheelZ);
 	this.add(wheel);
 
     wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-	wheel = new THREE.Mesh(carGeometry, wheelMaterial);
-	wheel.position.set(this.x - this.wheelPosition - this.carBlockHeight, this.y - this.carBlockHeight/2, this.z + this.carWidth/2 + this.wheelWidth);
+	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+	wheel.position.set(this.x - wheelX, this.y - wheelY, this.z + wheelZ);
 	this.add(wheel);
 
     wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-	wheel = new THREE.Mesh(carGeometry, wheelMaterial);
-	wheel.position.set(this.x - this.wheelPosition - this.carBlockHeight, this.y - this.carBlockHeight/2, this.z - this.carWidth/2 - this.wheelWidth);
+	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+	wheel.position.set(this.x -wheelX, this.y - wheelY, this.z - wheelZ);
 	this.add(wheel);
 
     wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-	wheel = new THREE.Mesh(carGeometry, wheelMaterial);
-	wheel.position.set(this.x + this.wheelPosition + this.carBlockHeight, this.y - this.carBlockHeight/2, this.z - this.carWidth/2 - this.wheelWidth);
+	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+	wheel.position.set(this.x + wheelX, this.y - wheelY, this.z - wheelZ);
 	this.add(wheel);
 };
 
 
-
-
-
-
+/**
+ *
+ * Builds a triangular-rectangular prism
+ * @param side (side of the triangle)
+ * @param length (the depth of the prism)
+ * @returns {TRIANGULARPrism!}
+ */
 function createTriangularPrism(side, length){
 
 	var triangle = new THREE.Shape();

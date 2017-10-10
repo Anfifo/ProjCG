@@ -17,15 +17,16 @@ function animate(){
     requestAnimationFrame(animate);
 }
 
+
 function createCamera( dimensions ){
 
 	var width = dimensions[0]/2 + 100;
 	var height = dimensions[2]/2 + 100;
 	console.log(width);
 	var window_ratio = window.innerHeight/window.innerWidth;
-	var table_ratio = (dimensions[1]+200)/(dimensions[0]+200);
+	var table_ratio = height/width;
 
-	if(window_ratio-0.3 > table_ratio)
+	if(window_ratio > table_ratio)
 		camera = new THREE.OrthographicCamera(-width, width, width*window_ratio, -width*window_ratio, 0.1, 100000);
 	else{
 		window_ratio = 1 / window_ratio;
@@ -46,16 +47,16 @@ function onResize(dimensions) {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	var window_ratio = renderer.getSize().height/renderer.getSize().width;
-	var table_ratio = (dimensions[1]+200)/(dimensions[0]+200);
 	var width = dimensions[0]/2 + 100;
-	var height = dimensions[2]/2 + 100;
-	console.log(width);
-	console.log(dimensions[2]);
+    var height = dimensions[2]/2 + 100;
+    var table_ratio = height/width;
+    console.log(width);
+    console.log(dimensions[2]);
 	console.log(window_ratio);
 	console.log(table_ratio);
 
 	if(window.innerHeight > 0 && window.innerWidth > 0){
-		if(window_ratio-0.3 > table_ratio){
+		if(window_ratio > table_ratio){
 			camera.left = -width;
 			camera.right = width;
 			camera.top = width * window_ratio;
@@ -72,7 +73,7 @@ function onResize(dimensions) {
 		}
 	}
 
-	render();
+	// render();
 }
 
 
@@ -156,6 +157,9 @@ function init(){
 	butter.rotation.y = -Math.PI/12;
 	scene.add(butter);
 
+
+
+
 	//Car handling
 	var inputHandler = new InputHandler();
 
@@ -172,7 +176,9 @@ function init(){
 
 
 
-	render();
+
+
+	// render();
 
 	var dim = table.getDimensions();
 	window.addEventListener("resize", function(dim){
