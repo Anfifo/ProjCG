@@ -140,18 +140,15 @@ function Orange(x, y, z)
     'use strict';
 
     this.type = 'Orange';
-    this.geometry = new THREE.SphereGeometry(23,						/* radius */
-                                            20,                         /* widthSegments */
-                                            25,                         /* heightSegments */
-                                            0,                          /* phiStart */
-                                            2 * Math.PI,                /* phiLength */
-                                            0,                          /* thetaStart */
-                                            2 * Math.PI);               /* thetaLength */
+    this.geometry = new THREE.SphereGeometry(23, 20, 30, 2 * Math.PI, 2 * Math.PI, 0, 2 * Math.PI);
     this.material = new THREE.MeshBasicMaterial({color: 0xe38416});
-    var orange = new THREE.Mesh(this.geometry, this.material);
 
-    THREE.Object3D.call(this);
-    this.add(orange);
+    THREE.Mesh.call(this, this.geometry, this.material);
+
+	this.direction = {
+        x: Math.random(),
+        z: Math.random()
+    }
 
     this.position.set(x, y, z);
 }
@@ -163,7 +160,7 @@ Orange.prototype.constructor = Orange;
  /**
  * adds to Orange class all method and attributes from THRE.Object3D
  */
-Orange.prototype = Object.create(THREE.Object3D.prototype);
+Orange.prototype = Object.create(THREE.Mesh.prototype);
 
 
 

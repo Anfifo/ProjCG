@@ -1,5 +1,6 @@
 var scene, camera, renderer;
 var animatables = [];
+var oranges = [];
 
 function render(){
 	renderer.render(scene, camera);
@@ -12,8 +13,27 @@ function createScene(){
 
 function animate(){
 
+	var width = 470;
+	var height = 220;
+
     animatables.forEach(function(element){ element.animate()} );
     render();
+
+	for (var i = 0; i < oranges.length; i++) {
+		oranges[i].position.x += 5 * oranges[i].direction.x;
+        oranges[i].position.z += 5 * oranges[i].direction.z;
+
+        // if edge is reached, bounce back
+        if (oranges[i].position.x < -width ||
+        oranges[i].position.x > width) {
+            oranges[i].direction.x = -oranges[i].direction.x;
+        }
+        if (oranges[i].position.z < -height ||
+        oranges[i].position.z > height) {
+            oranges[i].direction.z = -oranges[i].direction.z;
+        }
+	}
+
     requestAnimationFrame(animate);
 }
 
@@ -128,14 +148,14 @@ function init(){
 	var track = new InfinityTrack(cheerioProperties);
 	scene.add(track);
 
-	var orange = new Orange(80, 23, 200 );
-	scene.add(orange);
+	oranges[0] = new Orange(80, 23, 200 );
+	scene.add(oranges[0]);
 
-	orange = new Orange(400,23,125);
-	scene.add(orange);
+	oranges[1] = new Orange(400,23,125);
+	scene.add(oranges[1]);
 
-	orange = new Orange(-370,23, -180);
-	scene.add(orange);
+	oranges[2] = new Orange(-370,23, -180);
+	scene.add(oranges[2]);
 
 	var butter = new Butter(-400, 15, 150);
 	scene.add(butter);
@@ -188,6 +208,6 @@ function init(){
 	window.addEventListener("keydown", inputHandler.onKeyDown);
 	window.addEventListener("keyup", inputHandler.onKeyRelease);
 
-	animate(animatables);
+	animate();
 
 }
