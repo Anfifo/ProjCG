@@ -14,6 +14,9 @@ function InputHandler(){
     var self = this;
 
     var keyCodes = {
+        _1: 49,
+        _2: 50,
+        _3: 51,
         a: 65,
         d: 68,
         e: 69,
@@ -29,7 +32,9 @@ function InputHandler(){
     };
 
     var pressedKeys = {};
-
+    pressedKeys[keyCodes._1] = false;
+    pressedKeys[keyCodes._2] = false;
+    pressedKeys[keyCodes._3] = false;
     pressedKeys[keyCodes.a] = false;
     pressedKeys[keyCodes.d] = false;
     pressedKeys[keyCodes.e] = false;
@@ -89,6 +94,19 @@ function InputHandler(){
             car2Controls = new CarControls(car2);
             animatables.push(car2Controls);
         }
+
+        if(pressedKeys[keyCodes._1]){
+            cameraNr = 0;
+        }
+
+        if(pressedKeys[keyCodes._2]){
+            cameraNr = 1;
+        }
+
+        if(pressedKeys[keyCodes._3]){
+            cameraNr = 2;
+        }
+
     };
 
 

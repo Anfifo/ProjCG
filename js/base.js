@@ -1,10 +1,10 @@
-var scene, camera, renderer;
+var scene, cameras, renderer;
 var animatables = [];
 var oranges = [];
 var cameraNr;
 
 function render(){
-	renderer.render(scene, camera);
+	renderer.render(scene, cameras[cameraNr]);
 }
 
 function createScene(){
@@ -19,6 +19,9 @@ function animate(){
 
     animatables.forEach(function(element){ element.animate()} );
     render();
+    /*var position = animatables[0].car.position;
+    camera.position.set(position.x - 100 , 200 + position.y , position.z);*/
+
 
 	for (var i = 0; i < oranges.length; i++) {
 		oranges[i].position.x += 5 * oranges[i].direction.x;
@@ -38,20 +41,33 @@ function animate(){
     requestAnimationFrame(animate);
 }
 
+function createCamera3( dimensions) {
+	
+	var window_ratio = dimensions[0]/dimensions[2];
+
+	var camera = new THREE.PerspectiveCamera(45, window_ratio, 1, 3000);
+    camera.position.set(-30 , 50, 0);
+
+    camera.lookAt(scene.position);
+    return camera;
+
+    
+}
 
 function createCamera2( dimensions) {
-    cameraNr = 2;
+    
     var window_ratio = dimensions[0]/dimensions[2];
 
-    camera = new THREE.PerspectiveCamera(45, window_ratio, 1, 3000);
+    var camera = new THREE.PerspectiveCamera(45, window_ratio, 1, 3000);
     camera.position.set(0 , 500, 700);
 
     camera.lookAt(scene.position);
+    return camera;
 
 }
 
-function createCamera( dimensions ){
-	cameraNr = 1;
+function createCamera1( dimensions ){
+
 	var width = dimensions[0]/2 + 100;
 	var height = dimensions[2]/2 + 100;
 	console.log(width);
@@ -59,10 +75,10 @@ function createCamera( dimensions ){
 	var table_ratio = height/width;
 
 	if(window_ratio > table_ratio)
-		camera = new THREE.OrthographicCamera(-width, width, width*window_ratio, -width*window_ratio, 0.1, 100000);
+		var camera = new THREE.OrthographicCamera(-width, width, width*window_ratio, -width*window_ratio, 0.1, 100000);
 	else{
 		window_ratio = 1 / window_ratio;
-		camera = new THREE.OrthographicCamera(-height*window_ratio, height*window_ratio, height, -height, 0.1, 100000);
+		var camera = new THREE.OrthographicCamera(-height*window_ratio, height*window_ratio, height, -height, 0.1, 100000);
 	}
 
 	camera.position.x = 0;
@@ -70,6 +86,7 @@ function createCamera( dimensions ){
 	camera.position.z = 0;
 
 	camera.lookAt(scene.position);
+	return camera;
 
 	/*var cameraHelper = new THREE.CameraHelper(camera);
 	scene.add(cameraHelper);*/
@@ -116,6 +133,7 @@ function init(){
 
 	createScene();
 
+
 	var properties = {
         width: 1000,
         height: 20,
@@ -132,7 +150,11 @@ function init(){
     var table = new Table( properties );
 	scene.add(table);
 
-	createCamera2(table.getDimensions());
+	cameras = [createCamera1(table.getDimensions()),
+			   createCamera2(table.getDimensions()),
+			   createCamera3(table.getDimensions())];
+	cameraNr = 0;
+
 
 	var cheerioProperties = {
         radius: 7,
@@ -198,7 +220,10 @@ function init(){
     var car = createBasicCar(0,6.5,0);
     car.scale.set(5,5,5);
 
+    car.add(cameras[2]);
+
 	scene.add(car);
+
 
 	var carControls = new CarControls(car);
 
@@ -206,7 +231,7 @@ function init(){
 	animatables.push(carControls);
 
 
-
+	
 
 
 
