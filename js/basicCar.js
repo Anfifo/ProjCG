@@ -170,20 +170,24 @@ BasicCar.prototype.addCarWheels = function(){
 	var wheelY = this.carBlockHeight/2;
 	var wheelZ = + this.carWidth/2 + this.wheelWidth;
 
+	// front right wheel
 	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
 	wheel.position.set(this.x + wheelX, this.y - wheelY, this.z + wheelZ);
 	this.add(wheel);
 
+	// back right wheel
     wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
 	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
 	wheel.position.set(this.x - wheelX, this.y - wheelY, this.z + wheelZ);
 	this.add(wheel);
 
+	// back left wheel
     wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
 	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
 	wheel.position.set(this.x -wheelX, this.y - wheelY, this.z - wheelZ);
 	this.add(wheel);
 
+	// front left wheel
     wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
 	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
 	wheel.position.set(this.x + wheelX, this.y - wheelY, this.z - wheelZ);
@@ -193,10 +197,10 @@ BasicCar.prototype.addCarWheels = function(){
 
 /**
  *
- * Builds a triangular-rectangular prism
+ * Builds a triangular-rectangle prism
  * @param side (side of the triangle)
  * @param length (the depth of the prism)
- * @returns {TRIANGULARPrism!}
+ * @returns prism {a triangular prism}
  */
 function createTriangularPrism(side, length){
 

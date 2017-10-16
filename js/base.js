@@ -1,6 +1,7 @@
 var scene, camera, renderer;
 var animatables = [];
 var oranges = [];
+var cameraNr;
 
 function render(){
 	renderer.render(scene, camera);
@@ -38,8 +39,19 @@ function animate(){
 }
 
 
-function createCamera( dimensions ){
+function createCamera2( dimensions) {
+    cameraNr = 2;
+    var window_ratio = dimensions[0]/dimensions[2];
 
+    camera = new THREE.PerspectiveCamera(45, window_ratio, 1, 3000);
+    camera.position.set(0 , 500, 700);
+
+    camera.lookAt(scene.position);
+
+}
+
+function createCamera( dimensions ){
+	cameraNr = 1;
 	var width = dimensions[0]/2 + 100;
 	var height = dimensions[2]/2 + 100;
 	console.log(width);
@@ -120,7 +132,7 @@ function init(){
     var table = new Table( properties );
 	scene.add(table);
 
-	createCamera(table.getDimensions());
+	createCamera2(table.getDimensions());
 
 	var cheerioProperties = {
         radius: 7,

@@ -43,14 +43,14 @@ function CarControls(car) {
 		var slowDown = 0;
 
 		// simulates resistance
-		if (this.acceleration === 0 && this.speed !== 0){
+		if (this.acceleration === 0 && this.speed !== 0)
 			slowDown = this.speed > 0 ? - this.slowFactor : this.slowFactor;
-		}
+
 
 		//calculates new speed with physics movement formula v = vo + at ; with the addition of the resistance factor
 		this.speed = (this.speed) + (this.acceleration * timeSinceLastUpdate) + (slowDown * this.moveChangeTime *timeSinceLastUpdate);
 
-		if(this.speed > 0 && slowDown >0  || this.speed <0 && slowDown <0)
+		if(this.speed > 0 && slowDown > 0  || this.speed < 0 && slowDown < 0)
 			this.speed = 0;
 
 		if (this.speed > this.maxSpeed)
@@ -59,13 +59,12 @@ function CarControls(car) {
 		if (this.speed < - this.maxSpeed)
 			this.speed = - this.maxSpeed;
 
-		//applies space change to car; multiplies the speed by the time since last frame in order to get constant speed/s
+		//applies space change to car; multiplies the speed by the time since last frame in order to get the distance to move
 		this.car.translateX(this.speed * timeSinceLastUpdate);
 
 
 		//no movement means no rotation
-		if (this.speed !== 0)
-			this.car.rotateOnAxis(new THREE.Vector3(0, 1, 0), this.curveAngle * timeSinceLastUpdate * (this.speed / this.maxSpeed));
+		this.car.rotateOnAxis(new THREE.Vector3(0, 1, 0), this.curveAngle * timeSinceLastUpdate * (this.speed / this.maxSpeed));
 
 	};
 
