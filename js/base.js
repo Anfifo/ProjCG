@@ -43,10 +43,10 @@ function animate(){
 
 function createCamera3( dimensions) {
 	
-	var window_ratio = dimensions[0]/dimensions[2];
+	var window_ratio = window.innerWidth / window.innerHeight;//dimensions[0]/dimensions[2];
 
 	var camera = new THREE.PerspectiveCamera(45, window_ratio, 1, 3000);
-    camera.position.set(-30 , 50, 0);
+    camera.position.set(-40 , 40, 0);
 
     camera.lookAt(scene.position);
     return camera;
@@ -56,7 +56,7 @@ function createCamera3( dimensions) {
 
 function createCamera2( dimensions) {
     
-    var window_ratio = dimensions[0]/dimensions[2];
+    var window_ratio =  window.innerWidth / window.innerHeight ; // dimensions[0]/dimensions[2];
 
     var camera = new THREE.PerspectiveCamera(45, window_ratio, 1, 3000);
     camera.position.set(0 , 500, 700);
@@ -71,6 +71,7 @@ function createCamera1( dimensions ){
 	var width = dimensions[0]/2 + 100;
 	var height = dimensions[2]/2 + 100;
 	console.log(width);
+	console.log(height);
 	var window_ratio = window.innerHeight/window.innerWidth;
 	var table_ratio = height/width;
 
@@ -79,6 +80,7 @@ function createCamera1( dimensions ){
 	else{
 		window_ratio = 1 / window_ratio;
 		var camera = new THREE.OrthographicCamera(-height*window_ratio, height*window_ratio, height, -height, 0.1, 100000);
+
 	}
 
 	camera.position.x = 0;
@@ -99,29 +101,46 @@ function onResize(dimensions) {
 	var width = dimensions[0]/2 + 100;
     var height = dimensions[2]/2 + 100;
     var table_ratio = height/width;
+
     console.log(width);
-    console.log(dimensions[2]);
-	console.log(window_ratio);
-	console.log(table_ratio);
+    console.log(height);
+
+ 	for(var i = 1; i < 3; i++){
+	 	cameras[i].aspect = 1 / window_ratio;
+		cameras[i].updateProjectionMatrix();
+	}
+
 
 	if(window.innerHeight > 0 && window.innerWidth > 0){
 		if(window_ratio > table_ratio){
-			camera.left = -width;
-			camera.right = width;
-			camera.top = width * window_ratio;
-			camera.bottom = -width * window_ratio;
-			camera.updateProjectionMatrix();
+			cameras[0].left = -width;
+			cameras[0].right = width;
+			cameras[0].top = width * window_ratio;
+			cameras[0].bottom = -width * window_ratio;
 		}
+
 		else{
 			window_ratio = 1 / window_ratio;
-			camera.left = -height * window_ratio;
-			camera.right = height * window_ratio;;
-			camera.top = height;
-			camera.bottom = -height;
-			camera.updateProjectionMatrix();
+			cameras[0].left = -height * window_ratio;
+			cameras[0].right = height * window_ratio;;
+			cameras[0].top = height;
+			cameras[0].bottom = -height;
+			
 		}
 	}
 
+	cameras[0].updateProjectionMatrix();
+
+
+
+
+	/*
+	else{
+
+		cameras[0].aspect = window.innerWidth / window.innerHeight
+	}*/
+
+	
 	// render();
 }
 
