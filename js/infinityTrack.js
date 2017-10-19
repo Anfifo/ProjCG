@@ -64,6 +64,9 @@ function InfinityTrack(properties) {
 	//STRAIGHT PART
 	this.draw_line(-200, 200, 0.5, 0);
 	this.draw_line(-150, 150, -0.5, 0);
+
+	this.start_line(347,20,0);
+	this.start_line(347,20,12);
 	
 }
 
@@ -112,5 +115,26 @@ InfinityTrack.prototype.draw_line = function(xi, xf, m, b){
 		this.properties.color = Math.random()*0xffffff;
 		this.add( new Cheerio (this.properties));
 	}
+}
+
+/**
+ * draws the starting line for the track
+ */
+InfinityTrack.prototype.start_line = function(x,y,z){
+	properties = {
+        width: 80,
+        height: 0.01,
+        depth: 8,
+        color: Math.random() * 0xffffff,
+        wireframe: false,
+        position: {
+            x: x,
+            y: y,
+            z: z
+        }
+    };
+
+	var startingLine = new Table (properties);
+	this.add(startingLine);
 }
 

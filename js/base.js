@@ -166,8 +166,11 @@ function init(){
         }
     };
 
-    var table = new Table( properties );
+    var table = new Table(properties);
 	scene.add(table);
+
+
+
 
 	cameras = [createCamera1(table.getDimensions()),
 			   createCamera2(table.getDimensions()),
@@ -235,8 +238,10 @@ function init(){
 
 	//Car handling
 	var inputHandler = new InputHandler();
-
+	//Posicao inicial = (-8, 6.5, 70)
+	//Rotacao inicial = 90
     var car = createBasicCar(0,6.5,0);
+    
     car.scale.set(5,5,5);
 
     car.add(cameras[2]);
