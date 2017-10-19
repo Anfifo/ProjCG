@@ -17,6 +17,7 @@ function InputHandler(){
         _1: 49,
         _2: 50,
         _3: 51,
+        _4: 52,
         a: 65,
         d: 68,
         e: 69,
@@ -35,6 +36,7 @@ function InputHandler(){
     pressedKeys[keyCodes._1] = false;
     pressedKeys[keyCodes._2] = false;
     pressedKeys[keyCodes._3] = false;
+    pressedKeys[keyCodes._4] = false;
     pressedKeys[keyCodes.a] = false;
     pressedKeys[keyCodes.d] = false;
     pressedKeys[keyCodes.e] = false;
@@ -90,23 +92,27 @@ function InputHandler(){
         if(pressedKeys[keyCodes.p]){
             var car2 = createBasicCar(0,6.5,0, {color:0x42f44b});
             car2.scale.set(5,5,5);
+            cameraHandler.createCameraForObject(car2);
             scene.add(car2);
             car2Controls = new CarControls(car2);
             animatables.push(car2Controls);
         }
 
         if(pressedKeys[keyCodes._1]){
-            cameraNr = 0;
+            cameraHandler.updateSelectedCamera(0);
         }
 
         if(pressedKeys[keyCodes._2]){
-            cameraNr = 1;
+            cameraHandler.updateSelectedCamera(1);
         }
 
         if(pressedKeys[keyCodes._3]){
-            cameraNr = 2;
+            cameraHandler.updateSelectedCamera(2);        
         }
 
+        if(pressedKeys[keyCodes._4]){
+            cameraHandler.updateSelectedCamera(3);        
+        }
     };
 
 
