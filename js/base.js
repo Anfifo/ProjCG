@@ -1,7 +1,6 @@
-var scene, renderer, renderer1;
+var scene, renderer;
 var animatables = [];
 var oranges = [];
-//var cameraNr;
 var cameraHandler;
 
 function render(){
@@ -43,6 +42,7 @@ function animate(){
     	renderSplitScreen();
     else{
     	renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+        renderer.enableScissorTest (false);
     	render();
     }
     /*var position = animatables[0].car.position;
@@ -79,9 +79,6 @@ function init(){
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 
-	renderer1 = new THREE.WebGLRenderer();
-	renderer1.setSize(window.innerWidth, window.innerHeight);
-	document.body.appendChild(renderer1.domElement);
 
 	createScene();
 
