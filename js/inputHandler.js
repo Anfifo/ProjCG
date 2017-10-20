@@ -18,6 +18,7 @@ function InputHandler(){
         _2: 50,
         _3: 51,
         _4: 52,
+        _5: 53,
         a: 65,
         d: 68,
         e: 69,
@@ -37,6 +38,7 @@ function InputHandler(){
     pressedKeys[keyCodes._2] = false;
     pressedKeys[keyCodes._3] = false;
     pressedKeys[keyCodes._4] = false;
+    pressedKeys[keyCodes._5] = false;
     pressedKeys[keyCodes.a] = false;
     pressedKeys[keyCodes.d] = false;
     pressedKeys[keyCodes.e] = false;
@@ -99,19 +101,28 @@ function InputHandler(){
         }
 
         if(pressedKeys[keyCodes._1]){
+            cameraHandler.setSplitScreen(false);  
             cameraHandler.updateSelectedCamera(0);
         }
 
         if(pressedKeys[keyCodes._2]){
+            cameraHandler.setSplitScreen(false);  
             cameraHandler.updateSelectedCamera(1);
         }
 
         if(pressedKeys[keyCodes._3]){
+            cameraHandler.setSplitScreen(false); 
             cameraHandler.updateSelectedCamera(2);        
         }
 
         if(pressedKeys[keyCodes._4]){
+            cameraHandler.setSplitScreen(false);  
             cameraHandler.updateSelectedCamera(3);        
+        }
+
+        if(pressedKeys[keyCodes._5]){
+           if(car2Controls !== null) 
+            cameraHandler.setSplitScreen(true);       
         }
     };
 

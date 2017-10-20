@@ -18,6 +18,7 @@ function CameraHandler( dimensions ){
 	this.OrthographicCamera(0, 50, 0);
 	this.createPerspectiveCamera(0, 500, 700);
 	this.cameraNr = 0;
+	this.splitScreen = false;
 }
 
 /**
@@ -125,3 +126,18 @@ CameraHandler.prototype.resize = function(){
 
 	this.cameras[0].updateProjectionMatrix();
 }
+
+
+CameraHandler.prototype.resizePerspectiveCamera = function(cameraNr, aspect_ratio){
+	if(cameraNr < this.cameras.length)
+		this.cameras[cameraNr].aspect = aspect_ratio;
+}
+
+CameraHandler.prototype.splitScreenOn = function(){
+	return this.splitScreen;
+}
+
+CameraHandler.prototype.setSplitScreen = function(value){
+	this.splitScreen = value;
+}
+

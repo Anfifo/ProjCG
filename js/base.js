@@ -1,4 +1,4 @@
-var scene, renderer;
+var scene, renderer, renderer1;
 var animatables = [];
 var oranges = [];
 //var cameraNr;
@@ -6,6 +6,26 @@ var cameraHandler;
 
 function render(){
 	renderer.render(scene, cameraHandler.selectedCamera());
+}
+
+function renderSplitScreen(){
+	var height = window.innerHeight;
+	var width = window.innerWidth;
+	cameraHandler.updateSelectedCamera(2);
+
+	renderer.setViewport(0, 0, width/2, height);
+	renderer.setScissor(0, 0, width, height);
+	renderer.enableScissorTest (true);
+	cameraHandler.resizePerspectiveCamera(2, (width/2)/height);
+	render();
+
+	cameraHandler.updateSelectedCamera(3);
+
+	renderer.setViewport(width/2, 0, width/2, height);
+	renderer.setScissor(width/2, 0, width/2, height);
+	renderer.enableScissorTest (true);
+	cameraHandler.resizePerspectiveCamera(3, (width/2)/height);
+	render();
 }
 
 function createScene(){
@@ -19,7 +39,12 @@ function animate(){
 	var height = 220;
 
     animatables.forEach(function(element){ element.animate()} );
-    render();
+    if(cameraHandler.splitScreenOn())
+    	renderSplitScreen();
+    else{
+    	renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+    	render();
+    }
     /*var position = animatables[0].car.position;
     camera.position.set(position.x - 100 , 200 + position.y , position.z);*/
 
@@ -53,6 +78,10 @@ function init(){
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
+
+	renderer1 = new THREE.WebGLRenderer();
+	renderer1.setSize(window.innerWidth, window.innerHeight);
+	document.body.appendChild(renderer1.domElement);
 
 	createScene();
 
