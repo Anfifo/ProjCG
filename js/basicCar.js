@@ -12,18 +12,6 @@
 'use strict';
 
 
-/**
- * Encapsulates the class creation of the BasiCar
- * @param x axis position
- * @param y axis position
- * @param z axis position
- * @param properties additional properties like color
- * @returns {BasicCar}
- */
-function createBasicCar(x,y,z, properties){
-	return new BasicCar(x,y,z, properties);
-}
-
 
 /**
  * Class Constructor
@@ -38,7 +26,7 @@ function BasicCar(x,y,z, properties){
 	/**
 	 * calls the super constructor
 	 */
-	THREE.Object3D.call(this);
+	PhysicObject.call(this);
 
 	this.x = x;
 	this.z = z;
@@ -82,7 +70,7 @@ function BasicCar(x,y,z, properties){
 /**
  * adds to BasicCar class all method and attributes
  */
-BasicCar.prototype = Object.create(THREE.Object3D.prototype);
+BasicCar.prototype = Object.create(PhysicObject.prototype);
 
 /**
  * prevents issues with isInstance after BasiCar inheritance from THREE.Object3D

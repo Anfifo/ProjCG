@@ -32,10 +32,6 @@ function MovingCar(x, y, z, properties) {
 
 
 
-	this.animate = function(){
-		this.updateMovement();
-	};
-
 
 	this.calculateTranslation = function (timeSinceLastUpdate){
 

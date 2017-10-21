@@ -165,7 +165,9 @@ function init(){
 	var inputHandler = new InputHandler();
 	//Posicao inicial = (-8, 6.5, 70)
 	//Rotacao inicial = 90
-    var car = createBasicCar(0,6.5,0);
+
+
+	var car = createMovingCar(0,6.5,0);
     
     car.scale.set(5,5,5);
 
@@ -173,10 +175,8 @@ function init(){
 	scene.add(car);
 
 
-	var carControls = new CarControls(car);
-
-	inputHandler.addCarControls(carControls);
-	animatables.push(carControls);
+	inputHandler.addCarControls(car);
+	animatables.push(car);
 
 
 	

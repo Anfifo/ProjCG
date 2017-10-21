@@ -53,11 +53,11 @@ function InputHandler(){
     pressedKeys[keyCodes.right] = false;
 
 
-    var carControls;
-    var car2Controls;
+    var car1;
+    var car2;
 
     this.addCarControls = function(carCtrls){
-        carControls = carCtrls;
+        car1 = carCtrls;
     };
 
 
@@ -66,10 +66,10 @@ function InputHandler(){
         'use strict';
         pressedKeys[e.keyCode] = true;
 
-        if(carControls !== undefined && carControls !== null ){
+        if(car1 !== undefined && car1 !== null ){
             self.executeCarControls();
         }
-        if(car2Controls !== undefined && car2Controls !== null){
+        if(car2 !== undefined && car2 !== null){
             self.executeCar2Controls();
         }
 
@@ -92,12 +92,11 @@ function InputHandler(){
 
         //EASTER EGG create 2nd player car
         if(pressedKeys[keyCodes.p]){
-            var car2 = createBasicCar(0,6.5,0, {color:0x42f44b});
+            car2 = createMovingCar(0,6.5,0, {color:0x42f44b});
             car2.scale.set(5,5,5);
             cameraHandler.createCameraForObject(car2);
             scene.add(car2);
-            car2Controls = new CarControls(car2);
-            animatables.push(car2Controls);
+            animatables.push(car2);
         }
 
         if(pressedKeys[keyCodes._1]){
@@ -121,7 +120,7 @@ function InputHandler(){
         }
 
         if(pressedKeys[keyCodes._5]){
-           if(car2Controls !== null) 
+           if(car2 !== null)
             cameraHandler.setSplitScreen(true);       
         }
     };
@@ -131,10 +130,10 @@ function InputHandler(){
     this.onKeyRelease = function (e){
         pressedKeys[e.keyCode] = false;
 
-        if(carControls !== undefined && carControls !== null ){
+        if(car1 !== undefined && car1 !== null ){
             self.executeCarControls();
         }
-        if(car2Controls !== undefined && car2Controls !== null){
+        if(car2 !== undefined && car2 !== null){
             self.executeCar2Controls();
         }
     };
@@ -146,48 +145,48 @@ function InputHandler(){
 
     this.executeCarControls = function(){
         if (pressedKeys[keyCodes.up]){
-            carControls.moveForward();
+            car1.moveForward();
         }
         if (pressedKeys[keyCodes.down]){
-            carControls.moveBackwards();
+            car1.moveBackwards();
         }
         if (pressedKeys[keyCodes.left]){
-            carControls.turnLeft();
+            car1.turnLeft();
         }
         if (pressedKeys[keyCodes.right]){
-            carControls.turnRight();
+            car1.turnRight();
         }
 
         if ( !pressedKeys[keyCodes.up] && !pressedKeys[keyCodes.down]){
-            carControls.slowDown();
+            car1.slowDown();
         }
 
         if (!pressedKeys[keyCodes.left] && !pressedKeys[keyCodes.right]){
-            carControls.stopCurve();
+            car1.stopCurve();
         }
     };
 
     this.executeCar2Controls = function(){
 
         if (pressedKeys[keyCodes.e]){
-            car2Controls.moveForward();
+            car2.moveForward();
         }
         if (pressedKeys[keyCodes.d]){
-            car2Controls.moveBackwards();
+            car2.moveBackwards();
         }
         if (pressedKeys[keyCodes.s]){
-            car2Controls.turnLeft();
+            car2.turnLeft();
         }
         if (pressedKeys[keyCodes.f]){
-            car2Controls.turnRight();
+            car2.turnRight();
         }
 
         if ( !pressedKeys[keyCodes.e] && !pressedKeys[keyCodes.d]){
-            car2Controls.slowDown();
+            car2.slowDown();
         }
 
         if (!pressedKeys[keyCodes.s] && !pressedKeys[keyCodes.f]){
-            car2Controls.stopCurve();
+            car2.stopCurve();
         }
 
     };
