@@ -26,6 +26,7 @@ function BasicCar(x,y,z, properties){
 	/**
 	 * calls the super constructor
 	 */
+
 	PhysicObject.call(this);
 
 	this.x = x;

@@ -19,6 +19,7 @@
 function PhysicObject(){
     THREE.Object3D.call(this);
 
+
     this.speed = 0;
     this.updateClock = new THREE.Clock();
     this.acceleration = 0;

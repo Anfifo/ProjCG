@@ -14,7 +14,7 @@ function renderSplitScreen(){
 
 	renderer.setViewport(0, 0, width/2, height);
 	renderer.setScissor(0, 0, width, height);
-	renderer.enableScissorTest (true);
+	renderer.setScissorTest (true);
 	cameraHandler.resizePerspectiveCamera(2, (width/2)/height);
 	render();
 
@@ -22,7 +22,7 @@ function renderSplitScreen(){
 
 	renderer.setViewport(width/2, 0, width/2, height);
 	renderer.setScissor(width/2, 0, width/2, height);
-	renderer.enableScissorTest (true);
+	renderer.setScissorTest (true);
 	cameraHandler.resizePerspectiveCamera(3, (width/2)/height);
 	render();
 }
@@ -38,11 +38,12 @@ function animate(){
 	var height = 220;
 
     animatables.forEach(function(element){ element.animate()} );
+
     if(cameraHandler.splitScreenOn())
     	renderSplitScreen();
     else{
     	renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
-        renderer.enableScissorTest (false);
+        renderer.setScissorTest (false);
     	render();
     }
     /*var position = animatables[0].car.position;

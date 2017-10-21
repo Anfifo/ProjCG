@@ -31,12 +31,13 @@ CameraHandler.prototype.OrthographicCamera = function(x, y, z) {
 
 	
 	var table_ratio = this.height/this.width;
+	var camera;
 
 	if(this.window_ratio > table_ratio)
-		var camera = new THREE.OrthographicCamera(-this.width, this.width, this.width*this.window_ratio, -this.width*this.window_ratio, 0.1, 100000);
+		camera = new THREE.OrthographicCamera(-this.width, this.width, this.width*this.window_ratio, -this.width*this.window_ratio, 0.1, 100000);
 	else{
 		this.window_ratio = 1 / this.window_ratio;
-		var camera = new THREE.OrthographicCamera(-this.height*this.window_ratio, this.height*this.window_ratio, this.height, -this.height, 0.1, 100000);
+		camera = new THREE.OrthographicCamera(-this.height*this.window_ratio, this.height*this.window_ratio, this.height, -this.height, 0.1, 100000);
 
 	}
 
@@ -46,7 +47,7 @@ CameraHandler.prototype.OrthographicCamera = function(x, y, z) {
 
 	camera.lookAt(scene.position);
 	this.cameras.push(camera);
-}
+};
 
 /**
  * adds an THREE.PerspectiveCamera
@@ -63,7 +64,7 @@ CameraHandler.prototype.createPerspectiveCamera = function(x,y,z) {
     camera.lookAt(scene.position);
     this.cameras.push(camera);
     return camera;
-}
+};
 
 /**
  * creates a camera that folows the given object
@@ -74,14 +75,14 @@ CameraHandler.prototype.createCameraForObject = function(object){
 	if(this.cameras.length > 3){
 		this.resize();
 	}
-}
+};
 
 /**
  * @returns reference to the currently selected camera
  */
 CameraHandler.prototype.selectedCamera = function(){
 	return this.cameras[this.cameraNr];
-}
+};
 
 /**
  * updates the selected camera
@@ -89,7 +90,7 @@ CameraHandler.prototype.selectedCamera = function(){
 CameraHandler.prototype.updateSelectedCamera = function(cameraNr){
 	if(cameraNr < this.cameras.length)
 		this.cameraNr = cameraNr;
-}
+};
 
 /**
  * updates the cameras properties
@@ -125,19 +126,19 @@ CameraHandler.prototype.resize = function(){
 	}
 
 	this.cameras[0].updateProjectionMatrix();
-}
+};
 
 
 CameraHandler.prototype.resizePerspectiveCamera = function(cameraNr, aspect_ratio){
 	if(cameraNr < this.cameras.length)
 		this.cameras[cameraNr].aspect = aspect_ratio;
-}
+};
 
 CameraHandler.prototype.splitScreenOn = function(){
 	return this.splitScreen;
-}
+};
 
 CameraHandler.prototype.setSplitScreen = function(value){
 	this.splitScreen = value;
-}
+};
 

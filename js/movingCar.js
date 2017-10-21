@@ -20,6 +20,7 @@ function MovingCar(x, y, z, properties) {
 
     BasicCar.call(this, x, y, z, properties);
 
+
 	this.speed = 0;
 	this.acceleration = 0;
 	this.maxSpeed = 300;
