@@ -19,6 +19,8 @@
 function PhysicObject(){
     THREE.Object3D.call(this);
 
+    this.type = "PhysicObject";
+
     var self = this;
     this.mass = undefined;
     this.speed = 0;
@@ -45,10 +47,10 @@ function PhysicObject(){
 
     };
 
-    this.calculateCollision = function(element){
+    this.calculateCollision = function(element, possibleCollisions){
 
         this.applyCollision(element);
-        return true;
+
     };
 
 
@@ -57,6 +59,7 @@ function PhysicObject(){
     // v1' = ( (m1 - m2) / (m1 + m2) ) v1 + ( (2 * m2 ) / ( m1 + m2) )v2
     // v2' = ( (2 * m1 ) / (m1 + m2) ) v1 + ( (m2 - m1) / ( m1 + m2) )v2
     this.applyCollision = function(object){
+
         var m1 = this.mass;
         var m2 = object.mass;
 
@@ -64,15 +67,16 @@ function PhysicObject(){
         var objectPosition = object.getWorldPosition();
 
 
-        var oldSpeed1 = this.speed;
-        var oldSpeed2 = object.speed;
+        var oldSpeed1 = this.speed < 0 ? - this.speed : this.speed;
+        var oldSpeed2 = object.speed < 0 ? - object.speed : object.speed;
+
 
         var newSpeed1 = (( (m1 - m2) / (m1 + m2) ) * oldSpeed1 )+ (( (2 * m2 ) / ( m1 + m2) )* oldSpeed2);
-
         var newSpeed2 = (( (2 * m1 ) / (m1 + m2) ) * oldSpeed1 )+ (( (m2 - m1) / ( m1 + m2) ) * oldSpeed2);
 
-        this.speed = newSpeed1;
+        this.speed = this.speed < 0 ? - newSpeed1 : newSpeed1;
         object.speed = newSpeed2;
+
 
         //object direction
         var objDir = new THREE.Vector3();
@@ -83,18 +87,18 @@ function PhysicObject(){
         // objDir.subVectors(objectPosition, selfPosition);
         objDir.normalize();
         object.translationVector = objDir;
+
+        return true;
     };
 
     this.hasCollisions = function(objectList){
 
-        var selfPosition = this.getWorldPosition();
-        var collided = [];
+        var collided = false;
         objectList.forEach(function (element){
-
             if(element !== self && self.nearbyTo(element)){
-                self.calculateCollision(element);
-                collided.push(element);
-
+                if(self.calculateCollision(element, objectList)){
+                    collided = true;
+                }
             }
         });
 
@@ -104,9 +108,17 @@ function PhysicObject(){
 
 
     this.animate = function(possibleCollisions){
+
+        var selfPosition = this.getWorldPosition();
+
         this.updateMovement();
-        this.hasCollisions(possibleCollisions);
-        this.updateMovement();
+
+        while( this.hasCollisions(possibleCollisions)){
+            this.position = selfPosition;
+            selfPosition = this.getWorldPosition(); 
+            this.updateMovement();
+        }
+
     };
 
     this.calculateTranslation = function(){
@@ -121,11 +133,15 @@ function PhysicObject(){
     this.updateMovement = function () {
         var timeSinceLastUpdate = this.updateClock.getDelta();
 
+        var oldPosition = this.position;
+
         var distance = this.calculateTranslation(timeSinceLastUpdate);
         this.applyTranslation(distance);
 
         var angle = this.calculateRotation(timeSinceLastUpdate);
         this.applyRotation(angle);
+
+        return oldPosition;
     };
 
     this.applyTranslation = function (distance, vector){

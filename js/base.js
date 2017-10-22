@@ -195,7 +195,7 @@ function init(){
 	var car = createMovingCar(0,6.5,0);
 
 
-    car.scale.set(5,5,5);
+    car.scale.set(3,3,3);
 
     cameraHandler.createCameraForObject(car);
 
