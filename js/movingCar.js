@@ -150,3 +150,9 @@ MovingCar.prototype = Object.create(BasicCar.prototype);
  * prevents issues with isInstance after BasiCar inheritance from THREE.Object3D
  */
 MovingCar.prototype.constructor = MovingCar;
+
+MovingCar.prototype.returnToStart = function(){
+	console.log(this.position.y);
+	this.position.set(340,0, -50);
+	this.lookAt(new THREE.Vector3(0,0,0));
+};

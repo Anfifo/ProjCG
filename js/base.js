@@ -196,6 +196,7 @@ function init(){
 
 
     car.scale.set(3,3,3);
+    car.returnToStart();
 
     cameraHandler.createCameraForObject(car);
 

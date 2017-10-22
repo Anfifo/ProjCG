@@ -46,6 +46,7 @@ function InfinityTrack(properties) {
 
 	this.properties = properties;
 	this.cheerios = [];
+	this.startLinePosition = [347, 20, 12];
 
 	this.getCheerios = function(){return this.cheerios};
 
@@ -138,8 +139,8 @@ InfinityTrack.prototype.start_line = function(x,y,z){
             z: z
         }
     };
-
 	var startingLine = new Table (properties);
 	this.add(startingLine);
 };
+
 

@@ -115,7 +115,7 @@ function PhysicObject(){
 
         while( this.hasCollisions(possibleCollisions)){
             this.position = selfPosition;
-            selfPosition = this.getWorldPosition(); 
+            selfPosition = this.getWorldPosition();
             this.updateMovement();
         }
 
