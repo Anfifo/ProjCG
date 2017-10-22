@@ -83,6 +83,10 @@ function Cheerio(properties){
 	PhysicObject.call(this);
 
 	this.type = 'Cheerio';
+	this.mass = 10;
+	this.boundingSphereRadius =  properties.radius;
+
+
 
 	var geometry = new THREE.TorusGeometry(
 		properties.radius,

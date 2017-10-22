@@ -45,7 +45,9 @@ function InfinityTrack(properties) {
 	THREE.Object3D.call(this);
 
 	this.properties = properties;
+	this.cheerios = [];
 
+	this.getCheerios = function(){return this.cheerios};
 
 	/////////////////// OUTTER LOOP //////////////////
 	this.draw_half_loop(200,0,200,200,13);
@@ -97,9 +99,11 @@ InfinityTrack.prototype.draw_half_loop = function(cx, cy, x, y, delta_angle){
         this.properties.position.x = pos[0];
         this.properties.position.z = pos[1];
         this.properties.color = Math.random()*0xffffff;
-        this.add(new Cheerio( this.properties));
+        var cheerio = new Cheerio( this.properties);
+        this.cheerios.push(cheerio);
+        this.add(cheerio);
     }
-}
+};
 
 /**
  * draws a straight line of cheerios
@@ -113,9 +117,10 @@ InfinityTrack.prototype.draw_line = function(xi, xf, m, b){
 		this.properties.position.x = x;
 		this.properties.position.z = linear_function(m,b,x);
 		this.properties.color = Math.random()*0xffffff;
-		this.add( new Cheerio (this.properties));
-	}
-}
+        var cheerio = new Cheerio( this.properties);
+        this.cheerios.push(cheerio);
+        this.add(cheerio);	}
+};
 
 /**
  * draws the starting line for the track
@@ -136,5 +141,5 @@ InfinityTrack.prototype.start_line = function(x,y,z){
 
 	var startingLine = new Table (properties);
 	this.add(startingLine);
-}
+};
 

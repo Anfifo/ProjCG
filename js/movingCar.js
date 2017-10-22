@@ -20,15 +20,17 @@ function MovingCar(x, y, z, properties) {
 
     BasicCar.call(this, x, y, z, properties);
 
-
+	this.mass = 1000;
+	this.boundingSphereRadius = 20;
 	this.speed = 0;
 	this.acceleration = 0;
 	this.maxSpeed = 300;
 	this.maxAcceleration = 100;
-	this.moveChangeTime = 0;
 	this.curveAngle = 0;
 	this.slowFactor = 100;
-    this.translationVector = new THREE.Vector3(1,0,0);
+    var xVector = new THREE.Vector3(1,0,0);
+
+	this.translationVector = new THREE.Vector3(1,0,0);
     this.rotationVector = new THREE.Vector3(0, 1, 0);
 
 
@@ -36,7 +38,6 @@ function MovingCar(x, y, z, properties) {
 
 	this.calculateTranslation = function (timeSinceLastUpdate){
 
-        this.moveChangeTime += timeSinceLastUpdate;
         var slowDown = 0;
 
         // simulates resistance
@@ -44,7 +45,7 @@ function MovingCar(x, y, z, properties) {
             slowDown = this.speed > 0 ? - this.slowFactor : this.slowFactor;
 
         //calculates new speed with physics movement formula v = vo + at ; with the addition of the resistance factor
-        this.speed = (this.speed) + (this.acceleration * timeSinceLastUpdate) + (slowDown * this.moveChangeTime *timeSinceLastUpdate);
+        this.speed = (this.speed) + (this.acceleration * timeSinceLastUpdate) + (slowDown *timeSinceLastUpdate);
 
         if(this.speed > 0 && slowDown > 0  || this.speed < 0 && slowDown < 0)
             this.speed = 0;
@@ -74,7 +75,7 @@ function MovingCar(x, y, z, properties) {
 			this.stopMovement();
 		}
 		this.acceleration = this.maxAcceleration;
-
+		this.translationVector = xVector;
 	};
 
 	/**
@@ -89,7 +90,7 @@ function MovingCar(x, y, z, properties) {
 		}
 
 		this.acceleration = - this.maxAcceleration;
-
+		this.translationVector = xVector;
 	};
 
 	/**
@@ -100,7 +101,6 @@ function MovingCar(x, y, z, properties) {
 		this.speed = (this.speed/3) * 2;
 		this.acceleration = 0;
 		this.moveChangeTime = 0;
-
 	};
 
 	/**

@@ -73,7 +73,9 @@ function animateOranges(delta) {
 }
 
 function animate(){
-    animatables.forEach(function(element){ element.animate()} );
+
+	var possibleCollisions = animatables;
+	animatables.forEach(function(element){ element.animate(possibleCollisions)} );
 
     if(cameraHandler.splitScreenOn())
     	renderSplitScreen();
@@ -155,59 +157,62 @@ function init(){
 	scene.add(track);
 
 	oranges[0] = new Orange(80, 23, 200 );
-	scene.add(oranges[0]);
 
+    scene.add(oranges[0]);
 	oranges[1] = new Orange(400,23,125);
-	scene.add(oranges[1]);
 
+    scene.add(oranges[1]);
 	oranges[2] = new Orange(-370,23, -180);
-	scene.add(oranges[2]);
 
+    scene.add(oranges[2]);
 	var butter = new Butter(-400, 15, 150);
-	scene.add(butter);
 
+    scene.add(butter);
 	butter = new Butter(0, 15, -150);
-	butter.rotation.y = Math.PI/3;
-	scene.add(butter);
 
+    butter.rotation.y = Math.PI/3;
+    scene.add(butter);
 	butter = new Butter(400, 15, -150);
-	butter.rotation.y = Math.PI/6;
-	scene.add(butter);
 
+    butter.rotation.y = Math.PI/6;
+    scene.add(butter);
 	butter = new Butter(-80, 15, 200);
-	butter.rotation.y = -Math.PI/3;
-	scene.add(butter);
 
-
+    butter.rotation.y = -Math.PI/3;
+    scene.add(butter);
 	butter = new Butter(-440, 15, -60);
-	butter.rotation.y = -Math.PI/12;
-	scene.add(butter);
 
 
-
-
+    butter.rotation.y = -Math.PI/12;
+    scene.add(butter);
 	//Car handling
 	var inputHandler = new InputHandler();
-	//Posicao inicial = (-8, 6.5, 70)
-	//Rotacao inicial = 90
 
 
+
+
+    //Posicao inicial = (-8, 6.5, 70)
 	var car = createMovingCar(0,6.5,0);
+
 
     car.scale.set(5,5,5);
 
     cameraHandler.createCameraForObject(car);
-	scene.add(car);
 
+    scene.add(car);
+    //Rotacao inicial = 90
 
 	inputHandler.addCarControls(car);
-	animatables.push(car);
+
+    animatables.push(car);
+    console.log(track.getCheerios());
+   animatables = animatables.concat(track.getCheerios());
 
 
 
 
 	var dim = table.getDimensions();
-	window.addEventListener("resize", function(dim){
+    window.addEventListener("resize", function(dim){
    											return function(){onResize(dim)}
 									  }(dim));
 
