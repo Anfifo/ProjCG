@@ -29,7 +29,7 @@ function PhysicObject(){
     this.curveAngle = 0;
     this.translationVector = new THREE.Vector3();
     this.rotationVector = new THREE.Vector3();
-    this.slowFactor = 10;
+    this.slowFactor = 50;
     this.boundingSphereRadius = 0;
 
 
@@ -82,7 +82,6 @@ function PhysicObject(){
 
         // objDir.subVectors(objectPosition, selfPosition);
         objDir.normalize();
-        object.applyTranslation(100, objDir);
         object.translationVector = objDir;
     };
 
