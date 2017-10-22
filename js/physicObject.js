@@ -36,12 +36,12 @@ function PhysicObject(){
 
     this.nearbyTo = function (object, currentPosition){
         if(currentPosition === undefined){
-            var selfPosition = this.getWorldPosition();
+            var selfPosition = self.getWorldPosition();
         }
         var objectPosition = object.getWorldPosition();
         var distanceSquared = selfPosition.distanceToSquared(objectPosition);
 
-        return distanceSquared <= (this.boundingSphereRadius + object.boundingSphereRadius) * (this.boundingSphereRadius + object.boundingSphereRadius);
+        return distanceSquared <= (self.boundingSphereRadius + object.boundingSphereRadius) * (self.boundingSphereRadius + object.boundingSphereRadius);
 
     };
 
@@ -78,27 +78,28 @@ function PhysicObject(){
         var objDir = new THREE.Vector3();
 
         objDir.x = objectPosition.x - selfPosition.x;
-        objDir.y = objectPosition.y - selfPosition.y;
+        objDir.z = objectPosition.z - selfPosition.z;
 
         // objDir.subVectors(objectPosition, selfPosition);
         objDir.normalize();
-        // object.applyTranslation(10, objDir);
+        object.applyTranslation(100, objDir);
         object.translationVector = objDir;
     };
 
     this.hasCollisions = function(objectList){
 
         var selfPosition = this.getWorldPosition();
-
+        var collided = [];
         objectList.forEach(function (element){
 
             if(element !== self && self.nearbyTo(element)){
                 self.calculateCollision(element);
-                console.log(self);
-                console.log("collied with:");
-                console.log(element);
+                collided.push(element);
+
             }
         });
+
+        return collided;
     };
 
 
@@ -106,6 +107,7 @@ function PhysicObject(){
     this.animate = function(possibleCollisions){
         this.updateMovement();
         this.hasCollisions(possibleCollisions);
+        this.updateMovement();
     };
 
     this.calculateTranslation = function(){
