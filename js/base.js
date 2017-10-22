@@ -62,8 +62,8 @@ function animateOranges(delta) {
 
 		var xAngle = xDistance / 23;
 		var zAngle = zDistance / 23;
-		oranges[i].rotateX(xAngle);
-		oranges[i].rotateZ(zAngle);
+		oranges[i].rotateX(zAngle);
+		oranges[i].rotateZ(-xAngle);
 		oranges[i].position.x += xDistance;
 		oranges[i].position.z += zDistance;
 

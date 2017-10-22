@@ -30,6 +30,23 @@ function PhysicObject(){
     this.translationVector = new THREE.Vector3(1,0,0);
     this.rotationVector = new THREE.Vector3(0, 1, 0);
 
+    this.boundingSphereRadius = 0;
+
+
+    this.nearbyTo = function (object, currentPosition){
+        var selfPosition = currentPosition | this.getWorldPosition();
+        var objectPosition = object.getWorldPosition();
+        var distance = selfPosition.distanceTo(objectPosition);
+
+        if (distance <= this.boundingSphereRadius + object.boundingSphereRadius){
+            return true;
+        }
+
+    };
+
+    this.hasCollision = function(objectList){
+
+    };
 
     this.animate = function(){
         this.updateMovement();
