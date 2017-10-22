@@ -83,7 +83,7 @@ function Cheerio(properties){
 	PhysicObject.call(this);
 
 	this.type = 'Cheerio';
-	this.mass = 10;
+	this.mass = 300;
 	this.boundingSphereRadius =  properties.radius;
 
 
@@ -102,14 +102,14 @@ function Cheerio(properties){
 
 	var mesh = new THREE.Mesh( geometry, material);
 
-	this.add(mesh);
+	mesh.rotation.x = properties.rotation.x;
 	this.position.set(
-		properties.position.x,
-		properties.position.y,
-		properties.position.z
+         properties.position.x,
+         properties.position.y,
+         properties.position.z
 	);
-	this.rotation.x = properties.rotation.x;
-}
+	this.add(mesh);
+ }
 
 /**
  * adds to Cheerio class all method and attributes from THRE.Mesh
