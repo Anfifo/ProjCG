@@ -165,7 +165,7 @@ function Orange(x, y, z)
 	this.direction = {
         x: Math.random(),
         z: Math.random()
-    }
+    };
 
     this.position.set(x, y, z);
 }

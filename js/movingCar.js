@@ -101,7 +101,9 @@ function MovingCar(x, y, z, properties) {
 		this.speed = (this.speed/3) * 2;
 		this.acceleration = 0;
 		this.moveChangeTime = 0;
-	};
+        this.translationVector = xVector;
+
+    };
 
 	/**
 	 * stops car acceleration
@@ -109,6 +111,8 @@ function MovingCar(x, y, z, properties) {
 	this.slowDown = function(){
 		this.acceleration = 0;
         this.moveChangeTime = 0;
+        this.translationVector = xVector;
+
     };
 
 	/**
@@ -116,14 +120,18 @@ function MovingCar(x, y, z, properties) {
 	 */
 	this.stopCurve = function(){
 		this.curveAngle = 0;
-	};
+        this.translationVector = xVector;
+
+    };
 
 	/**
 	 * rotates/curves the car to the right
 	 */
 	this.turnRight = function(){
 		this.curveAngle = -(Math.PI/4) * 3;
-	};
+        this.translationVector = xVector;
+
+    };
 
 	/**
 	 * rotates/curves car to the left

@@ -27,9 +27,9 @@ function PhysicObject(){
     this.maxSpeed = 0;
     this.maxAcceleration = 0;
     this.curveAngle = 0;
-    this.translationVector = new THREE.Vector3(1,0,0);
-    this.rotationVector = new THREE.Vector3(0, 1, 0);
-    this.slowFactor = 300;
+    this.translationVector = new THREE.Vector3();
+    this.rotationVector = new THREE.Vector3();
+    this.slowFactor = 10;
     this.boundingSphereRadius = 0;
 
 
@@ -39,9 +39,9 @@ function PhysicObject(){
             var selfPosition = this.getWorldPosition();
         }
         var objectPosition = object.getWorldPosition();
-        var distance = selfPosition.distanceTo(objectPosition);
+        var distanceSquared = selfPosition.distanceToSquared(objectPosition);
 
-        return distance <= this.boundingSphereRadius + object.boundingSphereRadius;
+        return distanceSquared <= (this.boundingSphereRadius + object.boundingSphereRadius) * (this.boundingSphereRadius + object.boundingSphereRadius);
 
     };
 
@@ -77,9 +77,13 @@ function PhysicObject(){
         //object direction
         var objDir = new THREE.Vector3();
 
-        objDir.subVectors(objectPosition, selfPosition).normalize();
+        objDir.x = objectPosition.x - selfPosition.x;
+        objDir.y = objectPosition.y - selfPosition.y;
+
+        // objDir.subVectors(objectPosition, selfPosition);
+        objDir.normalize();
+        // object.applyTranslation(10, objDir);
         object.translationVector = objDir;
-        object.applyTranslation(100, objDir);
     };
 
     this.hasCollisions = function(objectList){
@@ -87,9 +91,12 @@ function PhysicObject(){
         var selfPosition = this.getWorldPosition();
 
         objectList.forEach(function (element){
+
             if(element !== self && self.nearbyTo(element)){
-                console.log("prossible collision between" +this + element);
                 self.calculateCollision(element);
+                console.log(self);
+                console.log("collied with:");
+                console.log(element);
             }
         });
     };

@@ -205,9 +205,8 @@ function init(){
 	inputHandler.addCarControls(car);
 
     animatables.push(car);
-    console.log(track.getCheerios());
-   animatables = animatables.concat(track.getCheerios());
-
+   	animatables = animatables.concat(track.getCheerios());
+	animatables.push(cheerio);
 
 
 
