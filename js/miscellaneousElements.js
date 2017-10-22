@@ -45,7 +45,7 @@ function Table(properties){
 		properties.position.z
 	);
 
-};
+}
 
 /**
  * adds to Table class all method and attributes from THRE.Mesh
@@ -60,7 +60,7 @@ Table.prototype.getDimensions = function() {
 	return [this.width,
 			this.height,
 			this.depth];
-}
+};
 
 
 
@@ -80,35 +80,37 @@ Table.prototype.getDimensions = function() {
  * @constructor
  */
 function Cheerio(properties){
+	PhysicObject.call(this);
+
 	this.type = 'Cheerio';
-	this.geometry = new THREE.TorusGeometry(
+
+	var geometry = new THREE.TorusGeometry(
 		properties.radius,
 		properties.tube,
 		properties.radialSegments,
 		properties.tubularSegments,
 		properties.arc
 	);
-	this.material = new THREE.MeshBasicMaterial({
+	var material = new THREE.MeshBasicMaterial({
 		color: properties.color,
 		wireframe: properties.wireframe
 	});
-	THREE.Mesh.call(
-		this,
-		this.geometry,
-		this.material
-	);
+
+	var mesh = new THREE.Mesh( geometry, material);
+
+	this.add(mesh);
 	this.position.set(
 		properties.position.x,
 		properties.position.y,
 		properties.position.z
 	);
 	this.rotation.x = properties.rotation.x;
-};
+}
 
 /**
  * adds to Cheerio class all method and attributes from THRE.Mesh
  */
-Cheerio.prototype = Object.create( THREE.Mesh.prototype );
+Cheerio.prototype = Object.create( PhysicObject.prototype );
 
 /**
  * prevents issues with isInstance after Cheerio inheritance from THREE.Mesh
