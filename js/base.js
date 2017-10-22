@@ -2,6 +2,8 @@ var scene, renderer;
 var animatables = [];
 var oranges = [];
 var cameraHandler;
+var clock, delta;
+var speed = 50, maxSpeed = 350;
 
 function render(){
 	renderer.render(scene, cameraHandler.selectedCamera());
@@ -32,11 +34,45 @@ function createScene(){
 	scene.add(new THREE.AxisHelper(10));
 }
 
+function randomPosition(value) {
+	return value - Math.random() * (value-(-value));
+}
+
+function hideShowOrange(orange, width, height) {
+	orange.visible = false;
+	orange.direction.x = randomPosition(1);
+	orange.direction.z = randomPosition(1);
+	orange.position.x = randomPosition(width / 4);
+	orange.position.z = randomPosition(height / 4);
+	setTimeout(function(){
+		orange.visible = true;
+		if (speed < maxSpeed)
+			speed += 5;
+	}, Math.random() * 10000);
+}
+
+function animateOranges(delta) {
+	var width = 530;
+	var height = 280;
+
+	for (var i = 0; i < oranges.length; i++) {
+		var xDistance = speed * delta * oranges[i].direction.x;
+		var zDistance = speed * delta * oranges[i].direction.z;
+
+
+		var xAngle = xDistance / 23;
+		var zAngle = zDistance / 23;
+		oranges[i].rotateX(xAngle);
+		oranges[i].rotateZ(zAngle);
+		oranges[i].position.x += xDistance;
+		oranges[i].position.z += zDistance;
+
+		if (-width > oranges[i].position.x || oranges[i].position.x > width || -height > oranges[i].position.z || oranges[i].position.z > height )
+			hideShowOrange(oranges[i], width/2, height/2);
+	}
+}
+
 function animate(){
-
-	var width = 470;
-	var height = 220;
-
     animatables.forEach(function(element){ element.animate()} );
 
     if(cameraHandler.splitScreenOn())
@@ -49,21 +85,8 @@ function animate(){
     /*var position = animatables[0].car.position;
     camera.position.set(position.x - 100 , 200 + position.y , position.z);*/
 
-
-	for (var i = 0; i < oranges.length; i++) {
-		oranges[i].position.x += 5 * oranges[i].direction.x;
-        oranges[i].position.z += 5 * oranges[i].direction.z;
-
-        // if edge is reached, bounce back
-        if (oranges[i].position.x < -width ||
-        oranges[i].position.x > width) {
-            oranges[i].direction.x = -oranges[i].direction.x;
-        }
-        if (oranges[i].position.z < -height ||
-        oranges[i].position.z > height) {
-            oranges[i].direction.z = -oranges[i].direction.z;
-        }
-	}
+	delta = clock.getDelta();
+	animateOranges(delta);
 
     requestAnimationFrame(animate);
 }
@@ -103,7 +126,7 @@ function init(){
 	cameraHandler = new CameraHandler(table.getDimensions());
 
 
-	
+
 	var cheerioProperties = {
         radius: 7,
 		tube: 2.7,
@@ -161,7 +184,7 @@ function init(){
 
 
 
-	
+
 	//Car handling
 	var inputHandler = new InputHandler();
 	//Posicao inicial = (-8, 6.5, 70)
@@ -169,7 +192,7 @@ function init(){
 
 
 	var car = createMovingCar(0,6.5,0);
-    
+
     car.scale.set(5,5,5);
 
     cameraHandler.createCameraForObject(car);
@@ -180,7 +203,7 @@ function init(){
 	animatables.push(car);
 
 
-	
+
 
 	var dim = table.getDimensions();
 	window.addEventListener("resize", function(dim){
