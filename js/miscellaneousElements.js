@@ -86,7 +86,7 @@ function Cheerio(properties){
 	this.mass = 300;
 	this.boundingSphereRadius =  properties.radius+ properties.tube;
 	this.aabbMin = new THREE.Vector3(-properties.radius, -properties.tube/2, properties.radius);
-	
+
 	this.aabbMax = new THREE.Vector3(properties.radius, properties.tube/2, -properties.radius);
 
 
@@ -147,7 +147,7 @@ function Orange(x, y, z)
 {
     'use strict';
 
-	THREE.Object3D.call(this);
+	PhysicObject.call(this);
 
     this.type = 'Orange';
 
@@ -170,20 +170,74 @@ function Orange(x, y, z)
     };
 
     this.position.set(x, y, z);
-}
 
+	this.speed = 50;
+ 	this.maxSpeed = 350;
+ 	var width = 530;
+ 	var height = 280;
 
+ 	function randomPosition(value) {
+ 		return value - Math.random() * (value-(-value));
+ 	}
 
-/**
- * prevents issues with isInstance after Orange inheritance from THREE.Object3D
- */
-Orange.prototype.constructor = Orange;
+ 	this.calculateTranslation = function () {
+ 		var xDistance = this.speed * this.updateClock.getDelta() * this.direction.x;
+ 		var zDistance = this.speed * this.updateClock.getDelta() * this.direction.z;
+ 		return new THREE.Vector3(xDistance, 0, zDistance);
+ 	}
 
+ 	this.calculateRotation = function(distances) {
+ 		var xAngle = distances.x / 23;
+ 		var zAngle = distances.z / 23;
+ 		return new THREE.Vector3(xAngle, 0, zAngle);
+ 	}
+
+ 	this.applyTranslation = function(distances) {
+ 		this.position.x += distances.x;
+ 		this.position.z += distances.z;
+ 	}
+
+ 	this.applyRotation = function(rotations) {
+ 		this.rotateX(rotations.z);
+ 		this.rotateZ(-rotations.x);
+ 	}
+
+ 	this.hideShow = function() {
+ 		this.visible = false;
+ 		this.direction.x = randomPosition(1);
+ 		this.direction.z = randomPosition(1);
+ 		this.position.x = randomPosition(width / 4);
+ 		this.position.z = randomPosition(height / 4);
+ 		setTimeout(function(){
+ 			this.visible = true;
+ 			if (this.speed < this.maxSpeed)
+ 				this.speed += 5;
+ 		}, Math.random() * 10000);
+ 	}
+
+ 	this.updateMovement = function() {
+ 	}
+
+ 	this.animate = function() {
+		var distances = this.calculateTranslation();
+		var rotations = this.calculateRotation(distances);
+ 		this.applyRotation(rotations);
+ 		this.applyTranslation(distances);
+
+ 		if (-width > this.position.x || this.position.x > width || -height > this.position.z || this.position.z > height )
+ 			this.hideShow(this, width/2, height/2);
+ 	}
+
+ }
  /**
- * adds to Orange class all method and attributes from THRE.Object3D
- */
-Orange.prototype = Object.create(THREE.Object3D.prototype);
+  * prevents issues with isInstance after Orange inheritance from THREE.Object3D
+  */
+ Orange.prototype.constructor = Orange;
 
+  /**
+  * adds to Orange class all method and attributes from THRE.Object3D
+  */
+ Orange.prototype = Object.create(PhysicObject.prototype);
 
 
 /**
