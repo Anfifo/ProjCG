@@ -64,10 +64,10 @@ function InfinityTrack(properties) {
 	this.draw_half_loop(200,0,200,100,25);
 	this.draw_half_loop(-200,0,-200,-100,25);
 
-	//STRAIGHT PART
+	//STRAIGHT PART0
 	this.draw_line(-150, 0, 0.5, 0);
 	this.draw_line(-150, -50, -0.5, 0);
-	this.draw_line(0, 150, 0.5, 0);
+	this.draw_line(50, 150, 0.5, 0);
 	this.draw_line(50, 150, -0.5, 0);
 
 	this.start_line(347,20,0);

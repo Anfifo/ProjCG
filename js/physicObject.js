@@ -48,17 +48,21 @@ function PhysicObject(){
 
     this.pointInside = function(object){
 
-        this.updateMatrixWorld();
+        var a = new THREE.Box3().setFromObject(this);
+        var b = new THREE.Box3().setFromObject(object);
+
+
+        /*this.updateMatrixWorld();
         var aMin = this.localToWorld(new THREE.Vector3(this.aabbMin.x, this.aabbMin.y, this.aabbMin.z));
         var aMax = this.localToWorld(new THREE.Vector3(this.aabbMax.x, this.aabbMax.y, this.aabbMax.z));
 
         object.updateMatrixWorld();
         var bMin = object.localToWorld(new THREE.Vector3(object.aabbMin.x, object.aabbMin.y, object.aabbMin.z));
         var bMax = object.localToWorld(new THREE.Vector3(object.aabbMax.x, object.aabbMax.y, object.aabbMax.z));
-
-        if(aMax.x >= bMin.x && aMin.x <= bMax.x &&
-           aMax.y >= bMin.y && aMin.y <= bMax.y &&
-           aMax.z >= bMin.z && aMin.z <= bMax.z )
+        */
+        if(a.max.x >= b.min.x && a.min.x <= b.max.x &&
+           a.max.y >= b.min.y && a.min.y <= b.max.y &&
+           a.max.z >= b.min.z && a.min.z <= b.max.z )
             return true;
         else
             return false;
@@ -104,7 +108,7 @@ function PhysicObject(){
 
 
     this.checkCollision = function(element){
-        return this.nearbyTo(element);
+        return this.pointInside(element);
     };
 
 

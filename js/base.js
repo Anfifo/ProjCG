@@ -100,7 +100,6 @@ function onResize(dimensions) {
 	cameraHandler.resize();
 }
 
-
 function init(){
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -180,20 +179,6 @@ function init(){
 
     scene.add(car);
 
-
- 	properties = {
-        width: 5*13,
-        height: 25,
-        depth: 35,
-        color: 0x000000, 
-        wireframe: true,
-        position: {
-            x: 340,
-            y: 6.5,
-            z: -50
-        }
-    };
-
     
 	inputHandler.addCarControls(car);
 
@@ -217,33 +202,3 @@ function init(){
 }
 
 
-
-function addButters(){
-	var butters = [];
-
-    var butter = new Butter(-400, 15, 150);
-    scene.add(butter);
-	butters.push(butter);
-
-    butter = new Butter(0, 15, -150);
-    butter.rotation.y = Math.PI/3;
-    scene.add(butter);
-    butters.push(butter);
-
-    butter = new Butter(400, 15, -150);
-    butter.rotation.y = Math.PI/6;
-    scene.add(butter);
-    butters.push(butter);
-
-    butter = new Butter(-80, 15, 200);
-    butter.rotation.y = -Math.PI/3;
-    scene.add(butter);
-    butters.push(butter);
-
-    butter = new Butter(-440, 15, -60);
-    butter.rotation.y = -Math.PI/12;
-    scene.add(butter);
-    butters.push(butter);
-
-    return butters;
-}

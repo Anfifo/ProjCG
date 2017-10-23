@@ -21,8 +21,8 @@ function MovingCar(x, y, z, properties) {
     BasicCar.call(this, x, y, z, properties);
 
 	this.mass = 1000;
-	this.aabbMin = new THREE.Vector3(-15, -17.5, 32.5);
-	this.aabbMax = new THREE.Vector3(15, 17.5, -32.5);
+	this.aabbMin = new THREE.Vector3(-7.5, 5, 2.7);
+	this.aabbMax = new THREE.Vector3(7.5, 10, -2.7);
 	this.boundingSphereRadius = 30;
 	this.speed = 0;
 	this.acceleration = 0;
