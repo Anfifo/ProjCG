@@ -51,22 +51,24 @@ function InfinityTrack(properties) {
 	this.getCheerios = function(){return this.cheerios};
 
 	/////////////////// OUTTER LOOP //////////////////
-	this.draw_half_loop(200,0,200,200,13);
-	this.draw_half_loop(-200,0,-200,-200,13);
+	this.draw_half_loop(200,0,200,200,15);
+	this.draw_half_loop(-200,0,-200,-200,15);
 	
 	//STRAIGHT PART 
-	this.draw_line(-200, 0, -0.5, 100);
-	this.draw_line(-200, 0, 0.5, -100);
-	this.draw_line(0, 200, -0.5, -100);
-	this.draw_line(0, 200, 0.5, 100);
+	this.draw_line(-150, -50, -0.5, 100);
+	this.draw_line(-150, 0, 0.5, -100);
+	this.draw_line(50, 150, -0.5, -100);
+	this.draw_line(0, 150, 0.5, 100);
 	
 	/////////////////// INNER LOOP ///////////////////
 	this.draw_half_loop(200,0,200,100,25);
 	this.draw_half_loop(-200,0,-200,-100,25);
 
 	//STRAIGHT PART
-	this.draw_line(-200, 200, 0.5, 0);
-	this.draw_line(-150, 150, -0.5, 0);
+	this.draw_line(-150, 0, 0.5, 0);
+	this.draw_line(-150, -50, -0.5, 0);
+	this.draw_line(0, 150, 0.5, 0);
+	this.draw_line(50, 150, -0.5, 0);
 
 	this.start_line(347,20,0);
 	this.start_line(347,20,12);

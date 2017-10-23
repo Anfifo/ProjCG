@@ -22,6 +22,8 @@ function MovingCar(x, y, z, properties) {
 
 	this.mass = 1000;
 	this.boundingSphereRadius = 20;
+	this.aabbMin = new THREE.Vector3(-15, -17.5, 32.5);
+	this.aabbMax = new THREE.Vector3(15, 17.5, -32.5);
 	this.speed = 0;
 	this.acceleration = 0;
 	this.maxSpeed = 300;
@@ -29,7 +31,6 @@ function MovingCar(x, y, z, properties) {
 	this.curveAngle = 0;
 	this.slowFactor = 100;
     var xVector = new THREE.Vector3(1,0,0);
-
 	this.translationVector = new THREE.Vector3(1,0,0);
     this.rotationVector = new THREE.Vector3(0, 1, 0);
 
@@ -154,7 +155,15 @@ MovingCar.prototype = Object.create(BasicCar.prototype);
 MovingCar.prototype.constructor = MovingCar;
 
 MovingCar.prototype.returnToStart = function(){
-	console.log(this.position.y);
 	this.position.set(340,0, -50);
 	this.lookAt(new THREE.Vector3(0,0,0));
+};
+
+MovingCar.prototype.getAabbMin = function(){
+	return this.aabbMin.x;
+};
+
+MovingCar.prototype.resetBoundingBox = function(){
+	this.aabbMin = new THREE.Vector3(-32.5, -12.5, -17.5);
+	this.aabbMax = new THREE.Vector3(32.5, 12.5, 17.5);
 };

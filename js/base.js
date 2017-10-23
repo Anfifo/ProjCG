@@ -4,8 +4,9 @@ var oranges = [];
 var cameraHandler;
 var clock, delta;
 var speed = 50, maxSpeed = 350;
-
+var car;
 function render(){
+	console.log(car.getAabbMin());
 	renderer.render(scene, cameraHandler.selectedCamera());
 }
 
@@ -148,14 +149,12 @@ function init(){
         }
     };
 
-    var cheerio = new Cheerio( cheerioProperties );
-    scene.add(cheerio);
 
 
 	//draw_infinity_track(cheerioProperties);
 	var track = new InfinityTrack(cheerioProperties);
 	scene.add(track);
-
+/*
 	oranges[0] = new Orange(80, 23, 200 );
 
     scene.add(oranges[0]);
@@ -184,7 +183,7 @@ function init(){
 
 
     butter.rotation.y = -Math.PI/12;
-    scene.add(butter);
+    scene.add(butter);*/
 	//Car handling
 	var inputHandler = new InputHandler();
 
@@ -192,7 +191,7 @@ function init(){
 
 
     //Posicao inicial = (-8, 6.5, 70)
-	var car = createMovingCar(0,6.5,0);
+	car = createMovingCar(0,6.5,0);
 
 
     car.scale.set(5,5,5);
@@ -201,13 +200,27 @@ function init(){
     cameraHandler.createCameraForObject(car);
 
     scene.add(car);
-    //Rotacao inicial = 90
 
+
+ 	properties = {
+        width: 5*13,
+        height: 25,
+        depth: 35,
+        color: 0x000000, 
+        wireframe: true,
+        position: {
+            x: 340,
+            y: 6.5,
+            z: -50
+        }
+    };
+
+    
 	inputHandler.addCarControls(car);
 
     animatables.push(car);
    	animatables = animatables.concat(track.getCheerios());
-	animatables.push(cheerio);
+
 
 
 

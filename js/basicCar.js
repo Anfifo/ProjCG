@@ -32,7 +32,7 @@ function BasicCar(x,y,z, properties){
 	this.x = x;
 	this.z = z;
 	this.y = y;
-
+	this.lookAt(new THREE.Vector3(0,0,0));
 	if (properties !== undefined && properties !== null){
 		this.carColor = properties.color;
 	}

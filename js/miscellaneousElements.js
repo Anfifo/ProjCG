@@ -85,7 +85,9 @@ function Cheerio(properties){
 	this.type = 'Cheerio';
 	this.mass = 300;
 	this.boundingSphereRadius =  properties.radius;
-
+	this.aabbMin = new THREE.Vector3(-properties.radius, -properties.tube/2, properties.radius);
+	
+	this.aabbMax = new THREE.Vector3(properties.radius, properties.tube/2, -properties.radius);
 
 
 	var geometry = new THREE.TorusGeometry(
@@ -169,6 +171,9 @@ function Orange(x, y, z)
 
     this.position.set(x, y, z);
 }
+
+
+
 /**
  * prevents issues with isInstance after Orange inheritance from THREE.Object3D
  */
