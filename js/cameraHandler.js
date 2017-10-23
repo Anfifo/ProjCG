@@ -130,8 +130,11 @@ CameraHandler.prototype.resize = function(){
 
 
 CameraHandler.prototype.resizePerspectiveCamera = function(cameraNr, aspect_ratio){
-	if(cameraNr < this.cameras.length)
+	if(cameraNr < this.cameras.length){
 		this.cameras[cameraNr].aspect = aspect_ratio;
+		this.cameras[cameraNr].updateProjectionMatrix();
+	}
+
 };
 
 CameraHandler.prototype.splitScreenOn = function(){

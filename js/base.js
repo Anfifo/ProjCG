@@ -15,18 +15,18 @@ function renderSplitScreen(){
 	var width = window.innerWidth;
 	cameraHandler.updateSelectedCamera(2);
 
-	renderer.setViewport(0, 0, width/2, height);
-	renderer.setScissor(0, 0, width, height);
+	renderer.setViewport(0, 0, width/2 - 10, height);
+	renderer.setScissor(0, 0, width/2 - 10, height);
 	renderer.setScissorTest (true);
-	cameraHandler.resizePerspectiveCamera(2, (width/2)/height);
+	cameraHandler.resizePerspectiveCamera(2, (width/2 - 10)/height);
 	render();
 
 	cameraHandler.updateSelectedCamera(3);
 
-	renderer.setViewport(width/2, 0, width/2, height);
-	renderer.setScissor(width/2, 0, width/2, height);
+	renderer.setViewport(width/2 + 10, 0, width/2, height);
+	renderer.setScissor(width/2 + 10, 0, width/2, height);
 	renderer.setScissorTest (true);
-	cameraHandler.resizePerspectiveCamera(3, (width/2)/height);
+	cameraHandler.resizePerspectiveCamera(3, (width/2 - 10)/height);
 	render();
 }
 
@@ -73,29 +73,10 @@ function animateOranges(delta) {
 	}
 }
 
-function checkOutOfBounds(object){
-    var width = 1000;
-	var depth =  500;
-
-	var coordinates = object.getWorldPosition();
-
-	if(coordinates.x > width/2 || coordinates.x <  - width/2 || coordinates.z > depth/2 || coordinates.z < -depth/2){
-		//animatables.remove(object);
-
-		if(object.type==="Cheerio")
-			object.visible = false;
-
-		if(object.type==="Car"){
-			object.returnToStart();
-		}
-	}
-
-}
-
 function animate(){
 
 	var possibleCollisions = animatables;
-	animatables.forEach(function(element){ element.animate(possibleCollisions); checkOutOfBounds(element)} );
+	animatables.forEach(function(element){ element.animate(possibleCollisions)} );
 
     if(cameraHandler.splitScreenOn())
     	renderSplitScreen();
@@ -117,6 +98,37 @@ function onResize(dimensions) {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	cameraHandler.resize();
+}
+
+
+function addButters(){
+	var butters = [];
+
+    var butter = new Butter(-400, 15, 150);
+    scene.add(butter);
+	butters.push(butter);
+
+    butter = new Butter(0, 15, -150);
+    butter.rotation.y = Math.PI/3;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(400, 15, -150);
+    butter.rotation.y = Math.PI/6;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(-80, 15, 200);
+    butter.rotation.y = -Math.PI/3;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(-440, 15, -60);
+    butter.rotation.y = -Math.PI/12;
+    scene.add(butter);
+    butters.push(butter);
+
+    return butters;
 }
 
 function init(){
