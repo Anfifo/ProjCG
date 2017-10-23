@@ -135,6 +135,56 @@ Cheerio.prototype.constructor = Cheerio;
  */
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+// function hideShowOrange(orange, width, height) {
+//     orange.visible = false;
+//     orange.direction.x = randomPosition(1);
+//     orange.direction.z = randomPosition(1);
+//     orange.position.x = randomPosition(width / 4);
+//     orange.position.z = randomPosition(height / 4);
+//     setTimeout(function(){
+//         orange.visible = true;
+//         if (speed < maxSpeed)
+//             speed += 5;
+//     }, Math.random() * 10000);
+// }
+//
+// function animateOranges(delta) {
+//     var width = 530;
+//     var height = 280;
+//
+//     for (var i = 0; i < oranges.length; i++) {
+//         var xDistance = speed * delta * oranges[i].direction.x;
+//         var zDistance = speed * delta * oranges[i].direction.z;
+//
+//
+//         var xAngle = xDistance / 23;
+//         var zAngle = zDistance / 23;
+//         oranges[i].rotateX(zAngle);
+//         oranges[i].rotateZ(-xAngle);
+//         oranges[i].position.x += xDistance;
+//         oranges[i].position.z += zDistance;
+//
+//         if (-width > oranges[i].position.x || oranges[i].position.x > width || -height > oranges[i].position.z || oranges[i].position.z > height )
+//             hideShowOrange(oranges[i], width/2, height/2);
+//     }
+// }
+
+
  /**
  * Class Constructor
  * @param x position
@@ -148,11 +198,13 @@ function Orange(x, y, z)
     'use strict';
 
 	PhysicObject.call(this);
-
+	var self = this;
     this.type = 'Orange';
+    this.boundingSphereRadius = 23;
+	this.orange = new THREE.Object3D();
 
 	var orangeGeometry = new THREE.SphereGeometry(23, 15, 15, 0, 2 * Math.PI, 0, 2 * Math.PI);
-	var orangeMaterial = new THREE.MeshBasicMaterial({color: 0xa75715});
+	var orangeMaterial = new THREE.MeshBasicMaterial({color: 0xcc6321});
 	var orange = new THREE.Mesh(orangeGeometry, orangeMaterial);
 
 	var geometry = new THREE.CylinderGeometry(3, 3, 15, 20, 1, false, 0, 2 * Math.PI);
@@ -161,8 +213,10 @@ function Orange(x, y, z)
 
 	cylinder.position.set(0, 20, 0);
 
-	this.add(orange);
-	this.add(cylinder);
+	this.orange.add(orange);
+	this.orange.add(cylinder);
+
+	this.add(this.orange);
 
 	this.direction = {
         x: Math.random(),
@@ -170,74 +224,71 @@ function Orange(x, y, z)
     };
 
     this.position.set(x, y, z);
-
-	this.speed = 50;
+	this.rotateY(Math.random()*Math.PI);
+	this.speed = 100;
  	this.maxSpeed = 350;
  	var width = 530;
  	var height = 280;
 
  	function randomPosition(value) {
- 		return value - Math.random() * (value-(-value));
+ 		return value - Math.random() * (value + value);
  	}
 
  	this.calculateTranslation = function () {
- 		var xDistance = this.speed * this.updateClock.getDelta() * this.direction.x;
- 		var zDistance = this.speed * this.updateClock.getDelta() * this.direction.z;
- 		return new THREE.Vector3(xDistance, 0, zDistance);
- 	}
+ 		var delta = this.updateClock.getDelta();
+ 		var xDistance = this.speed * delta * this.direction.x;
 
- 	this.calculateRotation = function(distances) {
- 		var xAngle = distances.x / 23;
- 		var zAngle = distances.z / 23;
- 		return new THREE.Vector3(xAngle, 0, zAngle);
- 	}
+        return xDistance;
+ 	};
 
- 	this.applyTranslation = function(distances) {
- 		this.position.x += distances.x;
- 		this.position.z += distances.z;
- 	}
+ 	this.calculateRotation = function(xDistance) {
+ 		var xAngle = xDistance / 23;
+ 		return xAngle;
+ 	};
 
- 	this.applyRotation = function(rotations) {
- 		this.rotateX(rotations.z);
- 		this.rotateZ(-rotations.x);
- 	}
+ 	this.applyTranslation = function(xDistance) {
+ 		this.translateX(xDistance);
+ 	};
 
- 	this.hideShow = function() {
+ 	this.applyRotation = function(xDistance) {
+ 		// if(rotations.z < 0)
+ 		// 	rotations.z = -rotations.z;
+
+		this.orange.rotation.z -= xDistance;
+
+ 	};
+
+ 	this.hideShow = function(height,width) {
  		this.visible = false;
  		this.direction.x = randomPosition(1);
  		this.direction.z = randomPosition(1);
- 		this.position.x = randomPosition(width / 4);
- 		this.position.z = randomPosition(height / 4);
- 		setTimeout(function(){
- 			this.visible = true;
- 			if (this.speed < this.maxSpeed)
- 				this.speed += 5;
- 		}, Math.random() * 10000);
- 	}
+        self.position.x = randomPosition(width/4);
+        self.position.z = randomPosition(height/4);
+        self.visible = true;
+        if (self.speed < self.maxSpeed) {
+            self.speed += 5;
+        }
+
+    };
 
  	this.updateMovement = function() {
- 	}
+        var distances = this.calculateTranslation();
+        var rotations = this.calculateRotation(distances);
+        this.applyRotation(rotations);
+        this.applyTranslation(distances);
 
- 	this.animate = function() {
-		var distances = this.calculateTranslation();
-		var rotations = this.calculateRotation(distances);
- 		this.applyRotation(rotations);
- 		this.applyTranslation(distances);
+    };
 
- 		if (-width > this.position.x || this.position.x > width || -height > this.position.z || this.position.z > height )
- 			this.hideShow(this, width/2, height/2);
- 	}
+}
+/**
+ * adds to Orange class all method and attributes from THRE.Object3D
+ */
+Orange.prototype = Object.create(PhysicObject.prototype);
 
- }
  /**
   * prevents issues with isInstance after Orange inheritance from THREE.Object3D
   */
  Orange.prototype.constructor = Orange;
-
-  /**
-  * adds to Orange class all method and attributes from THRE.Object3D
-  */
- Orange.prototype = Object.create(PhysicObject.prototype);
 
 
 /**

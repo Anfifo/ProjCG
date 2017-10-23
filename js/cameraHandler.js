@@ -15,7 +15,7 @@ function CameraHandler( dimensions ){
 	this.width = dimensions[0]/2 + 100;
 	this.window_ratio = window.innerHeight/window.innerWidth;
 	this.cameras = [];
-	this.OrthographicCamera(0, 50, 0);
+	this.OrthographicCamera(0, 70, 0);
 	this.createPerspectiveCamera(0, 500, 700);
 	this.cameraNr = 0;
 	this.splitScreen = false;

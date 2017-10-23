@@ -20,6 +20,7 @@ function InputHandler(){
         _4: 52,
         _5: 53,
         a: 65,
+        b: 66,
         d: 68,
         e: 69,
         f: 70,
@@ -40,6 +41,7 @@ function InputHandler(){
     pressedKeys[keyCodes._4] = false;
     pressedKeys[keyCodes._5] = false;
     pressedKeys[keyCodes.a] = false;
+    pressedKeys[keyCodes.b] = false;
     pressedKeys[keyCodes.d] = false;
     pressedKeys[keyCodes.e] = false;
     pressedKeys[keyCodes.f] = false;

@@ -17,15 +17,22 @@ function checkOutOfBounds(object){
     var coordinates = object.getWorldPosition();
 
     if(coordinates.x > width/2 || coordinates.x <  - width/2 || coordinates.z > depth/2 || coordinates.z < -depth/2){
-        //animatables.remove(object);
-
         if(object.type==="Cheerio")
             object.visible = false;
 
         if(object.type==="Car"){
             object.returnToStart();
         }
+        if(object.type ==="Orange" && object.visible == true){
+            object.visible = false;
+            var timeout = Math.random() * 10000;
+            setTimeout(function(){
+                object.hideShow(width/4, depth/4);
+			}, timeout);
+        }
     }
+
+
 
 }
 
@@ -58,44 +65,15 @@ function randomPosition(value) {
 	return value - Math.random() * (value-(-value));
 }
 
-function hideShowOrange(orange, width, height) {
-	orange.visible = false;
-	orange.direction.x = randomPosition(1);
-	orange.direction.z = randomPosition(1);
-	orange.position.x = randomPosition(width / 4);
-	orange.position.z = randomPosition(height / 4);
-	setTimeout(function(){
-		orange.visible = true;
-		if (speed < maxSpeed)
-			speed += 5;
-	}, Math.random() * 10000);
-}
-
-function animateOranges(delta) {
-	var width = 530;
-	var height = 280;
-
-	for (var i = 0; i < oranges.length; i++) {
-		var xDistance = speed * delta * oranges[i].direction.x;
-		var zDistance = speed * delta * oranges[i].direction.z;
-
-
-		var xAngle = xDistance / 23;
-		var zAngle = zDistance / 23;
-		oranges[i].rotateX(zAngle);
-		oranges[i].rotateZ(-xAngle);
-		oranges[i].position.x += xDistance;
-		oranges[i].position.z += zDistance;
-
-		if (-width > oranges[i].position.x || oranges[i].position.x > width || -height > oranges[i].position.z || oranges[i].position.z > height )
-			hideShowOrange(oranges[i], width/2, height/2);
-	}
-}
 
 function animate(){
 
 	var possibleCollisions = animatables;
-	animatables.forEach(function(element){ element.animate(possibleCollisions); checkOutOfBounds(element);} );
+
+	animatables.forEach(function(element){
+		element.animate(possibleCollisions);
+		checkOutOfBounds(element);
+	} );
 
     if(cameraHandler.splitScreenOn())
     	renderSplitScreen();
@@ -107,8 +85,8 @@ function animate(){
     /*var position = animatables[0].car.position;
     camera.position.set(position.x - 100 , 200 + position.y , position.z);*/
 
-	delta = clock.getDelta();
-	animateOranges(delta);
+	// delta = clock.getDelta();
+	// animateOranges(delta);
 
     requestAnimationFrame(animate);
 }
@@ -128,22 +106,22 @@ function addButters(){
 	butters.push(butter);
 
     butter = new Butter(0, 15, -150);
-    butter.rotation.y = Math.PI/3;
+    butter.rotation.y = Math.PI/2;
     scene.add(butter);
     butters.push(butter);
 
     butter = new Butter(400, 15, -150);
-    butter.rotation.y = Math.PI/6;
+    butter.rotation.y = Math.PI/2;
     scene.add(butter);
     butters.push(butter);
 
     butter = new Butter(-80, 15, 200);
-    butter.rotation.y = -Math.PI/3;
+    butter.rotation.y = -Math.PI/2;
     scene.add(butter);
     butters.push(butter);
 
     butter = new Butter(-440, 15, -60);
-    butter.rotation.y = -Math.PI/12;
+    butter.rotation.y = -Math.PI;
     scene.add(butter);
     butters.push(butter);
 
@@ -204,13 +182,13 @@ function init(){
 	var track = new InfinityTrack(cheerioProperties);
 	scene.add(track);
 
-	oranges[0] = new Orange(80, 23, 200 );
+	oranges[0] = new Orange(80, 33, 200 );
 
     scene.add(oranges[0]);
-	oranges[1] = new Orange(400,23,125);
+	oranges[1] = new Orange(400,33,125);
 
     scene.add(oranges[1]);
-	oranges[2] = new Orange(-370,23, -180);
+	oranges[2] = new Orange(-370,33, -180);
 
     scene.add(oranges[2]);
 
@@ -235,6 +213,7 @@ function init(){
     animatables.push(car);
     animatables = animatables.concat(track.getCheerios());
     animatables = animatables.concat(butters);
+    animatables = animatables.concat(oranges);
 
 
 

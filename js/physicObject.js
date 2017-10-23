@@ -63,21 +63,26 @@ function PhysicObject(){
         */
         if(a.max.x >= b.min.x && a.min.x <= b.max.x &&
            a.max.y >= b.min.y && a.min.y <= b.max.y &&
-           a.max.z >= b.min.z && a.min.z <= b.max.z )
+           a.max.z >= b.min.z && a.min.z <= b.max.z ) {
+            //scene.add(new THREE.BoxHelper(this, 0xff0000));
+            //scene.add(new THREE.BoxHelper(object, 0x00ff00));
+
             return true;
+        }
         else
             return false;
     };
 
     this.fixCollision = function(object){
 
+        // butter shouldn't move; objects which collide with butter lose their SPEED
+        if ( object.type === "Butter" && this.type !== "Cheerio"){ this.speed = 0; return;}
+        // Orange collision sends car to Start
+        if ( object.type === "Orange" && this.type === "Car"){ this.returnToStart(); return;}
+        if ( object.type === "Car" && this.type === "Orange"){ object.returnToStart(); return;}
+
         var m1 = this.mass;
         var m2 = object.mass;
-
-        if (object.type === "Butter" && this.type !== "Cheerio"){
-            this.speed = 0;
-            return;
-        }
 
         var selfPosition = this.getWorldPosition();
         var objectPosition = object.getWorldPosition();
@@ -95,11 +100,16 @@ function PhysicObject(){
         var oldSpeed1 = this.speed < 0 ? - this.speed : this.speed;
 
         var oldSpeed2 = object.speed < 0 ? - object.speed : object.speed;
-        var newSpeed1 = (( (m1 - m2) / (m1 + m2) ) * oldSpeed1 )+ (( (2 * m2 ) / ( m1 + m2) )* oldSpeed2);
 
-        var newSpeed2 = (( (2 * m1 ) / (m1 + m2) ) * oldSpeed1 )+ (( (m2 - m1) / ( m1 + m2) ) * oldSpeed2);
+
+        // m1 (v1)squared + m2 (v2)squared = m1 (v1')squared + m2 (v2')squared
+        // by conservation of momentum and conservation of kinetic energy:
+        // v1' = ( (m1 - m2) / (m1 + m2) ) v1 + ( (2 * m2 ) / ( m1 + m2) )v2   PHYSICS o/
+        // v2' = ( (2 * m1 ) / (m1 + m2) ) v1 + ( (m2 - m1) / ( m1 + m2) )v2
+        var newSpeed1 = ((( (m1 - m2) / (m1 + m2) )) * oldSpeed1 )+ ((( (2 * m2 ) / ( m1 + m2) )) * oldSpeed2);
+        var newSpeed2 = ((( (2 * m1 ) / (m1 + m2) )) * oldSpeed1 )+ ((( (m2 - m1) / ( m1 + m2) )) * oldSpeed2);
+
         this.speed = this.speed < 0 ? - newSpeed1 : newSpeed1;
-
 
         object.speed = newSpeed2;
     };
@@ -118,8 +128,8 @@ function PhysicObject(){
         }
 
         possibleCollisions.forEach(function (element){
-            // if((element.type === "Butter" && self.type==="Cheerio") || (self.type === "Butter" && element.type==="Cheerio"))
-            //     return;
+            if((element.type === "Orange" && self.type!=="Car") || (self.type === "Orange" && element.type==="Car"))
+                 return;
             if(element !== self && self.nearbyTo(element)){
                 if(self.checkCollision(element)){
                     collided.push(element);
