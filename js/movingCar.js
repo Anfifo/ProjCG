@@ -20,11 +20,11 @@ function MovingCar(x, y, z, properties) {
 
     BasicCar.call(this, x, y, z, properties);
 
-    this.type= "Car";
+    this.type = "Car";
 	this.mass = 1000;
 	this.aabbMin = new THREE.Vector3(-7.5, 5, 2.7);
 	this.aabbMax = new THREE.Vector3(7.5, 10, -2.7);
-	this.boundingSphereRadius = 30;
+	this.boundingSphereRadius = 40;
 	this.speed = 0;
 	this.acceleration = 0;
 	this.maxSpeed = 300;
@@ -74,7 +74,6 @@ function MovingCar(x, y, z, properties) {
 	 */
 	this.moveForward = function(){
 		if(this.speed < 0){
-			this.moveChangeTime = 0;
 			this.stopMovement();
 		}
 		this.acceleration = this.maxAcceleration;

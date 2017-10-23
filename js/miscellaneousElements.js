@@ -84,7 +84,7 @@ function Cheerio(properties){
 
 	this.type = 'Cheerio';
 	this.mass = 300;
-	this.boundingSphereRadius =  properties.radius+ properties.tube;
+	this.boundingSphereRadius =  properties.radius+ properties.tube+1;
 	this.aabbMin = new THREE.Vector3(-properties.radius, -properties.tube/2, properties.radius);
 
 	this.aabbMax = new THREE.Vector3(properties.radius, properties.tube/2, -properties.radius);
@@ -250,11 +250,8 @@ function Orange(x, y, z)
  		this.translateX(xDistance);
  	};
 
- 	this.applyRotation = function(xDistance) {
- 		// if(rotations.z < 0)
- 		// 	rotations.z = -rotations.z;
-
-		this.orange.rotation.z -= xDistance;
+ 	this.applyRotation = function(radAngle) {
+		this.orange.rotation.z -= radAngle;
 
  	};
 

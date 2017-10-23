@@ -1,10 +1,7 @@
 /**
  * Class PhysicObject
- * This class intends to simulate basic physics for objects such as movement and colisions
- * WARNING: Pay attention to which methods and attributes you want to override in order to use this class
+ * This class intends to simulate basic physics for objects such as movement and collisions
  *
- * Usage:
- * Override calculateTranslation and calculateRotation methods
  *
  */
 
@@ -35,109 +32,22 @@ function PhysicObject(){
     this.boundingSphereRadius = 0;
 
 
-    this.nearbyTo = function (object, currentPosition){
-        if(currentPosition === undefined){
-            var selfPosition = self.getWorldPosition();
-        }
-        var objectPosition = object.getWorldPosition();
-        var distanceSquared = selfPosition.distanceToSquared(objectPosition);
-
-        return distanceSquared <= (self.boundingSphereRadius + object.boundingSphereRadius) * (self.boundingSphereRadius + object.boundingSphereRadius);
-
+    this.animate = function(possibleCollisions){
+        this.updateMovement(possibleCollisions);
     };
 
 
-    this.pointInside = function(object){
+    this.updateMovement = function (possibleCollisions) {
+        var timeSinceLastUpdate = this.updateClock.getDelta();
 
-        var a = new THREE.Box3().setFromObject(this);
-        var b = new THREE.Box3().setFromObject(object);
+        var distance = this.calculateTranslation(timeSinceLastUpdate);
+        this.tryMovement(distance, this.translationVector, possibleCollisions);
 
+        var angle = this.calculateRotation(timeSinceLastUpdate);
+        this.applyRotation(angle);
 
-        /*this.updateMatrixWorld();
-        var aMin = this.localToWorld(new THREE.Vector3(this.aabbMin.x, this.aabbMin.y, this.aabbMin.z));
-        var aMax = this.localToWorld(new THREE.Vector3(this.aabbMax.x, this.aabbMax.y, this.aabbMax.z));
-
-        object.updateMatrixWorld();
-        var bMin = object.localToWorld(new THREE.Vector3(object.aabbMin.x, object.aabbMin.y, object.aabbMin.z));
-        var bMax = object.localToWorld(new THREE.Vector3(object.aabbMax.x, object.aabbMax.y, object.aabbMax.z));
-        */
-        if(a.max.x >= b.min.x && a.min.x <= b.max.x &&
-           a.max.y >= b.min.y && a.min.y <= b.max.y &&
-           a.max.z >= b.min.z && a.min.z <= b.max.z ) {
-            //scene.add(new THREE.BoxHelper(this, 0xff0000));
-            //scene.add(new THREE.BoxHelper(object, 0x00ff00));
-
-            return true;
-        }
-        else
-            return false;
     };
 
-    this.fixCollision = function(object){
-
-        // butter shouldn't move; objects which collide with butter lose their SPEED
-        if ( object.type === "Butter" && this.type !== "Cheerio"){ this.speed = 0; return;}
-        // Orange collision sends car to Start
-        if ( object.type === "Orange" && this.type === "Car"){ this.returnToStart(); return;}
-        if ( object.type === "Car" && this.type === "Orange"){ object.returnToStart(); return;}
-
-        var m1 = this.mass;
-        var m2 = object.mass;
-
-        var selfPosition = this.getWorldPosition();
-        var objectPosition = object.getWorldPosition();
-        var objDir = new THREE.Vector3();
-
-        objDir.x = objectPosition.x - selfPosition.x;
-        objDir.z = objectPosition.z - selfPosition.z;
-
-        //if 2 objects have same position give it a vector so it a direction doesn't get stuck and crash
-        if(objDir.x === 0 && objDir.z === 0){ objDir.x = 1; objDir.z = 1;}
-
-        objDir.normalize();
-        object.translationVector = objDir;
-
-        var oldSpeed1 = this.speed < 0 ? - this.speed : this.speed;
-
-        var oldSpeed2 = object.speed < 0 ? - object.speed : object.speed;
-
-
-        // m1 (v1)squared + m2 (v2)squared = m1 (v1')squared + m2 (v2')squared
-        // by conservation of momentum and conservation of kinetic energy:
-        // v1' = ( (m1 - m2) / (m1 + m2) ) v1 + ( (2 * m2 ) / ( m1 + m2) )v2   PHYSICS o/
-        // v2' = ( (2 * m1 ) / (m1 + m2) ) v1 + ( (m2 - m1) / ( m1 + m2) )v2
-        var newSpeed1 = ((( (m1 - m2) / (m1 + m2) )) * oldSpeed1 )+ ((( (2 * m2 ) / ( m1 + m2) )) * oldSpeed2);
-        var newSpeed2 = ((( (2 * m1 ) / (m1 + m2) )) * oldSpeed1 )+ ((( (m2 - m1) / ( m1 + m2) )) * oldSpeed2);
-
-        this.speed = this.speed < 0 ? - newSpeed1 : newSpeed1;
-
-        object.speed = newSpeed2;
-    };
-
-
-    this.checkCollision = function(element){
-        return this.pointInside(element);
-    };
-
-
-    this.findCollisions = function(possibleCollisions){
-        var collided = [];
-
-        if( possibleCollisions === undefined){
-            return collided;
-        }
-
-        possibleCollisions.forEach(function (element){
-            if((element.type === "Orange" && self.type!=="Car") || (self.type === "Orange" && element.type==="Car"))
-                 return;
-            if(element !== self && self.nearbyTo(element)){
-                if(self.checkCollision(element)){
-                    collided.push(element);
-                }
-            }
-        });
-        return collided;
-    };
 
 
     this.tryMovement = function(distance, vector, possibleCollisions){
@@ -155,27 +65,109 @@ function PhysicObject(){
                 self.fixCollision(element);
             });
         }
+    };
+
+
+    this.findCollisions = function(possibleCollisions){
+        var collided = [];
+
+        if( possibleCollisions === undefined){
+            return collided;
+        }
+
+        possibleCollisions.forEach(function (element){
+            if((element.type === "Orange" && self.type!=="Car") || (self.type === "Orange" && element.type==="Car"))
+                return;
+            if(element !== self && self.nearbyTo(element)){
+                if(self.checkCollision(element)){
+                    collided.push(element);
+                }
+            }
+        });
+        return collided;
+    };
+
+
+    this.nearbyTo = function (object, currentPosition){
+        if(currentPosition === undefined){
+            var selfPosition = self.getWorldPosition();
+        }
+        var objectPosition = object.getWorldPosition();
+        var distanceSquared = selfPosition.distanceToSquared(objectPosition);
+
+        return distanceSquared <= (self.boundingSphereRadius + object.boundingSphereRadius) * (self.boundingSphereRadius + object.boundingSphereRadius);
 
     };
 
 
+    this.checkCollision = function(element){
+        return this.pointInside(element);
+    };
 
-    this.animate = function(possibleCollisions){
-        this.updateMovement(possibleCollisions);
+
+    this.pointInside = function(object){
+
+        var a = new THREE.Box3().setFromObject(this);
+        var b = new THREE.Box3().setFromObject(object);
+
+        scene.add(a);
+        scene.add(b);
+
+        return (a.max.x >= b.min.x && a.min.x <= b.max.x &&
+           a.max.y >= b.min.y && a.min.y <= b.max.y &&
+           a.max.z >= b.min.z && a.min.z <= b.max.z );
     };
 
 
 
-    this.updateMovement = function (possibleCollisions) {
-        var timeSinceLastUpdate = this.updateClock.getDelta();
+    this.fixCollision = function(object){
 
-        var distance = this.calculateTranslation(timeSinceLastUpdate);
-        this.tryMovement(distance, this.translationVector, possibleCollisions);
+        // butter shouldn't move; objects which collide with butter lose their SPEED
+        if ( object.type === "Butter" && this.type !== "Cheerio"){ this.speed = 0; return;}
+        // Orange collision sends car to Start
+        if ( object.type === "Orange" && this.type === "Car"){ this.returnToStart(); return;}
+        if ( object.type === "Car" && this.type === "Orange"){ object.returnToStart(); return;}
 
-        var angle = this.calculateRotation(timeSinceLastUpdate);
-        this.applyRotation(angle);
+        var m1 = this.mass;
+        var m2 = object.mass;
 
+        var selfPosition = this.getWorldPosition();
+        var objectPosition = object.getWorldPosition();
+        var objDir = new THREE.Vector3();
+        var selfDir = new THREE.Vector3();
+
+        objDir.x = objectPosition.x - selfPosition.x;
+        objDir.z = objectPosition.z - selfPosition.z;
+
+        selfDir.x = selfPosition.x - objectPosition.x ;
+        selfDir.z = selfPosition.z - objectPosition.z ;
+
+        //if 2 objects have same position give it a vector so it a direction doesn't get stuck and crash
+        if(objDir.x === 0 && objDir.z === 0){ objDir.x = 1; objDir.z = 1;}
+
+        objDir.normalize();
+        selfDir.normalize();
+        var oldSpeed1 = this.speed < 0 ? - this.speed : this.speed;
+        var oldSpeed2 = object.speed < 0 ? - object.speed : object.speed;
+
+        // m1 (v1)squared + m2 (v2)squared = m1 (v1')squared + m2 (v2')squared
+        // by conservation of momentum and conservation of kinetic energy:
+        // v1' = ( (m1 - m2) / (m1 + m2) ) v1 + ( (2 * m2 ) / ( m1 + m2) )v2   PHYSICS o/
+        // v2' = ( (2 * m1 ) / (m1 + m2) ) v1 + ( (m2 - m1) / ( m1 + m2) )v2
+        var newSpeed1 = ((( (m1 - m2) / (m1 + m2) )) * oldSpeed1 )+ ((( (2 * m2 ) / ( m1 + m2) )) * oldSpeed2);
+        var newSpeed2 = ((( (2 * m1 ) / (m1 + m2) )) * oldSpeed1 )+ ((( (m2 - m1) / ( m1 + m2) )) * oldSpeed2);
+
+        if( object.type !== "Car")
+            object.translationVector = objDir;
+
+        if( this.type!== "Car")
+            this.translationVector = selfDir;
+
+        object.speed = newSpeed2;
+        this.speed = newSpeed1;
     };
+
+
 
 
     this.applyTranslation = function (distance, vector){
@@ -189,6 +181,7 @@ function PhysicObject(){
             vector = this.rotationVector;
         this.rotateOnAxis(vector, angle);
     };
+
 
 
     this.calculateRotation = function(){

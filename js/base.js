@@ -2,8 +2,7 @@ var scene, renderer;
 var animatables = [];
 var oranges = [];
 var cameraHandler;
-var clock, delta;
-var speed = 50, maxSpeed = 350;
+var animationClock = new THREE.Clock();
 
 function render(){
 	renderer.render(scene, cameraHandler.selectedCamera());
@@ -23,7 +22,7 @@ function checkOutOfBounds(object){
         if(object.type==="Car"){
             object.returnToStart();
         }
-        if(object.type ==="Orange" && object.visible == true){
+        if(object.type ==="Orange" && object.visible === true){
             object.visible = false;
             var timeout = Math.random() * 10000;
             setTimeout(function(){
@@ -31,8 +30,6 @@ function checkOutOfBounds(object){
 			}, timeout);
         }
     }
-
-
 
 }
 
