@@ -33,10 +33,11 @@ function MovingCar(x, y, z, properties) {
 	this.translationVector = new THREE.Vector3(1,0,0);
     this.rotationVector = new THREE.Vector3(0, 1, 0);
 
+    this.scale.set(3,3,3);
 
 
 
-	this.calculateTranslation = function (timeSinceLastUpdate){
+    this.calculateTranslation = function (timeSinceLastUpdate){
 
         var slowDown = 0;
 

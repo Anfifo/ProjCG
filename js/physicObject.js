@@ -47,102 +47,108 @@ function PhysicObject(){
 
     };
 
-    this.calculateCollision = function(element, possibleCollisions){
 
-        this.applyCollision(element);
-
-    };
-
-
-    // m1 (v1)squared + m2 (v2)squared = m1 (v1')squared + m2 (v2')squared
-    // by conservation of momentum and conservation of kinetic energy:
-    // v1' = ( (m1 - m2) / (m1 + m2) ) v1 + ( (2 * m2 ) / ( m1 + m2) )v2
-    // v2' = ( (2 * m1 ) / (m1 + m2) ) v1 + ( (m2 - m1) / ( m1 + m2) )v2
-    this.applyCollision = function(object){
+    this.fixCollision = function(object){
 
         var m1 = this.mass;
         var m2 = object.mass;
 
+        if (object.type === "Butter" && this.type !== "Cheerio"){
+            this.speed = 0;
+            return;
+        }
+
         var selfPosition = this.getWorldPosition();
         var objectPosition = object.getWorldPosition();
-
-
-        var oldSpeed1 = this.speed < 0 ? - this.speed : this.speed;
-        var oldSpeed2 = object.speed < 0 ? - object.speed : object.speed;
-
-
-        var newSpeed1 = (( (m1 - m2) / (m1 + m2) ) * oldSpeed1 )+ (( (2 * m2 ) / ( m1 + m2) )* oldSpeed2);
-        var newSpeed2 = (( (2 * m1 ) / (m1 + m2) ) * oldSpeed1 )+ (( (m2 - m1) / ( m1 + m2) ) * oldSpeed2);
-
-        this.speed = this.speed < 0 ? - newSpeed1 : newSpeed1;
-        object.speed = newSpeed2;
-
-
-        //object direction
         var objDir = new THREE.Vector3();
 
         objDir.x = objectPosition.x - selfPosition.x;
         objDir.z = objectPosition.z - selfPosition.z;
 
-        // objDir.subVectors(objectPosition, selfPosition);
+        if(objDir.x === 0 && objDir.z === 0){
+            objDir.x = 1;
+            objDir.z = 1;
+        }
+
         objDir.normalize();
         object.translationVector = objDir;
 
-        return true;
+        var oldSpeed1 = this.speed < 0 ? - this.speed : this.speed;
+
+        var oldSpeed2 = object.speed < 0 ? - object.speed : object.speed;
+        var newSpeed1 = (( (m1 - m2) / (m1 + m2) ) * oldSpeed1 )+ (( (2 * m2 ) / ( m1 + m2) )* oldSpeed2);
+
+        var newSpeed2 = (( (2 * m1 ) / (m1 + m2) ) * oldSpeed1 )+ (( (m2 - m1) / ( m1 + m2) ) * oldSpeed2);
+        this.speed = this.speed < 0 ? - newSpeed1 : newSpeed1;
+
+
+        object.speed = newSpeed2;
+        object.updateMovement();
     };
 
-    this.hasCollisions = function(objectList){
 
-        var collided = false;
-        objectList.forEach(function (element){
+    this.checkCollision = function(element){
+        return this.nearbyTo(element);
+    };
+
+
+    this.findCollisions = function(possibleCollisions){
+        var collided = [];
+
+        if( possibleCollisions === undefined){
+            return collided;
+        }
+
+        possibleCollisions.forEach(function (element){
+            // if((element.type === "Butter" && self.type==="Cheerio") || (self.type === "Butter" && element.type==="Cheerio"))
+            //     return;
             if(element !== self && self.nearbyTo(element)){
-                if(self.calculateCollision(element, objectList)){
-                    collided = true;
+                if(self.checkCollision(element)){
+                    collided.push(element);
                 }
             }
         });
-
         return collided;
+    };
+
+
+    this.tryMovement = function(distance, vector, possibleCollisions){
+        var selfPosition = new THREE.Vector3(this.position.x, this.position.y,this.position.z);
+
+        vector = vector || this.translationVector;
+        this.translateOnAxis(vector, distance);
+
+        var collisions = this.findCollisions(possibleCollisions);
+
+        if (collisions.length > 0){
+            this.position.set(selfPosition.x, selfPosition.y, selfPosition.z);
+
+            collisions.forEach(function(element){
+                self.fixCollision(element);
+            });
+        }
+
     };
 
 
 
     this.animate = function(possibleCollisions){
-
-        var selfPosition = this.getWorldPosition();
-
-        this.updateMovement();
-
-        while( this.hasCollisions(possibleCollisions)){
-            this.position = selfPosition;
-            selfPosition = this.getWorldPosition();
-            this.updateMovement();
-        }
-
-    };
-
-    this.calculateTranslation = function(){
-        throw "Calculate Translation not implemented";
-    };
-
-    this.calculateRotation = function(){
-        throw "Calculate Translation not implemented";
+        this.updateMovement(possibleCollisions);
     };
 
 
-    this.updateMovement = function () {
+
+    this.updateMovement = function (possibleCollisions) {
         var timeSinceLastUpdate = this.updateClock.getDelta();
 
-        var oldPosition = this.position;
-
         var distance = this.calculateTranslation(timeSinceLastUpdate);
-        this.applyTranslation(distance);
+        this.tryMovement(distance, this.translationVector, possibleCollisions);
 
         var angle = this.calculateRotation(timeSinceLastUpdate);
         this.applyRotation(angle);
 
-        return oldPosition;
     };
+
 
     this.applyTranslation = function (distance, vector){
         if (vector === undefined)
@@ -156,6 +162,10 @@ function PhysicObject(){
         this.rotateOnAxis(vector, angle);
     };
 
+
+    this.calculateRotation = function(){
+        throw "Calculate Translation not implemented";
+    };
 
 
     this.calculateTranslation = function (timeSinceLastUpdate){
@@ -193,3 +203,127 @@ PhysicObject.prototype = Object.create(THREE.Object3D.prototype);
 PhysicObject.prototype.constructor = PhysicObject;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+old code
+
+
+
+
+
+
+    this.animate = function(possibleCollisions){
+
+        //var selfPosition = {x : this.position.x, y : this.position.y, z: this.position.z};
+
+        this.updateMovement(possibleCollisions);
+
+        // while( this.hasCollisions(possibleCollisions)){
+        //     this.position.set(selfPosition.x, selfPosition.y, selfPosition.z);
+        //     selfPosition = {x : this.position.x, y : this.position.y, z: this.position.z};
+        //     this.updateMovement();
+        // }
+
+    };
+
+
+
+    this.calculateCollision = function(element, possibleCollisions){
+
+        return this.applyCollision(element);
+
+    };
+
+
+    // m1 (v1)squared + m2 (v2)squared = m1 (v1')squared + m2 (v2')squared
+    // by conservation of momentum and conservation of kinetic energy:
+    // v1' = ( (m1 - m2) / (m1 + m2) ) v1 + ( (2 * m2 ) / ( m1 + m2) )v2
+    // v2' = ( (2 * m1 ) / (m1 + m2) ) v1 + ( (m2 - m1) / ( m1 + m2) )v2
+    this.applyCollision = function(object){
+
+        var m1 = this.mass;
+        var m2 = object.mass;
+
+        var selfPosition = this.getWorldPosition();
+        var objectPosition = object.getWorldPosition();
+        var objDir = new THREE.Vector3();
+
+        if (object.type === "Butter"){
+            this.speed = -this.speed/this.speed;
+            return true;
+        }
+
+        if( this.type === "Butter"){
+            object.speed = -object.speed/object.speed;
+            return true;
+        }
+
+
+
+        objDir.x = objectPosition.x - selfPosition.x;
+        objDir.z = objectPosition.z - selfPosition.z;
+
+        if(objDir.x === 0 && objDir.z === 0){
+            objDir.x = 1;
+            objDir.z = 1;
+        }
+
+        objDir.normalize();
+        object.translationVector = objDir;
+
+        var oldSpeed1 = this.speed < 0 ? - this.speed : this.speed;
+
+        var oldSpeed2 = object.speed < 0 ? - object.speed : object.speed;
+        var newSpeed1 = (( (m1 - m2) / (m1 + m2) ) * oldSpeed1 )+ (( (2 * m2 ) / ( m1 + m2) )* oldSpeed2);
+
+        var newSpeed2 = (( (2 * m1 ) / (m1 + m2) ) * oldSpeed1 )+ (( (m2 - m1) / ( m1 + m2) ) * oldSpeed2);
+        this.speed = this.speed < 0 ? - newSpeed1 : newSpeed1;
+
+
+        object.speed = newSpeed2;
+        object.applyTranslation(7);
+        return true;
+    };
+
+    this.hasCollisions = function(objectList){
+
+        var collided = false;
+        objectList.forEach(function (element){
+            // if((element.type === "Butter" && self.type==="Cheerio") || (self.type === "Butter" && element.type==="Cheerio"))
+            //     return;
+            if(element !== self && self.nearbyTo(element)){
+                if(self.calculateCollision(element, objectList)){
+                    collided = true;
+                }
+            }
+        });
+
+        return collided;
+    };
+
+
+
+ */

@@ -199,22 +199,25 @@ Orange.prototype = Object.create(THREE.Object3D.prototype);
  */
 function Butter(x, y, z)
 {
+    PhysicObject.call(this);
+
     'use strict';
+    this.boundingSphereRadius = 32;
+
+    this.mass = 100000000;
 
     this.type = 'Butter';
-
     var baseMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
     var baseGeometry = new THREE.BoxGeometry(42, 0.5, 56);
-    var base = new THREE.Mesh(baseGeometry, baseMaterial);
 
+    var base = new THREE.Mesh(baseGeometry, baseMaterial);
     var butterMaterial = new THREE.MeshBasicMaterial({color: 0xffd830})
     var butterGeometry = new THREE.BoxGeometry(32, 17, 47);
+
     var butterBar = new THREE.Mesh(butterGeometry, butterMaterial);
-
     base.position.set(0, -5, 0);
-    butterBar.position.set(0, 0, 0);
 
-    THREE.Object3D.call(this);
+    butterBar.position.set(0, 0, 0);
     this.add(base);
     this.add(butterBar);
 
@@ -224,11 +227,11 @@ function Butter(x, y, z)
 
 
 /**
+ * adds to Butter class all method and attributes from THRE.Object3D
+ */
+Butter.prototype = Object.create(PhysicObject.prototype);
+
+/**
  * prevents issues with isInstance after Butter inheritance from THREE.Object3D
  */
 Butter.prototype.constructor = Butter;
-
-/**
- * adds to Butter class all method and attributes from THRE.Object3D
- */
-Butter.prototype = Object.create(THREE.Object3D.prototype);

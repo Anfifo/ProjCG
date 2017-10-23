@@ -9,6 +9,7 @@ function render(){
 	renderer.render(scene, cameraHandler.selectedCamera());
 }
 
+
 function renderSplitScreen(){
 	var height = window.innerHeight;
 	var width = window.innerWidth;
@@ -165,37 +166,16 @@ function init(){
 	oranges[2] = new Orange(-370,23, -180);
 
     scene.add(oranges[2]);
-	var butter = new Butter(-400, 15, 150);
 
-    scene.add(butter);
-	butter = new Butter(0, 15, -150);
-
-    butter.rotation.y = Math.PI/3;
-    scene.add(butter);
-	butter = new Butter(400, 15, -150);
-
-    butter.rotation.y = Math.PI/6;
-    scene.add(butter);
-	butter = new Butter(-80, 15, 200);
-
-    butter.rotation.y = -Math.PI/3;
-    scene.add(butter);
-	butter = new Butter(-440, 15, -60);
-
-
-    butter.rotation.y = -Math.PI/12;
-    scene.add(butter);
 	//Car handling
 	var inputHandler = new InputHandler();
 
-
+    var butters = addButters();
 
 
     //Posicao inicial = (-8, 6.5, 70)
 	var car = createMovingCar(0,6.5,0);
 
-
-    car.scale.set(3,3,3);
     car.returnToStart();
 
     cameraHandler.createCameraForObject(car);
@@ -206,9 +186,9 @@ function init(){
 	inputHandler.addCarControls(car);
 
     animatables.push(car);
-   	animatables = animatables.concat(track.getCheerios());
-	animatables.push(cheerio);
-
+    animatables.push(cheerio);
+    animatables = animatables.concat(track.getCheerios());
+    animatables = animatables.concat(butters);
 
 
 	var dim = table.getDimensions();
@@ -221,4 +201,36 @@ function init(){
 
 	animate();
 
+}
+
+
+
+function addButters(){
+	var butters = [];
+
+    var butter = new Butter(-400, 15, 150);
+    scene.add(butter);
+	butters.push(butter);
+
+    butter = new Butter(0, 15, -150);
+    butter.rotation.y = Math.PI/3;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(400, 15, -150);
+    butter.rotation.y = Math.PI/6;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(-80, 15, 200);
+    butter.rotation.y = -Math.PI/3;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(-440, 15, -60);
+    butter.rotation.y = -Math.PI/12;
+    scene.add(butter);
+    butters.push(butter);
+
+    return butters;
 }
