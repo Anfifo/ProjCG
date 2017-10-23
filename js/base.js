@@ -4,9 +4,8 @@ var oranges = [];
 var cameraHandler;
 var clock, delta;
 var speed = 50, maxSpeed = 350;
-var car;
+
 function render(){
-	console.log(car.getAabbMin());
 	renderer.render(scene, cameraHandler.selectedCamera());
 }
 
@@ -191,10 +190,10 @@ function init(){
 
 
     //Posicao inicial = (-8, 6.5, 70)
-	car = createMovingCar(0,6.5,0);
+	var car = createMovingCar(0,6.5,0);
 
 
-    car.scale.set(5,5,5);
+    car.scale.set(3,3,3);
     car.returnToStart();
 
     cameraHandler.createCameraForObject(car);

@@ -21,9 +21,9 @@ function MovingCar(x, y, z, properties) {
     BasicCar.call(this, x, y, z, properties);
 
 	this.mass = 1000;
-	this.boundingSphereRadius = 20;
 	this.aabbMin = new THREE.Vector3(-15, -17.5, 32.5);
 	this.aabbMax = new THREE.Vector3(15, 17.5, -32.5);
+	this.boundingSphereRadius = 30;
 	this.speed = 0;
 	this.acceleration = 0;
 	this.maxSpeed = 300;
@@ -86,7 +86,6 @@ function MovingCar(x, y, z, properties) {
 	this.moveBackwards = function(){
 
 		if(this.speed > 0){
-			this.moveChangeTime = 0;
 			this.stopMovement();
 		}
 
@@ -101,7 +100,6 @@ function MovingCar(x, y, z, properties) {
 
 		this.speed = (this.speed/3) * 2;
 		this.acceleration = 0;
-		this.moveChangeTime = 0;
         this.translationVector = xVector;
 
     };
