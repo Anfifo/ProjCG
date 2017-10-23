@@ -93,9 +93,9 @@ function InputHandler(){
         //EASTER EGG create 2nd player car
         if(pressedKeys[keyCodes.p]){
             car2 = createMovingCar(0,6.5,0, {color:0x42f44b});
-            car2.scale.set(5,5,5);
             cameraHandler.createCameraForObject(car2);
             scene.add(car2);
+            car2.returnToStart();
             animatables.push(car2);
         }
 
