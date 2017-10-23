@@ -46,6 +46,7 @@ function PhysicObject(){
 
     };
 
+
     this.pointInside = function(object){
 
         this.updateMatrixWorld();

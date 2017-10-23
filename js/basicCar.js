@@ -29,6 +29,7 @@ function BasicCar(x,y,z, properties){
 
 	PhysicObject.call(this);
 
+	this.type = "Car";
 	this.x = x;
 	this.z = z;
 	this.y = y;
