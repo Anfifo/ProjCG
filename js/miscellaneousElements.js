@@ -135,56 +135,6 @@ Cheerio.prototype.constructor = Cheerio;
  */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-// function hideShowOrange(orange, width, height) {
-//     orange.visible = false;
-//     orange.direction.x = randomPosition(1);
-//     orange.direction.z = randomPosition(1);
-//     orange.position.x = randomPosition(width / 4);
-//     orange.position.z = randomPosition(height / 4);
-//     setTimeout(function(){
-//         orange.visible = true;
-//         if (speed < maxSpeed)
-//             speed += 5;
-//     }, Math.random() * 10000);
-// }
-//
-// function animateOranges(delta) {
-//     var width = 530;
-//     var height = 280;
-//
-//     for (var i = 0; i < oranges.length; i++) {
-//         var xDistance = speed * delta * oranges[i].direction.x;
-//         var zDistance = speed * delta * oranges[i].direction.z;
-//
-//
-//         var xAngle = xDistance / 23;
-//         var zAngle = zDistance / 23;
-//         oranges[i].rotateX(zAngle);
-//         oranges[i].rotateZ(-xAngle);
-//         oranges[i].position.x += xDistance;
-//         oranges[i].position.z += zDistance;
-//
-//         if (-width > oranges[i].position.x || oranges[i].position.x > width || -height > oranges[i].position.z || oranges[i].position.z > height )
-//             hideShowOrange(oranges[i], width/2, height/2);
-//     }
-// }
-
-
  /**
  * Class Constructor
  * @param x position

@@ -31,9 +31,9 @@ function MovingCar(x, y, z, properties) {
 	this.maxAcceleration = 100;
 	this.curveAngle = 0;
 	this.slowFactor = 100;
-    var xVector = new THREE.Vector3(1,0,0);
 	this.translationVector = new THREE.Vector3(1,0,0);
     this.rotationVector = new THREE.Vector3(0, 1, 0);
+    var xVector = new THREE.Vector3(1,0,0);
 
     this.scale.set(3,3,3);
 
