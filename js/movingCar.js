@@ -20,6 +20,7 @@ function MovingCar(x, y, z, properties) {
 
     BasicCar.call(this, x, y, z, properties);
 
+    this.type= "Car";
 	this.mass = 1000;
 	this.aabbMin = new THREE.Vector3(-7.5, 5, 2.7);
 	this.aabbMax = new THREE.Vector3(7.5, 10, -2.7);
@@ -156,6 +157,9 @@ MovingCar.prototype.constructor = MovingCar;
 MovingCar.prototype.returnToStart = function(){
 	this.position.set(340,0, -50);
 	this.lookAt(new THREE.Vector3(0,0,0));
+	this.speed = 0;
+	this.acceleration = 0;
+	this.curveAngle = 0;
 };
 
 MovingCar.prototype.getAabbMin = function(){

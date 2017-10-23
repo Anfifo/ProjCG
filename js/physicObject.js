@@ -46,6 +46,7 @@ function PhysicObject(){
 
     };
 
+
     this.pointInside = function(object){
 
         var a = new THREE.Box3().setFromObject(this);
