@@ -31,7 +31,7 @@ function PhysicObject(){
     this.curveAngle = 0;
     this.translationVector = new THREE.Vector3();
     this.rotationVector = new THREE.Vector3();
-    this.slowFactor = 10;
+    this.slowFactor = 100;
     this.boundingSphereRadius = 0;
 
 
@@ -104,7 +104,6 @@ function PhysicObject(){
 
 
         object.speed = newSpeed2;
-        object.updateMovement();
     };
 
 
@@ -146,6 +145,7 @@ function PhysicObject(){
 
             collisions.forEach(function(element){
                 self.fixCollision(element);
+                element.updateMovement(possibleCollisions);
             });
         }
 

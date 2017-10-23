@@ -10,6 +10,25 @@ function render(){
 }
 
 
+function checkOutOfBounds(object){
+    var width = 1000;
+    var depth =  500;
+
+    var coordinates = object.getWorldPosition();
+
+    if(coordinates.x > width/2 || coordinates.x <  - width/2 || coordinates.z > depth/2 || coordinates.z < -depth/2){
+        //animatables.remove(object);
+
+        if(object.type==="Cheerio")
+            object.visible = false;
+
+        if(object.type==="Car"){
+            object.returnToStart();
+        }
+    }
+
+}
+
 function renderSplitScreen(){
 	var height = window.innerHeight;
 	var width = window.innerWidth;
@@ -76,7 +95,7 @@ function animateOranges(delta) {
 function animate(){
 
 	var possibleCollisions = animatables;
-	animatables.forEach(function(element){ element.animate(possibleCollisions)} );
+	animatables.forEach(function(element){ element.animate(possibleCollisions); checkOutOfBounds(element);} );
 
     if(cameraHandler.splitScreenOn())
     	renderSplitScreen();
