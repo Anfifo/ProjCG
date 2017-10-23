@@ -149,8 +149,6 @@ function init(){
         }
     };
 
-    var cheerio = new Cheerio( cheerioProperties );
-    scene.add(cheerio);
 
 
 	//draw_infinity_track(cheerioProperties);
@@ -181,14 +179,29 @@ function init(){
     cameraHandler.createCameraForObject(car);
 
     scene.add(car);
-    //Rotacao inicial = 90
 
+
+ 	properties = {
+        width: 5*13,
+        height: 25,
+        depth: 35,
+        color: 0x000000, 
+        wireframe: true,
+        position: {
+            x: 340,
+            y: 6.5,
+            z: -50
+        }
+    };
+
+    
 	inputHandler.addCarControls(car);
 
     animatables.push(car);
-    animatables.push(cheerio);
     animatables = animatables.concat(track.getCheerios());
     animatables = animatables.concat(butters);
+
+
 
 
 	var dim = table.getDimensions();

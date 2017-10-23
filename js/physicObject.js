@@ -31,9 +31,8 @@ function PhysicObject(){
     this.curveAngle = 0;
     this.translationVector = new THREE.Vector3();
     this.rotationVector = new THREE.Vector3();
-    this.slowFactor = 50;
+    this.slowFactor = 10;
     this.boundingSphereRadius = 0;
-
 
 
     this.nearbyTo = function (object, currentPosition){
@@ -47,6 +46,23 @@ function PhysicObject(){
 
     };
 
+    this.pointInside = function(object){
+
+        this.updateMatrixWorld();
+        var aMin = this.localToWorld(new THREE.Vector3(this.aabbMin.x, this.aabbMin.y, this.aabbMin.z));
+        var aMax = this.localToWorld(new THREE.Vector3(this.aabbMax.x, this.aabbMax.y, this.aabbMax.z));
+
+        object.updateMatrixWorld();
+        var bMin = object.localToWorld(new THREE.Vector3(object.aabbMin.x, object.aabbMin.y, object.aabbMin.z));
+        var bMax = object.localToWorld(new THREE.Vector3(object.aabbMax.x, object.aabbMax.y, object.aabbMax.z));
+
+        if(aMax.x >= bMin.x && aMin.x <= bMax.x &&
+           aMax.y >= bMin.y && aMin.y <= bMax.y &&
+           aMax.z >= bMin.z && aMin.z <= bMax.z )
+            return true;
+        else
+            return false;
+    };
 
     this.fixCollision = function(object){
 
