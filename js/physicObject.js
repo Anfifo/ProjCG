@@ -86,10 +86,8 @@ function PhysicObject(){
         objDir.x = objectPosition.x - selfPosition.x;
         objDir.z = objectPosition.z - selfPosition.z;
 
-        if(objDir.x === 0 && objDir.z === 0){
-            objDir.x = 1;
-            objDir.z = 1;
-        }
+        //if 2 objects have same position give it a vector so it a direction doesn't get stuck and crash
+        if(objDir.x === 0 && objDir.z === 0){ objDir.x = 1; objDir.z = 1;}
 
         objDir.normalize();
         object.translationVector = objDir;
@@ -145,7 +143,6 @@ function PhysicObject(){
 
             collisions.forEach(function(element){
                 self.fixCollision(element);
-                element.updateMovement(possibleCollisions);
             });
         }
 

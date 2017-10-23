@@ -84,7 +84,7 @@ function Cheerio(properties){
 
 	this.type = 'Cheerio';
 	this.mass = 300;
-	this.boundingSphereRadius =  properties.radius;
+	this.boundingSphereRadius =  properties.radius+ properties.tube;
 	this.aabbMin = new THREE.Vector3(-properties.radius, -properties.tube/2, properties.radius);
 	
 	this.aabbMax = new THREE.Vector3(properties.radius, properties.tube/2, -properties.radius);
