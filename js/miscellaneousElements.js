@@ -149,6 +149,7 @@ function Orange(x, y, z)
 
 	PhysicObject.call(this);
 	var self = this;
+	this.timePassed = 0;
     this.type = 'Orange';
     this.boundingSphereRadius = 23;
 	this.orange = new THREE.Object3D();
@@ -176,9 +177,7 @@ function Orange(x, y, z)
     this.position.set(x, y, z);
 	this.rotateY(Math.random()*Math.PI);
 	this.speed = 100;
- 	this.maxSpeed = 350;
- 	var width = 530;
- 	var height = 280;
+ 	this.maxSpeed = 500;
 
  	function randomPosition(value) {
  		return value - Math.random() * (value + value);
@@ -186,9 +185,11 @@ function Orange(x, y, z)
 
  	this.calculateTranslation = function () {
  		var delta = this.updateClock.getDelta();
- 		var xDistance = this.speed * delta * this.direction.x;
 
-        return xDistance;
+		if(this.speed < this.maxSpeed)
+ 			this.speed += delta;
+
+        return  this.speed * delta * Math.sign(this.direction.x) ;
  	};
 
  	this.calculateRotation = function(xDistance) {
@@ -209,12 +210,16 @@ function Orange(x, y, z)
  		this.visible = false;
  		this.direction.x = randomPosition(1);
  		this.direction.z = randomPosition(1);
-        self.position.x = randomPosition(width/4);
-        self.position.z = randomPosition(height/4);
-        self.visible = true;
-        if (self.speed < self.maxSpeed) {
-            self.speed += 5;
+        this.position.x = randomPosition(width/2);
+        this.position.z = randomPosition(height/2);
+        this.rotateY(Math.random()*Math.PI);
+
+
+        if (this.speed < this.maxSpeed) {
+            this.speed += 5;
         }
+
+        this.visible = true;
 
     };
 

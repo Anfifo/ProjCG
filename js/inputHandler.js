@@ -102,23 +102,19 @@ function InputHandler(){
         }
 
         if(pressedKeys[keyCodes._1]){
-            cameraHandler.setSplitScreen(false);  
-            cameraHandler.updateSelectedCamera(0);
+            switchCamera(0);
         }
 
         if(pressedKeys[keyCodes._2]){
-            cameraHandler.setSplitScreen(false);  
-            cameraHandler.updateSelectedCamera(1);
+            switchCamera(1);
         }
 
         if(pressedKeys[keyCodes._3]){
-            cameraHandler.setSplitScreen(false); 
-            cameraHandler.updateSelectedCamera(2);        
+            switchCamera(2);
         }
 
         if(pressedKeys[keyCodes._4]){
-            cameraHandler.setSplitScreen(false);  
-            cameraHandler.updateSelectedCamera(3);        
+            switchCamera(3);
         }
 
         if(pressedKeys[keyCodes._5]){
@@ -198,3 +194,10 @@ function InputHandler(){
 
 
 
+function switchCamera(number){
+
+    if(cameraHandler.splitScreenOn())
+        cameraHandler.resize();
+    cameraHandler.setSplitScreen(false);
+    cameraHandler.updateSelectedCamera(number);
+}

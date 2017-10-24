@@ -40,17 +40,21 @@ function PhysicObject(){
     this.updateMovement = function (possibleCollisions) {
         var timeSinceLastUpdate = this.updateClock.getDelta();
 
-        var distance = this.calculateTranslation(timeSinceLastUpdate);
-        this.tryMovement(distance, this.translationVector, possibleCollisions);
 
+        var distance = this.calculateTranslation(timeSinceLastUpdate);
         var angle = this.calculateRotation(timeSinceLastUpdate);
-        this.applyRotation(angle);
+
+        var moved = this.tryMovement(distance, this.translationVector, possibleCollisions);
+
+        if(moved)
+            this.applyRotation(angle);
 
     };
 
 
 
     this.tryMovement = function(distance, vector, possibleCollisions){
+        var success = true;
         var selfPosition = new THREE.Vector3(this.position.x, this.position.y,this.position.z);
 
         vector = vector || this.translationVector;
@@ -64,7 +68,10 @@ function PhysicObject(){
             collisions.forEach(function(element){
                 self.fixCollision(element);
             });
+            success = false;
         }
+
+        return success;
     };
 
 
@@ -109,9 +116,6 @@ function PhysicObject(){
 
         var a = new THREE.Box3().setFromObject(this);
         var b = new THREE.Box3().setFromObject(object);
-
-        scene.add(a);
-        scene.add(b);
 
         return (a.max.x >= b.min.x && a.min.x <= b.max.x &&
            a.max.y >= b.min.y && a.min.y <= b.max.y &&

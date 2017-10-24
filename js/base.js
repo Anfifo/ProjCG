@@ -24,7 +24,7 @@ function checkOutOfBounds(object){
         }
         if(object.type ==="Orange" && object.visible === true){
             object.visible = false;
-            var timeout = Math.random() * 10000;
+            var timeout = Math.random() * 5000;
             setTimeout(function(){
                 object.hideShow(width/4, depth/4);
 			}, timeout);
