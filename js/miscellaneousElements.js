@@ -175,9 +175,11 @@ function Orange(x, y, z)
     };
 
     this.position.set(x, y, z);
-	this.rotateY(Math.random()*Math.PI);
-	this.speed = 100;
- 	this.maxSpeed = 500;
+//    this.lookAt(animatables[0].position);
+
+    this.rotateY(Math.random()*Math.PI);
+	this.speed = 50;
+ 	this.maxSpeed = 300;
 
  	function randomPosition(value) {
  		return value - Math.random() * (value + value);
@@ -189,7 +191,7 @@ function Orange(x, y, z)
 		if(this.speed < this.maxSpeed)
  			this.speed += delta;
 		*/
-        return  this.speed * delta * Math.sign(this.direction.x) ;
+        return  this.speed * delta; //* Math.sign(this.direction.x) ;
  	};
 
  	this.calculateRotation = function(xDistance) {
@@ -198,11 +200,11 @@ function Orange(x, y, z)
  	};
 
  	this.applyTranslation = function(xDistance) {
- 		this.translateX(xDistance);
+ 		this.translateZ(xDistance);
  	};
 
  	this.applyRotation = function(radAngle) {
-		this.orange.rotation.z -= radAngle;
+		this.orange.rotation.x += radAngle;
 
  	};
 
@@ -212,6 +214,8 @@ function Orange(x, y, z)
  		this.direction.z = randomPosition(1);
         this.position.x = randomPosition(width/2);
         this.position.z = randomPosition(height/2);
+        //this.lookAt(animatables[0].position);
+
         this.rotateY(Math.random()*Math.PI);
 
 /*

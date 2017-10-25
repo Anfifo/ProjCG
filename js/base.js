@@ -10,8 +10,8 @@ function render(){
 
 setInterval(function() {
 	for (var i = 0; i < oranges.length; i++) {
-		if (oranges[i].speed + 50 < oranges[i].maxSpeed)
-			oranges[i].speed += 50;
+		if (oranges[i].speed + 20 < oranges[i].maxSpeed)
+			oranges[i].speed += 20;
 		else
 			oranges[i].speed += oranges[i].maxSpeed - oranges[i].speed;
 		console.log(oranges[i].speed);
@@ -134,6 +134,18 @@ function addButters(){
     return butters;
 }
 
+function addOranges(){
+    oranges[0] = new Orange(80, 33, 200 );
+    scene.add(oranges[0]);
+
+    oranges[1] = new Orange(400,33,125);
+    scene.add(oranges[1]);
+
+    oranges[2] = new Orange(-370,33, -180);
+    scene.add(oranges[2]);
+
+}
+
 function init(){
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -188,15 +200,6 @@ function init(){
 	var track = new InfinityTrack(cheerioProperties);
 	scene.add(track);
 
-	oranges[0] = new Orange(80, 33, 200 );
-
-    scene.add(oranges[0]);
-	oranges[1] = new Orange(400,33,125);
-
-    scene.add(oranges[1]);
-	oranges[2] = new Orange(-370,33, -180);
-
-    scene.add(oranges[2]);
 
 	//Car handling
 	var inputHandler = new InputHandler();
@@ -213,12 +216,11 @@ function init(){
 
     scene.add(car);
 
-
 	inputHandler.addCarControls(car);
-
     animatables.push(car);
     animatables = animatables.concat(track.getCheerios());
     animatables = animatables.concat(butters);
+    addOranges();
     animatables = animatables.concat(oranges);
 
 
