@@ -8,6 +8,15 @@ function render(){
 	renderer.render(scene, cameraHandler.selectedCamera());
 }
 
+setInterval(function() {
+	for (var i = 0; i < oranges.length; i++) {
+		if (oranges[i].speed + 50 < oranges[i].maxSpeed)
+			oranges[i].speed += 50;
+		else
+			oranges[i].speed += oranges[i].maxSpeed - oranges[i].speed;
+		console.log(oranges[i].speed);
+	}
+}, 10000);
 
 function checkOutOfBounds(object){
     var width = 1000;
@@ -204,7 +213,7 @@ function init(){
 
     scene.add(car);
 
-    
+
 	inputHandler.addCarControls(car);
 
     animatables.push(car);
@@ -226,5 +235,3 @@ function init(){
 	animate();
 
 }
-
-

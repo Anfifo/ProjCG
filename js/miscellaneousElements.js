@@ -185,10 +185,10 @@ function Orange(x, y, z)
 
  	this.calculateTranslation = function () {
  		var delta = this.updateClock.getDelta();
-
+		/*
 		if(this.speed < this.maxSpeed)
  			this.speed += delta;
-
+		*/
         return  this.speed * delta * Math.sign(this.direction.x) ;
  	};
 
@@ -214,11 +214,11 @@ function Orange(x, y, z)
         this.position.z = randomPosition(height/2);
         this.rotateY(Math.random()*Math.PI);
 
-
+/*
         if (this.speed < this.maxSpeed) {
             this.speed += 5;
         }
-
+*/
         this.visible = true;
 
     };
