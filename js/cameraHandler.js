@@ -71,7 +71,7 @@ CameraHandler.prototype.createPerspectiveCamera = function(x,y,z) {
  * @param object
  */
 CameraHandler.prototype.createCameraForObject = function(object){
-	object.add(this.createPerspectiveCamera(-40, 40, 0));
+	object.add(this.createPerspectiveCamera(-50, 35, 0));
 	if(this.cameras.length > 3){
 		this.resize();
 	}

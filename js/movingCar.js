@@ -20,6 +20,7 @@ function MovingCar(x, y, z, properties) {
 
     BasicCar.call(this, x, y, z, properties);
 
+    var self = this;
     this.type = "Car";
 	this.mass = 1000;
 	this.aabbMin = new THREE.Vector3(-7.5, 5, 2.7);
@@ -37,6 +38,19 @@ function MovingCar(x, y, z, properties) {
 
     this.scale.set(3,3,3);
 
+    this.stuckWithPreviousCollision = function (distance, vector, possibleCollisions){
+        var temp = this.findCollisions(possibleCollisions);
+        var foundOrange = false;
+        temp.forEach(function(ele){
+            if (ele.type ==="Orange")
+                foundOrange = true;
+        });
+        if ( temp.length > 0 && !foundOrange){
+            this.applyTranslation(distance, vector);
+            return true;
+        }
+        return false;
+	};
 
 
     this.calculateTranslation = function (timeSinceLastUpdate){
@@ -49,11 +63,15 @@ function MovingCar(x, y, z, properties) {
 
         //calculates new speed with physics movement formula v = vo + at ; with the addition of the resistance factor
         this.speed = (this.speed) + (this.acceleration * timeSinceLastUpdate) + (slowDown *timeSinceLastUpdate);
+        this.collisionSpeed = (this.collisionSpeed) - (this.slowFactor/10);
 
         if(this.speed > 0 && slowDown > 0  || this.speed < 0 && slowDown < 0)
             this.speed = 0;
 
-        if (this.speed > this.maxSpeed)
+        if(this.collisionSpeed < 0 )
+        	this.collisionSpeed = 0;
+
+		if (this.speed > this.maxSpeed)
             this.speed = this.maxSpeed;
 
         if (this.speed < - this.maxSpeed)
@@ -61,12 +79,30 @@ function MovingCar(x, y, z, properties) {
 
         //applies space change to car; multiplies the speed by the time since last frame in order to get the distance to move
 
-        return this.speed * timeSinceLastUpdate;
+        return [this.speed * timeSinceLastUpdate, this.collisionSpeed * timeSinceLastUpdate];
 	};
 
 	this.calculateRotation = function(timeSinceLastUpdate){
-        return this.curveAngle * timeSinceLastUpdate * (this.speed / this.maxSpeed);
+		var speedFactor = this.speed*2 / this.maxSpeed;
+		speedFactor = speedFactor > 1 ? 1 : speedFactor;
+        return this.curveAngle * timeSinceLastUpdate * speedFactor;
 	};
+
+
+    this.applyTranslation = function (distance, vector){
+
+    	if(Array.isArray(distance)){
+      		var collisionSpeed = distance[1];
+      		distance = distance[0];
+		}
+
+    	if(this.collisionSpeed && this.collisionVector)
+      	 	this.translateOnAxis(this.collisionVector, collisionSpeed);
+
+        if (vector === undefined)
+            vector = this.translationVector;
+        this.translateOnAxis(vector, distance);
+    };
 
 	/**
 	 * sets car motion forward

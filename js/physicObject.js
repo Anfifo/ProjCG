@@ -30,7 +30,12 @@ function PhysicObject(){
     this.rotationVector = new THREE.Vector3();
     this.slowFactor = 100;
     this.boundingSphereRadius = 0;
+    this.collisionVector = null;
+    this.collisionSpeed = 0;
 
+    this.stuckWithPreviousCollision = function(distance, vector, possibleCollisions){
+        return false;
+    };
 
     this.animate = function(possibleCollisions){
         this.updateMovement(possibleCollisions);
@@ -54,11 +59,16 @@ function PhysicObject(){
 
 
     this.tryMovement = function(distance, vector, possibleCollisions){
+
+        if (this.stuckWithPreviousCollision(distance, vector, possibleCollisions))
+            return false;
+
         var success = true;
         var selfPosition = new THREE.Vector3(this.position.x, this.position.y,this.position.z);
 
         vector = vector || this.translationVector;
-        this.translateOnAxis(vector, distance);
+
+        this.applyTranslation(distance,vector);
 
         var collisions = this.findCollisions(possibleCollisions);
 
@@ -161,14 +171,23 @@ function PhysicObject(){
         var newSpeed1 = ((( (m1 - m2) / (m1 + m2) )) * oldSpeed1 )+ ((( (2 * m2 ) / ( m1 + m2) )) * oldSpeed2);
         var newSpeed2 = ((( (2 * m1 ) / (m1 + m2) )) * oldSpeed1 )+ ((( (m2 - m1) / ( m1 + m2) )) * oldSpeed2);
 
-        if( object.type !== "Car")
+        if( object.type !== "Car"){
             object.translationVector = objDir;
+            object.speed = newSpeed2;
+        }else{
+            object.collisionVector = objDir;
+            object.collisionSpeed = newSpeed2;
+            object.speed = newSpeed2;
+        }
 
-        if( this.type!== "Car")
+        if( this.type!== "Car") {
             this.translationVector = selfDir;
-
-        object.speed = newSpeed2;
-        this.speed = newSpeed1;
+            this.speed = newSpeed1;
+        }else{
+            this.collisionVector = selfDir;
+            this.collisionSpeed = newSpeed1;
+            this.speed = newSpeed1;
+        }
     };
 
 
