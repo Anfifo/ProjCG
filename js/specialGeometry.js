@@ -3,7 +3,7 @@
 
 
 
-function createCuboidBufferMesh(height, depth, length){
+function createCuboidBufferMesh(depth, height, length){
 
     var vertices = getCuboidVertices(height, depth, length);
 
@@ -13,7 +13,9 @@ function createCuboidBufferMesh(height, depth, length){
 
     // itemSize = 3 because there are 3 values (components) per vertex
     geometry.addAttribute( 'position', new THREE.BufferAttribute( triangles, 3 ) );
+
     var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+
     var mesh = new THREE.Mesh( geometry, material );
 
     return mesh;
