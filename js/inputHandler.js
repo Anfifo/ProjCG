@@ -24,6 +24,7 @@ function InputHandler(){
         d: 68,
         e: 69,
         f: 70,
+        n: 78,
         p: 80,
         s: 83,
         t: 84,
@@ -45,6 +46,7 @@ function InputHandler(){
     pressedKeys[keyCodes.d] = false;
     pressedKeys[keyCodes.e] = false;
     pressedKeys[keyCodes.f] = false;
+    pressedKeys[keyCodes.n] = false;
     pressedKeys[keyCodes.p] = false;
     pressedKeys[keyCodes.s] = false;
     pressedKeys[keyCodes.t] = false;
@@ -120,6 +122,10 @@ function InputHandler(){
         if(pressedKeys[keyCodes._5]){
            if(car2 !== null)
             cameraHandler.setSplitScreen(true);       
+        }
+
+        if(pressedKeys[keyCodes.n]){
+            lightsHandler.dayNightTime();
         }
     };
 

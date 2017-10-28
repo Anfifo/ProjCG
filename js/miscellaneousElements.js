@@ -28,7 +28,7 @@ function Table(properties){
 		properties.depth
 	);
 
-	this.material = new THREE.MeshBasicMaterial({
+	this.lambertMaterial = new THREE.MeshLambertMaterial({
 		color: properties.color,
 		wireframe: properties.wireframe
 	});
@@ -36,7 +36,7 @@ function Table(properties){
 	THREE.Mesh.call(
 		this,
 		this.geometry,
-		this.material
+		this.lambertMaterial
 	);
 
 	this.position.set(
@@ -97,12 +97,12 @@ function Cheerio(properties){
 		properties.tubularSegments,
 		properties.arc
 	);
-	var material = new THREE.MeshBasicMaterial({
+	var lambertMaterial = new THREE.MeshLambertMaterial({
 		color: properties.color,
 		wireframe: properties.wireframe
 	});
 
-	var mesh = new THREE.Mesh( geometry, material);
+	var mesh = new THREE.Mesh( geometry, lambertMaterial);
 
 	mesh.rotation.x = properties.rotation.x;
 	this.position.set(
@@ -155,8 +155,8 @@ function Orange(x, y, z)
 	this.orange = new THREE.Object3D();
 
 	var orangeGeometry = new THREE.SphereGeometry(23, 15, 15, 0, 2 * Math.PI, 0, 2 * Math.PI);
-	var orangeMaterial = new THREE.MeshBasicMaterial({color: 0xcc6321});
-	var orange = new THREE.Mesh(orangeGeometry, orangeMaterial);
+	var lambertMaterial = new THREE.MeshLambertMaterial({color: 0xcc6321});
+	var orange = new THREE.Mesh(orangeGeometry,lambertMaterial);
 
 	var geometry = new THREE.CylinderGeometry(3, 3, 15, 20, 1, false, 0, 2 * Math.PI);
 	var material = new THREE.MeshBasicMaterial({color: 0x463a27});
@@ -273,14 +273,15 @@ function Butter(x, y, z)
     this.mass = 100000000;
 
     this.type = 'Butter';
-    var baseMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
+    var baseLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
     var baseGeometry = new THREE.BoxGeometry(42, 0.5, 56);
+	
+	var base = new THREE.Mesh(baseGeometry, baseLambertMaterial);
 
-    var base = new THREE.Mesh(baseGeometry, baseMaterial);
-    var butterMaterial = new THREE.MeshBasicMaterial({color: 0xffd830})
+    var butterLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffd830})
     var butterGeometry = new THREE.BoxGeometry(32, 17, 47);
 
-    var butterBar = new THREE.Mesh(butterGeometry, butterMaterial);
+    var butterBar = new THREE.Mesh(butterGeometry, butterLambertMaterial);
     base.position.set(0, -5, 0);
 
     butterBar.position.set(0, 0, 0);

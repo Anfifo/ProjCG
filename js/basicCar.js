@@ -61,7 +61,7 @@ function BasicCar(x,y,z, properties){
 	this.wheelWidth = this.carBlockHeight/3;
 	this.wheelRadius = (this.carBlockHeight*2)/3;
 
-	this.carMaterial = new THREE.MeshBasicMaterial({ color: this.carColor, wireframe: false });
+	this.carLambertMaterial = new THREE.MeshLambertMaterial({ color: this.carColor, wireframe: false });
 
     this.addLowerBody();
 	this.addCarRoof();
@@ -89,25 +89,25 @@ BasicCar.prototype.addLowerBody = function (){
 
 	//lower bottom
 	var carGeometry = new THREE.CubeGeometry(this.carLength, this.carBlockHeight, this.carWidth);
-	var bottom = new THREE.Mesh(carGeometry, this.carMaterial);
+	var bottom = new THREE.Mesh(carGeometry, this.carLambertMaterial);
 	bottom.position.set(this.x,this.y,this.z);
 	this.add(bottom);
 
 	//lower top
 	carGeometry = new THREE.CubeGeometry(this.carLength - 2*this.carBlockHeight, this.carBlockHeight, this.carWidth);
-	var top = new THREE.Mesh(carGeometry, this.carMaterial);
+	var top = new THREE.Mesh(carGeometry, this.carLambertMaterial);
 	top. position.set(this.x, this.y+this.carBlockHeight, this.z);
 	this.add(top);
 
 	//top prism ending positive
 	carGeometry = createTriangularPrism(this.carBlockHeight, this.carWidth);
-	var carFront = new THREE.Mesh(carGeometry, this.carMaterial);
+	var carFront = new THREE.Mesh(carGeometry, this.carLambertMaterial);
 	carFront.position.set(this.x + ((this.carLength - this.carBlockHeight)/2), this.y + this.carBlockHeight , this.z);
 	this.add(carFront);
 
 	//top prism ending negative
 	carGeometry = createTriangularPrism(this.carBlockHeight,this.carWidth);
-	var carBack = new THREE.Mesh(carGeometry, this.carMaterial);
+	var carBack = new THREE.Mesh(carGeometry, this.carLambertMaterial);
 	carBack.rotateY(Math.PI);
 	carBack.position.set( this.x - ((this.carLength - this.carBlockHeight)/2) , this.y + this.carBlockHeight , this.z);
 	this.add(carBack);
@@ -122,25 +122,25 @@ BasicCar.prototype.addCarRoof = function (){
 
 	//roof
 	var carGeometry = new THREE.CubeGeometry( this.roofLength , 2*this.carBlockHeight, this.carWidth);
-	var roof = new THREE.Mesh(carGeometry, this.carMaterial);
+	var roof = new THREE.Mesh(carGeometry, this.carLambertMaterial);
 	roof.position.set(this.x, this.y + this.roofHeight, this.z);
 	this.add(roof);
 
 
-	var windowMaterial = new THREE.MeshBasicMaterial({ color: 0xcce6ff, wireframe: false });
+	var windowLambertMaterial = new THREE.MeshLambertMaterial({ color: 0xcce6ff, wireframe: false });
 
 	//front window
 	var windowGeometry = createTriangularPrism(this.carBlockHeight*2, this.carWidth);
-	var frontWindow = new THREE.Mesh(windowGeometry, windowMaterial);
+	var frontWindow = new THREE.Mesh(windowGeometry, windowLambertMaterial);
 	frontWindow.position.set(this.x + this.windowPosition , this.y + this.roofHeight , this.z);
 	this.add(frontWindow);
 
 
 	//back window
-    windowMaterial = new THREE.MeshBasicMaterial({ color: 0xcce6ff, wireframe: false });
+    windowLambertMaterial = new THREE.MeshLambertMaterial({ color: 0xcce6ff, wireframe: false });
 
 	windowGeometry = createTriangularPrism(this.carBlockHeight*2,this.carWidth);
-	var backWindow = new THREE.Mesh(windowGeometry, windowMaterial);
+	var backWindow = new THREE.Mesh(windowGeometry, windowLambertMaterial);
 	backWindow.rotateY(Math.PI);
 	backWindow.position.set(this.x - this.windowPosition, this.y + this.roofHeight , this.z);
 	this.add(backWindow);
@@ -152,7 +152,7 @@ BasicCar.prototype.addCarRoof = function (){
  */
 BasicCar.prototype.addCarWheels = function(){
 
-	var wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
+	var wheelLambertMaterial = new THREE.MeshLambertMaterial({ color: 0xb3b3cc, wireframe: false });
 	var wheelGeometry = new THREE.TorusGeometry( this.wheelRadius , this.wheelWidth, 5,10);
 	var wheel;
 
@@ -161,25 +161,25 @@ BasicCar.prototype.addCarWheels = function(){
 	var wheelZ = + this.carWidth/2 + this.wheelWidth;
 
 	// front right wheel
-	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+	wheel = new THREE.Mesh(wheelGeometry, wheelLambertMaterial);
 	wheel.position.set(this.x + wheelX, this.y - wheelY, this.z + wheelZ);
 	this.add(wheel);
 
 	// back right wheel
-    wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+    wheelLambertMaterial = new THREE.MeshLambertMaterial({ color: 0xb3b3cc, wireframe: false });
+	wheel = new THREE.Mesh(wheelGeometry, wheelLambertMaterial);
 	wheel.position.set(this.x - wheelX, this.y - wheelY, this.z + wheelZ);
 	this.add(wheel);
 
 	// back left wheel
-    wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+    wheelLambertMaterial = new THREE.MeshLambertMaterial({ color: 0xb3b3cc, wireframe: false });
+	wheel = new THREE.Mesh(wheelGeometry, wheelLambertMaterial);
 	wheel.position.set(this.x -wheelX, this.y - wheelY, this.z - wheelZ);
 	this.add(wheel);
 
 	// front left wheel
-    wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-	wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
+    wheelLambertMaterial = new THREE.MeshLambertMaterial({ color: 0xb3b3cc, wireframe: false });
+	wheel = new THREE.Mesh(wheelGeometry, wheelLambertMaterial);
 	wheel.position.set(this.x + wheelX, this.y - wheelY, this.z - wheelZ);
 	this.add(wheel);
 };

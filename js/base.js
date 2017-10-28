@@ -2,6 +2,7 @@ var scene, renderer;
 var animatables = [];
 var oranges = [];
 var cameraHandler;
+var lightsHandler;
 var animationClock = new THREE.Clock();
 
 function render(){
@@ -154,8 +155,8 @@ function init(){
 	clock = new THREE.Clock();
 
 	createScene();
-
-
+    lightsHandler = new LightsHandler();
+    
 	var properties = {
         width: 1000,
         height: 20,
