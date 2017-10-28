@@ -24,6 +24,7 @@ function InputHandler(){
         d: 68,
         e: 69,
         f: 70,
+        g: 71,
         n: 78,
         p: 80,
         s: 83,
@@ -46,6 +47,7 @@ function InputHandler(){
     pressedKeys[keyCodes.d] = false;
     pressedKeys[keyCodes.e] = false;
     pressedKeys[keyCodes.f] = false;
+    pressedKeys[keyCodes.g] = false;
     pressedKeys[keyCodes.n] = false;
     pressedKeys[keyCodes.p] = false;
     pressedKeys[keyCodes.s] = false;
@@ -126,6 +128,27 @@ function InputHandler(){
 
         if(pressedKeys[keyCodes.n]){
             lightsHandler.dayNightTime();
+        }
+
+        if(pressedKeys[keyCodes.g]){
+            scene.traverse( function(node) {
+                if(node instanceof THREE.Mesh){
+                    var wireframe = node.material.wireframe;
+                    var color = node.material.color;
+
+                    if(!node.material.isMeshPhongMaterial)
+                        node.material = new THREE.MeshPhongMaterial({
+                                        color: color,
+                                        wireframe: wireframe});
+                    else
+                        node.material = new THREE.MeshLambertMaterial({
+                                        color: color,
+                                        wireframe: wireframe});
+
+                    node.needsUpdate=true;
+            
+                }
+            });
         }
     };
 
