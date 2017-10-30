@@ -135,26 +135,10 @@ function InputHandler(){
             lightsHandler.dayNightTime();
         }
 
-        if(pressedKeys[keyCodes.g]){
-            scene.traverse( function(node) {
-                if(node instanceof THREE.Mesh){
-                    var wireframe = node.material.wireframe;
-                    var color = node.material.color;
-
-                    if(!node.material.isMeshPhongMaterial)
-                        node.material = new THREE.MeshPhongMaterial({
-                                        color: color,
-                                        wireframe: wireframe});
-                    else
-                        node.material = new THREE.MeshLambertMaterial({
-                                        color: color,
-                                        wireframe: wireframe});
-
-                    node.needsUpdate=true;
-            
-                }
-            });
+        if(pressedKeys[keyCodes.c]){
+            lightsHandler.switchCandles();
         }
+
 
         if(pressedKeys[keyCodes.g]){
             scene.traverse( function(node) {
@@ -172,18 +156,18 @@ function InputHandler(){
                     else if (!node.material.isMeshPhongMaterial){
                         self.currentShading = 'Phong';
                         node.material = new THREE.MeshPhongMaterial({
-                                        color: 0xffffff,
+                                        color: color,
                                         wireframe: wireframe});
                     }
                     else{
                         self.currentShading = 'Gouraud';
                         node.material = new THREE.MeshLambertMaterial({
-                                        color: 0x000000,
+                                        color: color,
                                         wireframe: wireframe});
                     }
 
                     node.needsUpdate=true;
-            
+        
                 }
             });
         }
@@ -196,17 +180,17 @@ function InputHandler(){
 
                     if(!node.material.isMeshBasicMaterial){
                         node.material = new THREE.MeshBasicMaterial({
-                                        color: 0xff0000,
+                                        color: color,
                                         wireframe: wireframe});
                     }
                     else{
                         if(self.currentShading === 'Gouraud')
                             node.material = new THREE.MeshLambertMaterial({
-                                            color: 0x00ff00,
+                                            color: color,
                                             wireframe: wireframe});
                         else
                             node.material = new THREE.MeshPhongMaterial({
-                                            color: 0x0000ff,
+                                            color: color,
                                             wireframe: wireframe});
                     }
 

@@ -58,7 +58,7 @@ CameraHandler.prototype.OrthographicCamera = function(x, y, z) {
 CameraHandler.prototype.createPerspectiveCamera = function(x,y,z) {
 
 
-    var camera = new THREE.PerspectiveCamera(45, this.window_ratio, 1, 3000);
+    var camera = new THREE.PerspectiveCamera(60, this.window_ratio, 1, 3000);
     camera.position.set(x, y, z);
 
     camera.lookAt(scene.position);

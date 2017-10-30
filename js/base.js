@@ -15,7 +15,6 @@ setInterval(function() {
 			oranges[i].speed += 20;
 		else
 			oranges[i].speed += oranges[i].maxSpeed - oranges[i].speed;
-		console.log(oranges[i].speed);
 	}
 }, 10000);
 
@@ -187,7 +186,7 @@ function init(){
         wireframe: false,
         position: {
             x: 0,
-            y: 20,
+            y: 13,
             z: 0
         },
         rotation: {
