@@ -12,6 +12,7 @@ function InputHandler(){
      * @type {InputHandler}
      */
     var self = this;
+    self.currentShading = 'Gouraud';
 
     var keyCodes = {
         _1: 49,
@@ -21,10 +22,12 @@ function InputHandler(){
         _5: 53,
         a: 65,
         b: 66,
+        c: 67,
         d: 68,
         e: 69,
         f: 70,
         g: 71,
+        l: 76,
         n: 78,
         p: 80,
         s: 83,
@@ -44,10 +47,12 @@ function InputHandler(){
     pressedKeys[keyCodes._5] = false;
     pressedKeys[keyCodes.a] = false;
     pressedKeys[keyCodes.b] = false;
+    pressedKeys[keyCodes.c] = false;
     pressedKeys[keyCodes.d] = false;
     pressedKeys[keyCodes.e] = false;
     pressedKeys[keyCodes.f] = false;
     pressedKeys[keyCodes.g] = false;
+    pressedKeys[keyCodes.l] = false;
     pressedKeys[keyCodes.n] = false;
     pressedKeys[keyCodes.p] = false;
     pressedKeys[keyCodes.s] = false;
@@ -144,6 +149,66 @@ function InputHandler(){
                         node.material = new THREE.MeshLambertMaterial({
                                         color: color,
                                         wireframe: wireframe});
+
+                    node.needsUpdate=true;
+            
+                }
+            });
+        }
+
+        if(pressedKeys[keyCodes.g]){
+            scene.traverse( function(node) {
+                if(node instanceof THREE.Mesh){
+                    var wireframe = node.material.wireframe;
+                    var color = node.material.color;
+
+                    if(node.material.isMeshBasicMaterial){
+                        if(self.currentShading === 'Phong')
+                            self.currentShading = 'Gouraud';
+                        else
+                            self.currentShading = 'Phong';
+                    }
+
+                    else if (!node.material.isMeshPhongMaterial){
+                        self.currentShading = 'Phong';
+                        node.material = new THREE.MeshPhongMaterial({
+                                        color: 0xffffff,
+                                        wireframe: wireframe});
+                    }
+                    else{
+                        self.currentShading = 'Gouraud';
+                        node.material = new THREE.MeshLambertMaterial({
+                                        color: 0x000000,
+                                        wireframe: wireframe});
+                    }
+
+                    node.needsUpdate=true;
+            
+                }
+            });
+        }
+
+        if(pressedKeys[keyCodes.l]){
+            scene.traverse( function(node) {
+                if(node instanceof THREE.Mesh){
+                    var wireframe = node.material.wireframe;
+                    var color = node.material.color;
+
+                    if(!node.material.isMeshBasicMaterial){
+                        node.material = new THREE.MeshBasicMaterial({
+                                        color: 0xff0000,
+                                        wireframe: wireframe});
+                    }
+                    else{
+                        if(self.currentShading === 'Gouraud')
+                            node.material = new THREE.MeshLambertMaterial({
+                                            color: 0x00ff00,
+                                            wireframe: wireframe});
+                        else
+                            node.material = new THREE.MeshPhongMaterial({
+                                            color: 0x0000ff,
+                                            wireframe: wireframe});
+                    }
 
                     node.needsUpdate=true;
             

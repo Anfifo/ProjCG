@@ -159,7 +159,7 @@ function Orange(x, y, z)
 	var orange = new THREE.Mesh(orangeGeometry,lambertMaterial);
 
 	var geometry = new THREE.CylinderGeometry(3, 3, 15, 20, 1, false, 0, 2 * Math.PI);
-	var material = new THREE.MeshBasicMaterial({color: 0x463a27});
+	var material = new THREE.MeshLambertMaterial({color: 0x463a27});
 	var cylinder = new THREE.Mesh(geometry, material);
 
 	cylinder.position.set(0, 20, 0);
