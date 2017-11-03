@@ -21,7 +21,6 @@ function PhysicObject(){
     var self = this;
     this.mass = undefined;
     this.speed = 0;
-    this.updateClock = new THREE.Clock();
     this.acceleration = 0;
     this.maxSpeed = 0;
     this.maxAcceleration = 0;
@@ -37,13 +36,12 @@ function PhysicObject(){
         return false;
     };
 
-    this.animate = function(possibleCollisions){
-        this.updateMovement(possibleCollisions);
+    this.animate = function(possibleCollisions, delta){
+        this.updateMovement(possibleCollisions, delta);
     };
 
 
-    this.updateMovement = function (possibleCollisions) {
-        var timeSinceLastUpdate = this.updateClock.getDelta();
+    this.updateMovement = function (possibleCollisions, timeSinceLastUpdate) {
 
 
         var distance = this.calculateTranslation(timeSinceLastUpdate);

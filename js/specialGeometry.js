@@ -37,6 +37,8 @@ CuboidMesh.prototype = Object.create(THREE.Mesh.prototype);
 CuboidMesh.prototype.constructor = CuboidMesh;
 
 
+
+
 /**
  * A Tringular Rectangular Prism is a triangular prism with a rect angle as one of it's angles in 3d it looks like this:
  *
@@ -64,18 +66,23 @@ function TriangularRectPrismMesh(depth, height, width, material){
     removeVectorFromArray(vertexToRemove1,vertices);
     removeVectorFromArray(vertexToRemove2, vertices);
 
+
     var composingTrianglesVertices = computeAllTrianglesVertices(vertices, nrOfVertices);
 
     var geometry = new THREE.Geometry();
     addVerticesToGeometry(composingTrianglesVertices, geometry);
+
     THREE.Mesh.call(this, geometry, material);
 
 }
 
-
 TriangularRectPrismMesh.prototype = Object.create(THREE.Mesh.prototype);
 //prevents issues with isinstance after inheritance
 TriangularRectPrismMesh.prototype.constructor = TriangularRectPrismMesh;
+
+
+
+
 
 
 
@@ -119,6 +126,11 @@ function TriangularPrismObject(depth,height,width, material){
 TriangularPrismObject.prototype = Object.create(THREE.Object3D.prototype);
 //prevents issues with isinstance after inheritance
 TriangularPrismObject.prototype.constructor = TriangularPrismObject;
+
+
+
+
+
 
 
 
@@ -172,7 +184,14 @@ ShapeObject.prototype.constructor = ShapeObject;
 
 
 
-function addVerticesToGeometry(vertices, geom){
+// AUXILIARY FUNCTIONS
+
+/**
+ * unites, adds and computes normals of vertices for given geometry
+ * @param vertices
+ * @param geometry
+ */
+function addVerticesToGeometry(vertices, geometry){
     var pos = 0;
     var i;
 
@@ -181,11 +200,11 @@ function addVerticesToGeometry(vertices, geom){
         var v2 = new THREE.Vector3(vertices[i+1][0],vertices[i+1][1],vertices[i+1][2]);
         var v3 = new THREE.Vector3(vertices[i+2][0],vertices[i+2][1],vertices[i+2][2]);
 
-        geom.vertices.push(v1);
-        geom.vertices.push(v2);
-        geom.vertices.push(v3);
-        geom.faces.push( new THREE.Face3( pos++, pos++, pos++ ));
-        geom.computeFaceNormals();
+        geometry.vertices.push(v1);
+        geometry.vertices.push(v2);
+        geometry.vertices.push(v3);
+        geometry.faces.push( new THREE.Face3( pos++, pos++, pos++ ));
+        geometry.computeFaceNormals();
     }
 }
 
@@ -276,14 +295,10 @@ function getAdjacentVertices( vertex, nrOfObjectVertices){
  * @returns {Array}
  */
 function computeAllTrianglesVertices(vertices, nrOfObjectVertices){
-    var position = 0;
     var i;
     var vertex;
 
-    // has X vertices, each vertice will have 3 triangles, each triangle needs 3 vector, each vectors has 3 values
-    // X vertices * 3 Triangles * 3 Vectors * 3 Points;
     var triangles = [];
-
     if(nrOfObjectVertices === 6)
         return computeAllTrianglesVerticesOfTriangularPrism(vertices, nrOfObjectVertices);
 
@@ -331,23 +346,27 @@ function computeAllTrianglesVerticesOfTriangularPrism(vertices, nrOfObjectVertic
             var bottomLeftFrontVertex = vertex;
 
         if (vertex[0] < 0 && vertex[1]  > 0 && vertex[2] < 0 ){
-            addTrianglesToList(vertex, adjacentVertices, triangles);
             var topRightVertex = vertex;
+            addTrianglesToList(vertex, adjacentVertices, triangles);
         }
         if (vertex[0] < 0 && vertex[1] < 0 && vertex [2] > 0 ){
             var bottomLeftBackVertex = vertex;
             addTrianglesToList(vertex, adjacentVertices, triangles);
         }
-
     }
+    //adds missing triangles
     addTrianglesToList(topLeftVertex, [bottomRightFrontVertex, bottomLeftFrontVertex], triangles);
     addTrianglesToList(bottomRightBackVertex, [bottomRightFrontVertex, bottomLeftFrontVertex], triangles);
-
 
     return triangles;
 }
 
-
+/**
+ *
+ * @param vertex
+ * @param adjacentVertices
+ * @param triangles
+ */
 function addTrianglesToList(vertex, adjacentVertices, triangles){
     var i;
     // so when it would get out of range it goes back to the first member
@@ -390,7 +409,12 @@ function removeVectorFromArray(element, array){
             array.splice(i, 1)
 }
 
-
+/**
+ * finds if both numbers have same sign
+ * @param element1
+ * @param element2
+ * @returns {boolean}
+ */
 function hasSameSign(element1, element2){
     return (element1 > 0 && element2 > 0) || (element1 < 0 && element2 < 0)
 }

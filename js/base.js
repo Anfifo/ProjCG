@@ -67,17 +67,14 @@ function createScene(){
 	scene.add(new THREE.AxisHelper(10));
 }
 
-function randomPosition(value) {
-	return value - Math.random() * (value-(-value));
-}
-
 
 function animate(){
 
 	var possibleCollisions = animatables;
+    var delta = animationClock.getDelta();
 
 	animatables.forEach(function(element){
-		element.animate(possibleCollisions);
+		element.animate(possibleCollisions, delta);
 		checkOutOfBounds(element);
 	} );
 
@@ -88,11 +85,6 @@ function animate(){
         renderer.setScissorTest (false);
     	render();
     }
-    /*var position = animatables[0].car.position;
-    camera.position.set(position.x - 100 , 200 + position.y , position.z);*/
-
-	// delta = clock.getDelta();
-	// animateOranges(delta);
 
     requestAnimationFrame(animate);
 }
@@ -145,6 +137,9 @@ function addOranges(){
     scene.add(oranges[2]);
 
 }
+
+
+
 
 function init(){
 	renderer = new THREE.WebGLRenderer();
@@ -209,11 +204,8 @@ function init(){
 
     //Posicao inicial = (-8, 6.5, 70)
 	var car = createMovingCar(0,6.5,0);
-
     car.returnToStart();
-
     cameraHandler.createCameraForObject(car);
-
     scene.add(car);
 
 	inputHandler.addCarControls(car);
