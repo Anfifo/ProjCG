@@ -251,27 +251,27 @@ function Candle(x, y, z)
 {
 	THREE.Object3D.call(this);
 
-this.type = 'Candle';
+	this.type = 'Candle';
 
-var candleGeometry = new THREE.CylinderGeometry(5, 5, 27, 20, 1, false, 0, 2 * Math.PI);
-var candleMaterial = new THREE.MeshLambertMaterial({color: 0xbfb5a0});
-var candle = new THREE.Mesh(candleGeometry, candleMaterial)
+	var candleGeometry = new THREE.CylinderGeometry(5, 5, 27, 20, 1, false, 0, 2 * Math.PI);
+	var candleMaterial = new THREE.MeshLambertMaterial({color: 0xbfb5a0});
+	var candle = new THREE.Mesh(candleGeometry, candleMaterial);
 
-var wickGeometry = new THREE.CylinderGeometry(1, 1, 5, 20, 1, false, 0, 2 * Math.PI);
-var wickMaterial = new THREE.MeshLambertMaterial({color: 0x000000});
-var wick = new THREE.Mesh(wickGeometry, wickMaterial);
-wick.position.set(0, 15, 0);
+	var wickGeometry = new THREE.CylinderGeometry(1, 1, 5, 20, 1, false, 0, 2 * Math.PI);
+	var wickMaterial = new THREE.MeshLambertMaterial({color: 0x000000});
+	var wick = new THREE.Mesh(wickGeometry, wickMaterial);
+	wick.position.set(0, 15, 0);
 
-this.light = new THREE.PointLight(0xf6dd9b, 1.5, 300, 2);
-this.light.position.set(0, 20, 0);
+	this.light = new THREE.PointLight(0xf6dd9b, 1.5, 350, 2);
+	this.light.position.set(0, 20, 0);
 
-this.lightHelper = new THREE.PointLightHelper(this.light, 3);
+	this.lightHelper = new THREE.PointLightHelper(this.light, 3);
 
-this.add(candle);
-this.add(wick);
-this.add(this.light);
+	this.add(candle);
+	this.add(wick);
+	this.add(this.light);
 
-this.position.set(x, y, z);
+	this.position.set(x, y, z);
 
 }
 

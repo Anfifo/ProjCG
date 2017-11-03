@@ -52,9 +52,9 @@ function BasicCar(x,y,z, properties){
     this.wheelWidth = this.carBlockHeight/2;
     this.wheelRadius = this.carBlockHeight;
 
-    this.carMaterial = new THREE.MeshBasicMaterial({ color: this.carColor, wireframe: false });
-    this.wheelMaterial = new THREE.MeshBasicMaterial({ color: 0xb3b3cc, wireframe: false });
-    this.windowMaterial = new THREE.MeshBasicMaterial({ color: 0xcce6ff, wireframe: false });
+    this.carMaterial = new THREE.MeshLambertMaterial({ color: this.carColor});
+    this.wheelMaterial = new THREE.MeshLambertMaterial({ color: 0xb3b3cc});
+    this.windowMaterial = new THREE.MeshLambertMaterial({ color: 0xcce6ff});
 
     this.addLowerBody();
     this.addCarRoof();
@@ -131,7 +131,7 @@ BasicCar.prototype.addCarWheels = function(){
     var i;
     var wheel, position;
     var wheelMaterial = this.wheelMaterial;
-    var numberOfPrisms = 32;
+    var numberOfPrisms = 16;
     var radius = this.wheelRadius;
     var width = this.wheelWidth;
     var wheelX = this.wheelPosition +this.carBlockHeight;

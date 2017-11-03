@@ -33,7 +33,9 @@ function CuboidMesh(depth, height, width, material){
     var geometryVertices = new THREE.BufferAttribute( pointsArray, 3 );
 
     geometry.addAttribute( 'position', geometryVertices );
-    material = material || new THREE.MeshBasicMaterial( { color: 0xff0000 , wireframe:false} );
+    //material = material || new THREE.MeshBasicMaterial( { color: 0xff0000 , wireframe:false} );
+
+    geometry = new THREE.Geometry().fromBufferGeometry( geometry );
 
     THREE.Mesh.call(this, geometry, material);
 }
@@ -80,6 +82,8 @@ function TriangularRectPrismMesh(depth, height, width, material){
     geometry.addAttribute( 'position', geometryVertices );
     material = material || new THREE.MeshBasicMaterial( { color: 0xff0000 , wireframe: false} );
 
+    geometry = new THREE.Geometry().fromBufferGeometry( geometry );
+
     THREE.Mesh.call(this, geometry, material);
 }
 
@@ -115,7 +119,7 @@ function TriangularPrismMesh(depth,height,width, material){
     var triangle1 = new TriangularRectPrismMesh(rDepth, rHeight, rWidth, material);
     var triangle2 = new TriangularRectPrismMesh(rDepth, rHeight, rWidth, material);
 
-    THREE.Mesh.call(this);
+    THREE.Object3D.call(this);
 
     // places the 2 triangles in the proper position
     triangle1.translateY(rHeight/2);
@@ -127,7 +131,7 @@ function TriangularPrismMesh(depth,height,width, material){
 
 }
 
-TriangularPrismMesh.prototype = Object.create(THREE.Mesh.prototype);
+TriangularPrismMesh.prototype = Object.create(THREE.Object3D.prototype);
 //prevents issues with isinstance after inheritance
 TriangularPrismMesh.prototype.constructor = TriangularPrismMesh;
 
@@ -160,7 +164,7 @@ function ShapeMesh (radius, width, nrOfTriangles, material){
     var currentRotation = 0;
     var i;
 
-    THREE.Mesh.call(this);
+    THREE.Object3D.call(this);
     nrOfTriangles = nrOfTriangles || 8; //default value
 
     for (i = 0; i < nrOfTriangles; i++){
@@ -174,7 +178,7 @@ function ShapeMesh (radius, width, nrOfTriangles, material){
 }
 
 
-ShapeMesh.prototype = Object.create(THREE.Mesh.prototype);
+ShapeMesh.prototype = Object.create(THREE.Object3D.prototype);
 //prevents issues with isinstance after inheritance
 ShapeMesh.prototype.constructor = ShapeMesh;
 

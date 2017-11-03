@@ -38,7 +38,7 @@ LightsHandler.prototype.createCandles = function () {
 	scene.add(candle6);
 	scene.add(candle6.lightHelper);
 
-}
+};
 
 LightsHandler.prototype.dayNightTime = function(){
 	if(this.dayTime)

@@ -12,7 +12,8 @@ function InputHandler(){
      * @type {InputHandler}
      */
     var self = this;
-    self.currentShading = 'Gouraud';
+    this.currentShading = 'Gouraud';
+    this.wireframeToggle = false;
 
     var keyCodes = {
         _1: 49,
@@ -85,17 +86,13 @@ function InputHandler(){
         }
 
         // toggle wireframe
+
         if(pressedKeys[keyCodes.a]){
+            this.wireframeToggle = !this.wireframeToggle;
             scene.traverse( function(node) {
-                if(node instanceof THREE.Mesh &&
-                    !(node instanceof Table || node instanceof Cheerio) ){
-                    node.material.wireframe = !node.material.wireframe;
-                    if (node.geometry.type === 'TorusGeometry'){
-                        console.log("Rodas");
-                    }
-                    if (node.geometry.type === "ExtrudeGeometry"){
-                        console.log("Vidros");
-                    }
+                if((node instanceof THREE.Mesh &&
+                    !(node instanceof Table )) ){
+                        node.material.wireframe = wireframeToggle;
                 }
             });
             // render();
