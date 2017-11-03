@@ -1,3 +1,7 @@
+
+
+
+
 /**
  * This file contains our versions of some geometries and meshes already created by 3js
  * the objective is to create these meshes from scratch with triangles
@@ -5,11 +9,13 @@
 
 
 /**
- * Cuboid class. The cuboid represents a cube-like 3d object; looks like this in 2D:
- *  _______
- * |       |
- * |       |
- * |_______|
+ * Cuboid class. The cuboid represents a cube-like 3d object, looks like this in 3D:
+ *       ______
+ *     /      /|
+ *   /______/  |
+ *  |      |   |
+ *  |      |  /
+ *  |______|/
  *
  * @param depth X
  * @param height Y
@@ -27,7 +33,7 @@ function CuboidMesh(depth, height, width, material){
     var geometryVertices = new THREE.BufferAttribute( pointsArray, 3 );
 
     geometry.addAttribute( 'position', geometryVertices );
-    material = material || new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+    material = material || new THREE.MeshBasicMaterial( { color: 0xff0000 , wireframe:false} );
 
     THREE.Mesh.call(this, geometry, material);
 }
@@ -38,11 +44,14 @@ CuboidMesh.prototype.constructor = CuboidMesh;
 
 
 /**
- * A Tringular Rectangular Prism is a triangular prism with a rect angle as one of it's angles in 2d it looks like this:
- * |\
- * | \
- * |  \
- * |___\
+ * A Tringular Rectangular Prism is a triangular prism with a rect angle as one of it's angles in 3d it looks like this:
+ *
+ *  _______
+ * |\      \
+ * | \      \
+ * |  \      \
+ * |___\______\
+ *
  * @param depth
  * @param height
  * @param width
@@ -69,7 +78,7 @@ function TriangularRectPrismMesh(depth, height, width, material){
     var geometryVertices = new THREE.BufferAttribute( pointsArray, 3 );
 
     geometry.addAttribute( 'position', geometryVertices );
-    material = material || new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+    material = material || new THREE.MeshBasicMaterial( { color: 0xff0000 , wireframe: false} );
 
     THREE.Mesh.call(this, geometry, material);
 }
@@ -83,11 +92,11 @@ TriangularRectPrismMesh.prototype.constructor = TriangularRectPrismMesh;
 
 /**
  * A triangular Prism is simply 2 triangular rectangular prisms together
- * in 2D it looks like this:
- *
- *    /\
- *  /   \
- * /_____\
+ * in 3D it looks like this:
+ *      /\
+ *    /\  \
+ *  /   \  \
+ * /_____\/
  *
  * @param depth
  * @param height
@@ -193,7 +202,7 @@ function getCuboidVertices (depth, height, width){
         for(j = 0; j < 2; j++){
             for( k = 0; k < 2; k++){
                 // changes de values for each iteration
-                temp_width = k === 0 ? l : -l;
+                temp_width  = k === 0 ? l : -l;
                 temp_height = j === 0 ? h : -h;
                 temp_depth  = i === 0 ? d : -d;
                 vertices.push([temp_depth, temp_height, temp_width]);
@@ -209,25 +218,26 @@ function getCuboidVertices (depth, height, width){
  * If it's a cuboid it will have 8 vertices
  * If it's a triangular prism it will have 6
  * @param vertex
- * @param numberOfObjectVertices
+ * @param nrOfObjectVertices
  * @returns {[adj1,adj2,adj3]}
  */
-function getAdjacentVertices( vertex, numberOfObjectVertices){
+function getAdjacentVertices( vertex, nrOfObjectVertices){
     var adj1 = [], adj2 = [], adj3 = [];
     var x,y,z;
     x = vertex[0]; y = vertex[1]; z = vertex[2];
 
     //adjacent vertices of a cuboid
-    if(numberOfObjectVertices === 8){
+    if(nrOfObjectVertices === 8){
         adj1 = [-x, y, z];
         adj2 = [x, -y, z];
         adj3 = [x, y, -z];
     }
 
     //imagine the triangle |\
-    //                     |_\
+    //                     | \
+    //                     |__\
     //adjacent vertices of a triangular prism
-    if(numberOfObjectVertices === 6){
+    if(nrOfObjectVertices === 6){
         if((y > 0 && x < 0)  ){ // adjacent to top
             adj1 = [-x, -y, z];
             adj2 = [x, -y, z];
@@ -267,33 +277,95 @@ function addVectorPointsToList(vector, position, list){
 /**
  * Given a list of vertices, it returns a new list that results of uniting all verticies with their adjacent in triangles
  * @param vertices
- * @param numberOfObjectVertices
+ * @param nrOfObjectVertices
  * @returns {Float32Array}
  */
-function generateGeometryPointsArray(vertices, numberOfObjectVertices){
+function generateGeometryPointsArray(vertices, nrOfObjectVertices){
     var position = 0;
     var i, j;
     var vertex;
 
     // has X vertices, each vertice will have 3 triangles, each triangle needs 3 vector, each vectors has 3 values
     // X vertices * 3 Triangles * 3 Vectors * 3 Points;
-    var triangles = new Float32Array(3 * 3 * 3 * numberOfObjectVertices);
+    var triangles = new Float32Array(3 * 3 * 3 * nrOfObjectVertices);
+
+    if(nrOfObjectVertices === 6)
+        return generateTriangularPointsArray(vertices, nrOfObjectVertices);
 
     for ( i = 0; i < vertices.length; i++){
         vertex = vertices[i];
-        var adjacentVertices = getAdjacentVertices(vertex, numberOfObjectVertices);
 
-        // so when it would get out of range it goes back to the first member
-        adjacentVertices.push(adjacentVertices[0]);
+        // only half of the vertices are needed to represent a cube
+        if(!    (   ( hasSameSign(vertex[0], vertex[2]) && vertex[1] > 0) || // x sign = z sign and y > 0
+                (   (!hasSameSign(vertex[0], vertex[2])) && vertex[1] < 0)) // x sign != z sign and y < 0
+            && nrOfObjectVertices === 8 ) //is a cuboid
+            continue;
 
-        // creates a triangle for each point with his adjacent points
-        for( j = 0; j < adjacentVertices.length-1 ; j++){
-            position = addVectorPointsToList(vertex, position,triangles );
-            position = addVectorPointsToList(adjacentVertices[j], position, triangles );
-            position = addVectorPointsToList(adjacentVertices[j+1], position, triangles );
-        }
+        var adjacentVertices = getAdjacentVertices(vertex, nrOfObjectVertices);
+        adjacentVertices.push(adjacentVertices[0]); // avoid out of range situation; it loops back to first members
+
+        position = addTrianglesToList(vertex, adjacentVertices, position, triangles);
     }
     return triangles;
+}
+
+
+function generateTriangularPointsArray(vertices, nrOfObjectVertices){
+    var triangles = new Float32Array(3 * 3 * 3 * nrOfObjectVertices);
+    var position = 0;
+    var vertex;
+    var i;
+
+
+    for ( i = 0; i < vertices.length; i++){
+        vertex = vertices[i];
+        var adjacentVertices = getAdjacentVertices(vertex, nrOfObjectVertices);
+
+        if (vertex[0] < 0 && vertex[1]  > 0 && vertex[2] > 0 ){
+            var topLeftVertex = vertex;
+        }
+
+        if (vertex[0] < 0 && vertex[1]  > 0 && vertex[2] < 0 ){
+            position = addTrianglesToList(vertex, adjacentVertices, position, triangles);
+            var topRightVertex = vertex;
+        }
+
+        if (vertex[0] < 0 && vertex[1] < 0 && vertex [2] > 0 ){
+            var bottomLeftBackVertex = vertex;
+            position = addTrianglesToList(vertex, adjacentVertices, position, triangles);
+        }
+
+        if (vertex[0] < 0 && vertex[1] < 0 && vertex [2] < 0 ) {
+            var bottomRightBackVertex = vertex;
+        }
+
+        if (vertex[0] > 0 && vertex[1] < 0 && vertex[2] < 0 )
+            var bottomRightFrontVertex = vertex;
+
+        if (vertex[0] > 0 && vertex[1] < 0 && vertex[2] > 0 )
+            var bottomLeftFrontVertex = vertex;
+
+    }
+    position = addTrianglesToList(topLeftVertex, [bottomRightFrontVertex, bottomLeftFrontVertex], position, triangles);
+    position = addTrianglesToList(bottomRightBackVertex, [bottomRightFrontVertex, bottomLeftFrontVertex], position, triangles);
+
+
+    return triangles;
+}
+
+
+function addTrianglesToList(vertex, adjacentVertices, position, triangles){
+    var j;
+    // so when it would get out of range it goes back to the first member
+    adjacentVertices.push(adjacentVertices[0]);
+
+    // creates a triangle for each point with his adjacent points
+    for( j = 0; j < adjacentVertices.length - 1 ; j++){
+        position = addVectorPointsToList(vertex, position, triangles );
+        position = addVectorPointsToList(adjacentVertices[j], position, triangles );
+        position = addVectorPointsToList(adjacentVertices[j+1], position, triangles );
+    }
+    return position;
 }
 
 
@@ -325,4 +397,18 @@ function removeVectorFromArray(element, array){
         if(equalArrays(array[i], element))
             array.splice(i, 1)
 }
+
+
+function hasSameSign(element1, element2){
+    return (element1 > 0 && element2 > 0) || (element1 < 0 && element2 < 0)
+}
+
+
+
+
+
+
+
+
+
 
