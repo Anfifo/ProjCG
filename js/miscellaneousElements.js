@@ -111,6 +111,10 @@ function Cheerio(properties){
          properties.position.z
 	);
 	this.add(mesh);
+
+	this.processOutOfBounds = function(){
+		this.visible = false;
+	 }
  }
 
 /**
@@ -233,6 +237,16 @@ function Orange(x, y, z)
 
     };
 
+
+ 	this.processOutOfBounds = function(width, depth) {
+        if(this.visible === true){
+            this.visible = false;
+            var timeout = Math.random() * 5000;
+            setTimeout(function () {
+                self.hideShow(width / 4, depth / 4);
+            }, timeout);
+        }
+    }
 }
 /**
  * adds to Orange class all method and attributes from THRE.Object3D

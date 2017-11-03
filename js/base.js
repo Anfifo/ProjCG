@@ -1,5 +1,6 @@
 var scene, renderer;
 var animatables = [];
+var tableDimensions = [1000,500];
 var oranges = [];
 var cameraHandler;
 var lightsHandler;
@@ -17,30 +18,6 @@ setInterval(function() {
 			oranges[i].speed += oranges[i].maxSpeed - oranges[i].speed;
 	}
 }, 10000);
-
-function checkOutOfBounds(object){
-    var width = 1000;
-    var depth =  500;
-
-    var coordinates = object.getWorldPosition();
-
-    if(coordinates.x > width/2 || coordinates.x <  - width/2 || coordinates.z > depth/2 || coordinates.z < -depth/2){
-        if(object.type==="Cheerio")
-            object.visible = false;
-
-        if(object.type==="Car"){
-            object.returnToStart();
-        }
-        if(object.type ==="Orange" && object.visible === true){
-            object.visible = false;
-            var timeout = Math.random() * 5000;
-            setTimeout(function(){
-                object.hideShow(width/4, depth/4);
-			}, timeout);
-        }
-    }
-
-}
 
 function renderSplitScreen(){
 	var height = window.innerHeight;
@@ -75,7 +52,7 @@ function animate(){
 
 	animatables.forEach(function(element){
 		element.animate(possibleCollisions, delta);
-		checkOutOfBounds(element);
+		element.checkOutOfBounds(tableDimensions[0], tableDimensions[1]);
 	} );
 
     if(cameraHandler.splitScreenOn())

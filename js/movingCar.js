@@ -176,6 +176,10 @@ function MovingCar(x, y, z, properties) {
 		this.curveAngle = (Math.PI/4) * 3;
 	};
 
+
+	this.processOutOfBounds = function(){
+		this.returnToStart();
+	}
 }
 
 
