@@ -263,7 +263,9 @@ var wick = new THREE.Mesh(wickGeometry, wickMaterial);
 wick.position.set(0, 15, 0);
 
 this.light = new THREE.PointLight(0xf6dd9b, 1.5, 300, 2);
-this.light.position.set(0, 35, 0);
+this.light.position.set(0, 20, 0);
+
+this.lightHelper = new THREE.PointLightHelper(this.light, 3);
 
 this.add(candle);
 this.add(wick);
