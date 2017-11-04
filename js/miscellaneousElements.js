@@ -274,7 +274,9 @@ function Candle(x, y, z)
 	var wick = new THREE.Mesh(wickGeometry, wickMaterial);
 	wick.position.set(0, 15, 0);
 
-	this.light = new THREE.PointLight(0xf6dd9b, 1.5, 350, 2);
+    this.light = new THREE.PointLight(0xf0b904, 1, 400, 2); // Andre
+	//this.light = new THREE.PointLight(0xf6dd9b, 1.5, 350, 2); // Catarina
+
 	this.light.position.set(0, 20, 0);
 
 	this.lightHelper = new THREE.PointLightHelper(this.light, 3);

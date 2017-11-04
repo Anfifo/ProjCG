@@ -8,32 +8,34 @@ function LightsHandler( dimensions ){
 	this.createCandles();
 }
 LightsHandler.prototype.createCandles = function () {
-	var candle1 = new Candle(-335, 30, 170);
+	var y = 20;
+
+	var candle1 = new Candle(-335, y, 170);
 	this.candles.push(candle1);
 	scene.add(candle1);
 	scene.add(candle1.lightHelper);
 
-	var candle2 = new Candle(335, 30, 175);
+	var candle2 = new Candle(335, y, 175);
 	this.candles.push(candle2);
 	scene.add(candle2);
 	scene.add(candle2.lightHelper);
 
-	var candle3 = new Candle(-260, 30, -40);
+	var candle3 = new Candle(-260, y, -40);
 	this.candles.push(candle3);
 	scene.add(candle3);
 	scene.add(candle3.lightHelper);
 
-	var candle4 = new Candle(0, 30, 150);
+	var candle4 = new Candle(0, y, 150);
 	this.candles.push(candle4);
 	scene.add(candle4);
 	scene.add(candle4.lightHelper);
 
-	var candle5 = new Candle(-70, 30, -150);
+	var candle5 = new Candle(-70, y, -150);
 	this.candles.push(candle5);
 	scene.add(candle5);
 	scene.add(candle5.lightHelper);
 
-	var candle6 = new Candle(220, 30, -70);
+	var candle6 = new Candle(220, y, -70);
 	this.candles.push(candle6);
 	scene.add(candle6);
 	scene.add(candle6.lightHelper);

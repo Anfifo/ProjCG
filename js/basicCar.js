@@ -60,6 +60,11 @@ function BasicCar(x,y,z, properties){
     this.addCarRoof();
     this.addCarWheels();
 
+    this.light = new THREE.SpotLight(0xfdfbd8, 1     , 200, Math.PI+Math.PI/8, 0.7, 2);
+    this.light.position.set(this.x + this.carLength/2, this.y, this.z);
+    this.light.target.position.set(this.x +this.carLength, this.y, this.z);
+    this.add(this.light);
+    this.add(this.light.target);
 }
 
 
