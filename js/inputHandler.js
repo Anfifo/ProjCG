@@ -37,7 +37,8 @@ function InputHandler(){
         up: 38,
         left: 37,
         right: 39,
-        down: 40
+        down: 40,
+        comma: 188
     };
 
     var pressedKeys = {};
@@ -63,6 +64,7 @@ function InputHandler(){
     pressedKeys[keyCodes.down] = false;
     pressedKeys[keyCodes.left] = false;
     pressedKeys[keyCodes.right] = false;
+    pressedKeys[keyCodes.comma] = false;
 
 
     var car1;
@@ -195,6 +197,9 @@ function InputHandler(){
             
                 }
             });
+        }
+        if(pressedKeys[keyCodes.comma]){
+            car1.toggleLights();
         }
     };
 

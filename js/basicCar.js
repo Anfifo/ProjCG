@@ -60,7 +60,8 @@ function BasicCar(x,y,z, properties){
     this.addCarRoof();
     this.addCarWheels();
 
-    this.light = new THREE.SpotLight(0xfdfbd8, 1     , 200, Math.PI+Math.PI/8, 0.7, 2);
+    this.lightStatus = 0;
+    this.light = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
     this.light.position.set(this.x + this.carLength/2, this.y, this.z);
     this.light.target.position.set(this.x +this.carLength, this.y, this.z);
     this.add(this.light);
@@ -158,6 +159,33 @@ BasicCar.prototype.addCarWheels = function(){
         this.add(wheel);
     }
 
+};
+
+
+
+
+
+BasicCar.prototype.toggleLights = function(){
+
+    if ( this.lightStatus === 2){
+        this.light.intensity = 0;
+        this.light.distance = 0;
+        this.lightStatus = 0;
+        return null;
+    }
+
+    if( this.lightStatus === 0 ){
+        this.light.intensity = 1;
+        this.light.distance = 200;
+        this.lightStatus++;
+        return null;
+    }
+
+    if( this.lightStatus === 1){
+        this.light.intensity = 3;
+        this.light.distance = 500;
+        this.lightStatus++;
+    }
 };
 
 
