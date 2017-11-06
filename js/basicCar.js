@@ -218,6 +218,7 @@ BasicCar.prototype.toggleToPhong = function(wireframe){
     for(var i = 0; i < this.wheels.length; i++){
         console.log(this.wheels.length);
         this.wheels[i].traverse( function(node){
+            var wireframe = node.material.wireframe
             if(node instanceof THREE.Mesh)
                 node.material = new THREE.MeshPhongMaterial({
                     color: 0xb3b3cc, reflectivity: 0, shininess: 0, wireframe: node.material.wireframe});
@@ -241,7 +242,7 @@ BasicCar.prototype.toggleToGouraud = function(wireframe){
         this.wheels[i].traverse( function(node){
             if(node instanceof THREE.Mesh)
                 node.material = new THREE.MeshLambertMaterial({
-                    color: 0xb3b3cc, wireframe: node.materialwireframe});
+                    color: 0xb3b3cc, wireframe: node.material.wireframe});
         });
     }
    
