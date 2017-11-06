@@ -169,7 +169,7 @@ BasicCar.prototype.addCarWheels = function(){
     for (i = 0; i < 4; i++){
         position = wheelPositions[i];
         console.log(position);
-        wheel = new ShapeObject(radius, width, numberOfPrisms, wheelMaterial);
+        wheel = new ShapeMesh(radius, width, numberOfPrisms, wheelMaterial);
         wheel.position.set(position[0], position[1], position[2]);
         this.add(wheel);
         this.wheels.push(wheel);
