@@ -46,9 +46,11 @@ function InfinityTrack(properties) {
 
 	this.properties = properties;
 	this.cheerios = [];
+	this.starting_line = [];
 	this.startLinePosition = [347, 20, 12];
 
 	this.getCheerios = function(){return this.cheerios};
+	this.getStartingLines = function(){return this.starting_line};
 
 	/////////////////// OUTTER LOOP //////////////////
 	this.draw_half_loop(200,0,200,200,15);
@@ -70,8 +72,10 @@ function InfinityTrack(properties) {
 	this.draw_line(50, 150, 0.5, 0);
 	this.draw_line(50, 150, -0.5, 0);
 
-	this.start_line(347,10,0);
-	this.start_line(347,10,12);
+	//this.start_line(347,10,0);
+	//this.start_line(347,10,12);
+
+
 	
 }
 
@@ -142,7 +146,17 @@ InfinityTrack.prototype.start_line = function(x,y,z){
         }
     };
 	var startingLine = new Table (properties);
+	this.starting_line.push(startingLine);
 	this.add(startingLine);
 };
 
+InfinityTrack.prototype.toggleToPhong = function(wireframe){
+	for(cheerio in cheerios){
+		cheerio.toogleToPhong(wireframe);
+	}
+
+	for(line in starting_line)
+		line.toogleToPhong(wireframe);
+
+}
 

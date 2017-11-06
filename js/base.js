@@ -2,6 +2,8 @@ var scene, renderer;
 var animatables = [];
 var tableDimensions = [1000,500];
 var oranges = [];
+var table;
+var startingLines = [];
 var cameraHandler;
 var lightsHandler;
 var animationClock = new THREE.Clock();
@@ -141,13 +143,13 @@ function init(){
         }
     };
 
-    var table = new Table(properties);
+    table = new Table(properties);
 	scene.add(table);
-
+    
 	cameraHandler = new CameraHandler(table.getDimensions());
 
 
-
+    
 	var cheerioProperties = {
         radius: 7,
 		tube: 2.7,
@@ -168,16 +170,14 @@ function init(){
 
 
 
-	//draw_infinity_track(cheerioProperties);
 	var track = new InfinityTrack(cheerioProperties);
 	scene.add(track);
-
-
+  
 	//Car handling
 	var inputHandler = new InputHandler();
 
     var butters = addButters();
-
+    startingLines = track.getStartingLines();
 
     //Posicao inicial = (-8, 6.5, 70)
 	var car = createMovingCar(0,6.5,0);
@@ -193,8 +193,7 @@ function init(){
     animatables = animatables.concat(oranges);
 
 
-
-
+ 
 	var dim = table.getDimensions();
     window.addEventListener("resize", function(dim){
    											return function(){onResize(dim)}
@@ -202,7 +201,6 @@ function init(){
 
 	window.addEventListener("keydown", inputHandler.onKeyDown);
 	window.addEventListener("keyup", inputHandler.onKeyRelease);
-
 	animate();
 
 }

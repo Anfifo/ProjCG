@@ -13,6 +13,7 @@ function InputHandler(){
      */
     var self = this;
     this.currentShading = 'Gouraud';
+    this.basicMaterial = false;
     this.wireframeToggle = false;
 
     var keyCodes = {
@@ -138,65 +139,47 @@ function InputHandler(){
             lightsHandler.switchCandles();
         }
 
-
+        // Toggle Shading
         if(pressedKeys[keyCodes.g]){
-            scene.traverse( function(node) {
-                if(node instanceof THREE.Mesh){
-                    var wireframe = node.material.wireframe;
-                    var color = node.material.color;
 
-                    if(node.material.isMeshBasicMaterial){
-                        if(self.currentShading === 'Phong')
-                            self.currentShading = 'Gouraud';
-                        else
-                            self.currentShading = 'Phong';
-                    }
+            if(this.basicMaterial){
+                if(self.currentShading === 'Phong')
+                    self.currentShading = "Gouraud";
+                else
+                    self.currentShading = "Phong";
+            }
+           
+            else if(self.currentShading === 'Phong'){
+                self.currentShading = 'Gouraud';
+                toggleToGouraud(this.wireframeToggle);
+            }
 
-                    else if (!node.material.isMeshPhongMaterial){
-                        self.currentShading = 'Phong';
-                        node.material = new THREE.MeshPhongMaterial({
-                                        color: color,
-                                        wireframe: wireframe});
-                    }
-                    else{
-                        self.currentShading = 'Gouraud';
-                        node.material = new THREE.MeshLambertMaterial({
-                                        color: color,
-                                        wireframe: wireframe});
-                    }
-
-                    node.needsUpdate=true;
-        
-                }
-            });
+            else{
+                self.currentShading = 'Phong';
+                toggleToPhong(this.wireframeToggle);
+            }
         }
 
+        //Toggle Illumination Calculation
         if(pressedKeys[keyCodes.l]){
-            scene.traverse( function(node) {
-                if(node instanceof THREE.Mesh){
-                    var wireframe = node.material.wireframe;
-                    var color = node.material.color;
-
-                    if(!node.material.isMeshBasicMaterial){
+            if(!this.basicMaterial){
+                scene.traverse( function(node) {
+                    if(node instanceof THREE.Mesh){
                         node.material = new THREE.MeshBasicMaterial({
-                                        color: color,
-                                        wireframe: wireframe});
+                                        color: node.material.color,
+                                        wireframe: node.material.wireframe
+                        });
                     }
-                    else{
-                        if(self.currentShading === 'Gouraud')
-                            node.material = new THREE.MeshLambertMaterial({
-                                            color: color,
-                                            wireframe: wireframe});
-                        else
-                            node.material = new THREE.MeshPhongMaterial({
-                                            color: color,
-                                            wireframe: wireframe});
-                    }
+                });
+            }
+            else if(self.currentShading === 'Phong')
+                toggleToPhong(this.wireframeToggle);
 
-                    node.needsUpdate=true;
-            
-                }
-            });
+            else
+                toggleToGouraud(this.wireframeToggle);
+
+            this.basicMaterial = !this.basicMaterial;
+
         }
         if(pressedKeys[keyCodes.comma]){
             car1.toggleLights();
@@ -280,4 +263,20 @@ function switchCamera(number){
         cameraHandler.resize();
     cameraHandler.setSplitScreen(false);
     cameraHandler.updateSelectedCamera(number);
+}
+
+function toggleToGouraud(wireframe){
+    table.toggleToGouraud(wireframe);
+    lightsHandler.toggleCandlesToGouraud(wireframe);
+    animatables.forEach(function(element){
+        element.toggleToGouraud(wireframe);
+     } );
+}
+
+function toggleToPhong(wireframe){
+    table.toggleToPhong(wireframe);
+    lightsHandler.toggleCandlesToPhong(wireframe);    
+    animatables.forEach(function(element){
+        element.toggleToPhong(wireframe);
+     } );
 }

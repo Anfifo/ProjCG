@@ -1,7 +1,7 @@
 
 function LightsHandler( dimensions ){
-	this.ambientLight = new THREE.AmbientLight( 0x404040 , 4);
-	scene.add(this.ambientLight);
+	this.directionalLight = new THREE.DirectionalLight( 0x404040 , 3);
+	scene.add(this.directionalLight);
 	this.dayTime = true;
 	this.candles = [];
 	this.candlesIgnited = true;
@@ -44,10 +44,10 @@ LightsHandler.prototype.createCandles = function () {
 
 LightsHandler.prototype.dayNightTime = function(){
 	if(this.dayTime)
-		scene.remove(this.ambientLight);
+		scene.remove(this.directionalLight);
 
 	else
-		scene.add(this.ambientLight);
+		scene.add(this.directionalLight);
 
 	this.dayTime = !this.dayTime;
 };
@@ -67,3 +67,14 @@ LightsHandler.prototype.switchCandles = function(){
 		}
 	}
 };
+
+
+LightsHandler.prototype.toggleCandlesToPhong = function(wireframe){
+   for(var i = 0; i < this.candles.length; i++)
+    this.candles[i].toggleToPhong(wireframe);
+}
+
+LightsHandler.prototype.toggleCandlesToGouraud = function(wireframe){
+   for(var i = 0; i < this.candles.length; i++)
+    this.candles[i].toggleToGouraud(wireframe);
+}
