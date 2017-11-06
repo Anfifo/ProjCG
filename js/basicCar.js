@@ -74,6 +74,15 @@ function BasicCar(x,y,z, properties){
     this.light.target.position.set(this.x +this.carLength, this.y, this.z);
     this.add(this.light);
     this.add(this.light.target);
+
+
+
+
+    this.backLight = new THREE.SpotLight(0xff0000, 0, 0, Math.PI+Math.PI/8, 0.7, 10);
+    this.backLight.position.set(this.x - this.carLength/2, this.y, this.z);
+    this.backLight.target.position.set(this.x - this.carLength, this.y, this.z);
+    this.add(this.backLight);
+    this.add(this.backLight.target);
 }
 
 
@@ -187,12 +196,16 @@ BasicCar.prototype.toggleLights = function(){
         this.light.intensity = 0;
         this.light.distance = 0;
         this.lightStatus = 0;
+        this.backLight.intensity = 0;
+        this.backLight.distance = 0;
         return null;
     }
 
     if( this.lightStatus === 0 ){
         this.light.intensity = 1;
         this.light.distance = 200;
+        this.backLight.intensity = 1;
+        this.backLight.distance = 50;
         this.lightStatus++;
         return null;
     }
@@ -200,6 +213,8 @@ BasicCar.prototype.toggleLights = function(){
     if( this.lightStatus === 1){
         this.light.intensity = 3;
         this.light.distance = 500;
+        this.backLight.intensity = 1;
+        this.backLight.distance = 50;
         this.lightStatus++;
     }
 };
@@ -225,7 +240,7 @@ BasicCar.prototype.toggleToPhong = function(wireframe){
         });
     }
    
-}
+};
 
 BasicCar.prototype.toggleToGouraud = function(wireframe){
     for(var i = 0; i < this.body.length; i++){
@@ -246,4 +261,4 @@ BasicCar.prototype.toggleToGouraud = function(wireframe){
         });
     }
    
-}
+};
