@@ -268,6 +268,11 @@ function switchCamera(number){
 function toggleToGouraud(wireframe){
     table.toggleToGouraud(wireframe);
     lightsHandler.toggleCandlesToGouraud(wireframe);
+
+    for(var i = 0; i < startingLines.length; i++){
+        startingLines[i].toggleToGouraud(wireframe);
+    } 
+
     animatables.forEach(function(element){
         element.toggleToGouraud(wireframe);
      } );
@@ -275,7 +280,12 @@ function toggleToGouraud(wireframe){
 
 function toggleToPhong(wireframe){
     table.toggleToPhong(wireframe);
-    lightsHandler.toggleCandlesToPhong(wireframe);    
+    lightsHandler.toggleCandlesToPhong(wireframe);
+    
+    for(var i = 0; i < startingLines.length; i++){
+        startingLines[i].toggleToPhong(wireframe);
+    } 
+     
     animatables.forEach(function(element){
         element.toggleToPhong(wireframe);
      } );

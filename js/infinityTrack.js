@@ -72,8 +72,8 @@ function InfinityTrack(properties) {
 	this.draw_line(50, 150, 0.5, 0);
 	this.draw_line(50, 150, -0.5, 0);
 
-	//this.start_line(347,10,0);
-	//this.start_line(347,10,12);
+	this.start_line(347,10,0);
+	this.start_line(347,10,12);
 
 
 	
