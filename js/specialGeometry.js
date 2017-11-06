@@ -84,9 +84,6 @@ TriangularRectPrismMesh.prototype.constructor = TriangularRectPrismMesh;
 
 
 
-
-
-
 /**
  * A shape mesh will make a 2D-looking object with a given width on the Z axis
  * depending on the nrOfTriangles argument the output will be:

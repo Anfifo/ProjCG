@@ -345,8 +345,9 @@ function Candle(x, y, z)
 	this.light.position.set(0, 20, 0);
 
 	this.lightHelper = new THREE.PointLightHelper(this.light, 3);
+    this.lightHelper.material.wireframe = false;
 
-	this.add(candle);
+    this.add(candle);
 	this.add(wick);
 	this.add(this.light);
 

@@ -93,21 +93,24 @@ function InputHandler(){
         if(pressedKeys[keyCodes.a]){
             this.wireframeToggle = !this.wireframeToggle;
             scene.traverse( function(node) {
-                if((node instanceof THREE.Mesh &&
-                    !(node instanceof Table )) ){
+                if((node instanceof THREE.Mesh) ){
                         node.material.wireframe = wireframeToggle;
                 }
             });
+            table.material.wireframe = false;
             // render();
         }
 
         //EASTER EGG create 2nd player car
         if(pressedKeys[keyCodes.p]){
-            car2 = createMovingCar(0,6.5,0, {color:0x42f44b});
-            cameraHandler.createCameraForObject(car2);
-            scene.add(car2);
-            car2.returnToStart();
-            animatables.push(car2);
+
+            if(!car2){
+                car2 = createMovingCar(0,6.5,0, {color:0x42f44b});
+                cameraHandler.createCameraForObject(car2);
+                scene.add(car2);
+                car2.returnToStart();
+                animatables.push(car2);
+            }
         }
 
         if(pressedKeys[keyCodes._1]){
@@ -182,6 +185,11 @@ function InputHandler(){
 
         }
         if(pressedKeys[keyCodes.comma]){
+
+            if(car2){
+                car2.lightStatus = car1.lightStatus;
+                car2.toggleLights();
+            }
             car1.toggleLights();
         }
     };
@@ -266,7 +274,7 @@ function switchCamera(number){
 }
 
 function toggleToGouraud(wireframe){
-    table.toggleToGouraud(wireframe);
+    table.toggleToGouraud(false);
     lightsHandler.toggleCandlesToGouraud(wireframe);
 
     for(var i = 0; i < startingLines.length; i++){
@@ -279,7 +287,7 @@ function toggleToGouraud(wireframe){
 }
 
 function toggleToPhong(wireframe){
-    table.toggleToPhong(wireframe);
+    table.toggleToPhong(false);
     lightsHandler.toggleCandlesToPhong(wireframe);
     
     for(var i = 0; i < startingLines.length; i++){
