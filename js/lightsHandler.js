@@ -1,7 +1,7 @@
 
 function LightsHandler( dimensions ){
-	this.directionalLight = new THREE.DirectionalLight( 0xfffaed , 0.9);
-	this.directionalLight.position.set(0, 300, 0);
+	this.directionalLight = new THREE.DirectionalLight( 0xefefef , 0.9);
+	this.directionalLight.position.set(0, 200, 0);
 	scene.add(this.directionalLight);
 	scene.add(this.directionalLight.target);
 	this.dayTime = true;

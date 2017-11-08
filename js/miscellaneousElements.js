@@ -21,7 +21,7 @@ function Table(properties){
 	this.width = properties.width;
 	this.height = properties.height;
 	this.depth = properties.depth;
-
+	this.map = properties.map;
 	this.color = properties.color;
 
 	this.geometry = new THREE.BoxGeometry(
@@ -36,7 +36,8 @@ function Table(properties){
 
 	this.lambertMaterial = new THREE.MeshLambertMaterial({
 		color: properties.color,
-		wireframe: properties.wireframe
+		wireframe: properties.wireframe,
+		map : properties.map
 	});
 
 	THREE.Mesh.call(
@@ -74,7 +75,8 @@ Table.prototype.toggleToPhong = function(wireframe) {
 		wireframe: wireframe,
 		reflectivity: 0,
 		specular: 0x000000,
-		shininess: 0
+		shininess: 0,
+		map: this.map
 	});
 };
 
@@ -83,7 +85,8 @@ Table.prototype.toggleToGouraud = function(wireframe) {
 	this.material = new THREE.MeshLambertMaterial({
 		color:this.color,
 		wireframe: wireframe,
-	});
+        map: this.map
+    });
 };
 
 

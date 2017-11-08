@@ -100,18 +100,25 @@ function init(){
 
 	createScene();
     lightsHandler = new LightsHandler();
-    
-	var properties = {
+    var texture = new THREE.TextureLoader().load( 'Textures/tcloth.jpg' );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    // texture.repeat.set(1,1);
+
+
+    var properties = {
         width: 1000,
         height: 20,
         depth: 500,
-        color: 0x9da4a8,
+        //color: 0x9da4a8,
+        color:0xdddddd,
         wireframe: false,
         position: {
             x: 0,
             y: 0,
             z: 0
-        }
+        },
+        map:texture
     };
 
     table = new Table(properties);

@@ -395,8 +395,8 @@ function addVerticesToGeometry(vertices, geometry){
         geometry.vertices.push(v2);
         geometry.vertices.push(v3);
         geometry.faces.push( new THREE.Face3( pos++, pos++, pos++ ));
-        geometry.computeFaceNormals();
     }
+    geometry.computeFaceNormals();
 }
 
 
