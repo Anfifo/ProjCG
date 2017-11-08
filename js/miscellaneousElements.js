@@ -520,16 +520,16 @@ function addOranges(){
 function createPauseCube(){
     var box = new THREE.Object3D();
 
-    var texture = new THREE.TextureLoader().load( "Textures/Paused.png" );
+    var texture = new THREE.TextureLoader().load( "Textures/paused2.jpg" );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
 
     var material = new THREE.MeshLambertMaterial({ color: 0xffffff, map: texture});
 
 
-    var dimX = 200;
-    var dimY = 100;
-    var dimZ = 200;
+    var dimX = 250;
+    var dimY = 120;
+    var dimZ = 250;
     var light;
 
     var geometry = new THREE.BoxGeometry(dimX,dimY,dimZ);
