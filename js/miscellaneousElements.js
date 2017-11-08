@@ -459,7 +459,7 @@ Butter.prototype.toggleToGouraud = function(wireframe) {
 		if(node instanceof THREE.Mesh)
 			node.material = new THREE.MeshLambertMaterial({
 				color: node.material.color,
-				wireframe: wireframe,
+				wireframe: wireframe
 			});
 	});
 };
@@ -514,14 +514,45 @@ function addOranges(){
 }
 
 
-
 function createPauseCube(){
-    var material = new THREE.MeshLambertMaterial({ color: 0xb3b3cc});
-    var x = 200;
-    var y = 100;
-    var z = 200;
-    var cuboid = new CuboidMesh(x, y, z, material);
+    var box = new THREE.Object3D();
 
-    cuboid.position.set(0,120,0);
-    return cuboid;
+    var texture = new THREE.TextureLoader().load( "Textures/Paused.png" );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+
+    var material = new THREE.MeshLambertMaterial({ color: 0xffffff, map: texture});
+
+
+    var dimX = 200;
+    var dimY = 100;
+    var dimZ = 200;
+    var light;
+
+    var geometry = new THREE.BoxGeometry(dimX,dimY,dimZ);
+    var cuboid = new THREE.Mesh( geometry, material );
+    box.add(cuboid);
+
+    var color = 0xffffff, intensity = 1, range = 200, decay = 2;
+
+    light = new THREE.PointLight(color, intensity, range, decay);
+    light.position.set(-dimX/2 -5, dimY/2, dimZ/2 +5);
+    box.add(light);
+
+    light = new THREE.PointLight(color, intensity, range, decay);
+    light.position.set(dimX/2 + 5 , dimY/2, -dimZ/2 - 5);
+    box.add(light);
+
+    light = new THREE.PointLight(color, intensity, range, decay);
+    light.position.set(-dimX/2 -5 , dimY/2, -dimZ/2 -5);
+    box.add(light);
+
+    light = new THREE.PointLight(color, intensity, range, decay);
+    light.position.set(dimX/2 +5, dimY/2, dimZ/2 + 5);
+    box.add(light);
+
+
+    box.position.set(0,120,0);
+
+    return box;
 }

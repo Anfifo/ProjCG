@@ -295,23 +295,31 @@ function toggleToGouraud(wireframe){
 function toggleToPhong(wireframe){
     table.toggleToPhong(false);
     lightsHandler.toggleCandlesToPhong(wireframe);
-    
+
     for(var i = 0; i < startingLines.length; i++){
         startingLines[i].toggleToPhong(wireframe);
-    } 
-     
+    }
+
     animatables.forEach(function(element){
         element.toggleToPhong(wireframe);
      } );
 }
 
+var pausedSignBox;
+
 function togglePause(){
     gameRunning = ! gameRunning;
 
-    if(gameRunning)
+    if(gameRunning){
         cameraHandler.stopPauseCamera();
+        if(pausedSignBox){
+            scene.remove(pausedSignBox);
+            pausedSignBox = undefined;
+        }
+    }
     else{
         cameraHandler.selectPauseCamera();
-        scene.add(createPauseCube());
+        pausedSignBox = createPauseCube();
+        scene.add(pausedSignBox);
     }
 }

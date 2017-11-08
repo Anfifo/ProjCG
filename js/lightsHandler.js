@@ -1,7 +1,9 @@
 
 function LightsHandler( dimensions ){
-	this.directionalLight = new THREE.DirectionalLight( 0x404040 , 3);
+	this.directionalLight = new THREE.DirectionalLight( 0xfffaed , 0.9);
+	this.directionalLight.position.set(0, 300, 0);
 	scene.add(this.directionalLight);
+	scene.add(this.directionalLight.target);
 	this.dayTime = true;
 	this.candles = [];
 	this.candlesIgnited = true;
@@ -72,9 +74,9 @@ LightsHandler.prototype.switchCandles = function(){
 LightsHandler.prototype.toggleCandlesToPhong = function(wireframe){
    for(var i = 0; i < this.candles.length; i++)
     this.candles[i].toggleToPhong(wireframe);
-}
+};
 
 LightsHandler.prototype.toggleCandlesToGouraud = function(wireframe){
    for(var i = 0; i < this.candles.length; i++)
     this.candles[i].toggleToGouraud(wireframe);
-}
+};
