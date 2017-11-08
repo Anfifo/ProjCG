@@ -463,3 +463,65 @@ Butter.prototype.toggleToGouraud = function(wireframe) {
 			});
 	});
 };
+
+
+
+
+
+function addButters(){
+    var butters = [];
+
+    var butter = new Butter(-400, 15, 150);
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(0, 15, -150);
+    butter.rotation.y = Math.PI/2;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(400, 15, -150);
+    butter.rotation.y = Math.PI/2;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(-80, 15, 200);
+    butter.rotation.y = -Math.PI/2;
+    scene.add(butter);
+    butters.push(butter);
+
+    butter = new Butter(-440, 15, -60);
+    butter.rotation.y = -Math.PI;
+    scene.add(butter);
+    butters.push(butter);
+
+    return butters;
+}
+
+
+
+function addOranges(){
+    var oranges = [];
+    oranges[0] = new Orange(80, 33, 200 );
+    scene.add(oranges[0]);
+
+    oranges[1] = new Orange(400,33,125);
+    scene.add(oranges[1]);
+
+    oranges[2] = new Orange(-370,33, -180);
+    scene.add(oranges[2]);
+    return oranges;
+}
+
+
+
+function createPauseCube(){
+    var material = new THREE.MeshLambertMaterial({ color: 0xb3b3cc});
+    var x = 200;
+    var y = 100;
+    var z = 200;
+    var cuboid = new CuboidMesh(x, y, z, material);
+
+    cuboid.position.set(0,120,0);
+    return cuboid;
+}

@@ -177,7 +177,6 @@ BasicCar.prototype.addCarWheels = function(){
 
     for (i = 0; i < 4; i++){
         position = wheelPositions[i];
-        console.log(position);
         wheel = new ShapeMesh(radius, width, numberOfPrisms, wheelMaterial);
         wheel.position.set(position[0], position[1], position[2]);
         this.add(wheel);
@@ -221,19 +220,19 @@ BasicCar.prototype.toggleLights = function(){
 
 
 BasicCar.prototype.toggleToPhong = function(wireframe){
-    for(var i = 0; i < this.body.length; i++){
+    var i;
+
+    for (i = 0; i < this.body.length; i++){
         this.body[i].material = new THREE.MeshPhongMaterial({ 
             color: this.carColor, reflectivity: 0.6, shininess: 60, wireframe: wireframe});
     }
-    for(var i = 0; i < this.windows.length; i++){
+    for (i = 0; i < this.windows.length; i++){
         this.windows[i].material = new THREE.MeshPhongMaterial({ 
             color: 0xcce6ff, transparent: true, opacity: 0.8, reflectivity: 0.0, shininess:0, wireframe:wireframe});
             
     }
-    for(var i = 0; i < this.wheels.length; i++){
-        console.log(this.wheels.length);
+    for (i = 0; i < this.wheels.length; i++){
         this.wheels[i].traverse( function(node){
-            var wireframe = node.material.wireframe
             if(node instanceof THREE.Mesh)
                 node.material = new THREE.MeshPhongMaterial({
                     color: 0xb3b3cc, reflectivity: 0, shininess: 0, wireframe: node.material.wireframe});
@@ -243,17 +242,17 @@ BasicCar.prototype.toggleToPhong = function(wireframe){
 };
 
 BasicCar.prototype.toggleToGouraud = function(wireframe){
-    for(var i = 0; i < this.body.length; i++){
+    var i;
+    for (i = 0; i < this.body.length; i++){
         this.body[i].material = new THREE.MeshLambertMaterial({ 
             color: this.carColor, wireframe: wireframe});
     }
-    for(var i = 0; i < this.windows.length; i++){
+    for (i = 0; i < this.windows.length; i++){
         this.windows[i].material = new THREE.MeshLambertMaterial({ 
             color: 0xcce6ff, transparent: true, opacity: 0.8, wireframe:wireframe});
             
     }
-    for(var i = 0; i < this.wheels.length; i++){
-        console.log(this.wheels.length);
+    for (i = 0; i < this.wheels.length; i++){
         this.wheels[i].traverse( function(node){
             if(node instanceof THREE.Mesh)
                 node.material = new THREE.MeshLambertMaterial({

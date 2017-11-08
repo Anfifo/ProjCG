@@ -11,7 +11,7 @@
  * @constructor
  */
 function CameraHandler( dimensions ){
-	this.height = dimensions[2]/2 + 100;
+    this.height = dimensions[2]/2 + 100;
 	this.width = dimensions[0]/2 + 100;
 	this.window_ratio = window.innerHeight/window.innerWidth;
 	this.cameras = [];
@@ -19,6 +19,9 @@ function CameraHandler( dimensions ){
 	this.createPerspectiveCamera(0, 500, 700);
 	this.cameraNr = 0;
 	this.splitScreen = false;
+
+	this.paused = false;
+	this.pauseCamera = this.createPauseCamera(450,100,100);
 }
 
 /**
@@ -81,6 +84,9 @@ CameraHandler.prototype.createCameraForObject = function(object){
  * @returns reference to the currently selected camera
  */
 CameraHandler.prototype.selectedCamera = function(){
+    if(this.paused){
+        return this.pauseCamera;
+    }
 	return this.cameras[this.cameraNr];
 };
 
@@ -104,8 +110,11 @@ CameraHandler.prototype.resize = function(){
 	 	this.cameras[i].aspect = 1 / this.window_ratio;
 		this.cameras[i].updateProjectionMatrix();
 		console.log(i);
-
 	}
+	if (this.pauseCamera){
+        this.pauseCamera.aspect = 1 / this.window_ratio;
+        this.pauseCamera.updateProjectionMatrix();
+    }
 
 
 	if(window.innerHeight > 0 && window.innerWidth > 0){
@@ -145,3 +154,18 @@ CameraHandler.prototype.setSplitScreen = function(value){
 	this.splitScreen = value;
 };
 
+CameraHandler.prototype.createPauseCamera = function(x, y, z){
+
+    var camera = new THREE.PerspectiveCamera(60, this.window_ratio, 1, 3000);
+    camera.position.set(x, y, z);
+    camera.lookAt(scene.position);
+
+    return camera;
+};
+
+CameraHandler.prototype.selectPauseCamera = function(){
+    this.paused = true;
+};
+CameraHandler.prototype.stopPauseCamera = function (){
+    this.paused = false;
+};

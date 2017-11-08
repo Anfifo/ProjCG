@@ -17,6 +17,7 @@ function InputHandler(){
     this.wireframeToggle = false;
 
     var keyCodes = {
+        enter: 13,
         _1: 49,
         _2: 50,
         _3: 51,
@@ -43,27 +44,28 @@ function InputHandler(){
     };
 
     var pressedKeys = {};
-    pressedKeys[keyCodes._1] = false;
-    pressedKeys[keyCodes._2] = false;
-    pressedKeys[keyCodes._3] = false;
-    pressedKeys[keyCodes._4] = false;
-    pressedKeys[keyCodes._5] = false;
-    pressedKeys[keyCodes.a] = false;
-    pressedKeys[keyCodes.b] = false;
-    pressedKeys[keyCodes.c] = false;
-    pressedKeys[keyCodes.d] = false;
-    pressedKeys[keyCodes.e] = false;
-    pressedKeys[keyCodes.f] = false;
-    pressedKeys[keyCodes.g] = false;
-    pressedKeys[keyCodes.l] = false;
-    pressedKeys[keyCodes.n] = false;
-    pressedKeys[keyCodes.p] = false;
-    pressedKeys[keyCodes.s] = false;
-    pressedKeys[keyCodes.t] = false;
-    pressedKeys[keyCodes.w] = false;
-    pressedKeys[keyCodes.up] = false;
-    pressedKeys[keyCodes.down] = false;
-    pressedKeys[keyCodes.left] = false;
+    pressedKeys[keyCodes.enter] = false;
+    pressedKeys[keyCodes._1]    = false;
+    pressedKeys[keyCodes._2]    = false;
+    pressedKeys[keyCodes._3]    = false;
+    pressedKeys[keyCodes._4]    = false;
+    pressedKeys[keyCodes._5]    = false;
+    pressedKeys[keyCodes.a]     = false;
+    pressedKeys[keyCodes.b]     = false;
+    pressedKeys[keyCodes.c]     = false;
+    pressedKeys[keyCodes.d]     = false;
+    pressedKeys[keyCodes.e]     = false;
+    pressedKeys[keyCodes.f]     = false;
+    pressedKeys[keyCodes.g]     = false;
+    pressedKeys[keyCodes.l]     = false;
+    pressedKeys[keyCodes.n]     = false;
+    pressedKeys[keyCodes.p]     = false;
+    pressedKeys[keyCodes.s]     = false;
+    pressedKeys[keyCodes.t]     = false;
+    pressedKeys[keyCodes.w]     = false;
+    pressedKeys[keyCodes.up]    = false;
+    pressedKeys[keyCodes.down]  = false;
+    pressedKeys[keyCodes.left]  = false;
     pressedKeys[keyCodes.right] = false;
     pressedKeys[keyCodes.comma] = false;
 
@@ -91,10 +93,10 @@ function InputHandler(){
         // toggle wireframe
 
         if(pressedKeys[keyCodes.a]){
-            this.wireframeToggle = !this.wireframeToggle;
+            self.wireframeToggle = !self.wireframeToggle;
             scene.traverse( function(node) {
                 if((node instanceof THREE.Mesh) ){
-                        node.material.wireframe = wireframeToggle;
+                    node.material.wireframe = self.wireframeToggle;
                 }
             });
             table.material.wireframe = false;
@@ -154,18 +156,18 @@ function InputHandler(){
            
             else if(self.currentShading === 'Phong'){
                 self.currentShading = 'Gouraud';
-                toggleToGouraud(this.wireframeToggle);
+                toggleToGouraud(self.wireframeToggle);
             }
 
             else{
                 self.currentShading = 'Phong';
-                toggleToPhong(this.wireframeToggle);
+                toggleToPhong(self.wireframeToggle);
             }
         }
 
         //Toggle Illumination Calculation
         if(pressedKeys[keyCodes.l]){
-            if(!this.basicMaterial){
+            if(!self.basicMaterial){
                 scene.traverse( function(node) {
                     if(node instanceof THREE.Mesh){
                         node.material = new THREE.MeshBasicMaterial({
@@ -176,12 +178,12 @@ function InputHandler(){
                 });
             }
             else if(self.currentShading === 'Phong')
-                toggleToPhong(this.wireframeToggle);
+                toggleToPhong(self.wireframeToggle);
 
             else
-                toggleToGouraud(this.wireframeToggle);
+                toggleToGouraud(self.wireframeToggle);
 
-            this.basicMaterial = !this.basicMaterial;
+            self.basicMaterial = !self.basicMaterial;
 
         }
         if(pressedKeys[keyCodes.comma]){
@@ -191,6 +193,10 @@ function InputHandler(){
                 car2.toggleLights();
             }
             car1.toggleLights();
+        }
+
+        if((pressedKeys[keyCodes.s] && !car2) || pressedKeys[keyCodes.enter]){
+            togglePause();
         }
     };
 
@@ -297,4 +303,15 @@ function toggleToPhong(wireframe){
     animatables.forEach(function(element){
         element.toggleToPhong(wireframe);
      } );
+}
+
+function togglePause(){
+    gameRunning = ! gameRunning;
+
+    if(gameRunning)
+        cameraHandler.stopPauseCamera();
+    else{
+        cameraHandler.selectPauseCamera();
+        scene.add(createPauseCube());
+    }
 }

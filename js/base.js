@@ -1,16 +1,24 @@
 var scene, renderer;
 var animatables = [];
 var tableDimensions = [1000,500];
-var oranges = [];
 var table;
+var oranges = [];
 var startingLines = [];
 var cameraHandler;
 var lightsHandler;
 var animationClock = new THREE.Clock();
+var gameRunning = true;
 
 function render(){
 	renderer.render(scene, cameraHandler.selectedCamera());
 }
+
+function pauseAnimation(delta){
+    cameraHandler.pauseCamera.lookAt(scene.position);
+    cameraHandler.pauseCamera.translateX(25 * delta);
+}
+
+
 
 setInterval(function() {
 	for (var i = 0; i < oranges.length; i++) {
@@ -52,19 +60,24 @@ function animate(){
 	var possibleCollisions = animatables;
     var delta = animationClock.getDelta();
 
-	animatables.forEach(function(element){
-		element.animate(possibleCollisions, delta);
-		element.checkOutOfBounds(tableDimensions[0], tableDimensions[1]);
-	} );
+    if(gameRunning){
+        animatables.forEach(function(element){
+            element.animate(possibleCollisions, delta);
+            element.checkOutOfBounds(tableDimensions[0], tableDimensions[1]);
+        } );
 
-    if(cameraHandler.splitScreenOn())
-    	renderSplitScreen();
-    else{
-    	renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
-        renderer.setScissorTest (false);
-    	render();
+        if(cameraHandler.splitScreenOn())
+            renderSplitScreen();
+        else{
+            renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+            renderer.setScissorTest (false);
+            render();
+        }
+
+    }else{
+        pauseAnimation(delta);
+        render();
     }
-
     requestAnimationFrame(animate);
 }
 
@@ -74,48 +87,6 @@ function onResize(dimensions) {
 	cameraHandler.resize();
 }
 
-
-function addButters(){
-	var butters = [];
-
-    var butter = new Butter(-400, 15, 150);
-    scene.add(butter);
-	butters.push(butter);
-
-    butter = new Butter(0, 15, -150);
-    butter.rotation.y = Math.PI/2;
-    scene.add(butter);
-    butters.push(butter);
-
-    butter = new Butter(400, 15, -150);
-    butter.rotation.y = Math.PI/2;
-    scene.add(butter);
-    butters.push(butter);
-
-    butter = new Butter(-80, 15, 200);
-    butter.rotation.y = -Math.PI/2;
-    scene.add(butter);
-    butters.push(butter);
-
-    butter = new Butter(-440, 15, -60);
-    butter.rotation.y = -Math.PI;
-    scene.add(butter);
-    butters.push(butter);
-
-    return butters;
-}
-
-function addOranges(){
-    oranges[0] = new Orange(80, 33, 200 );
-    scene.add(oranges[0]);
-
-    oranges[1] = new Orange(400,33,125);
-    scene.add(oranges[1]);
-
-    oranges[2] = new Orange(-370,33, -180);
-    scene.add(oranges[2]);
-
-}
 
 
 
@@ -188,18 +159,17 @@ function init(){
     scene.add(car);
 
 	inputHandler.addCarControls(car);
+    oranges = addOranges();
+
     animatables.push(car);
     animatables = animatables.concat(track.getCheerios());
     animatables = animatables.concat(butters);
-    addOranges();
     animatables = animatables.concat(oranges);
 
 
  
 	var dim = table.getDimensions();
-    window.addEventListener("resize", function(dim){
-   											return function(){onResize(dim)}
-									  }(dim));
+    window.addEventListener("resize", function(dim){onResize(dim)});
 
 	window.addEventListener("keydown", inputHandler.onKeyDown);
 	window.addEventListener("keyup", inputHandler.onKeyRelease);
