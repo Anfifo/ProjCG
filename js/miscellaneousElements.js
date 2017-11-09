@@ -37,8 +37,11 @@ function Table(properties){
 	this.lambertMaterial = new THREE.MeshLambertMaterial({
 		color: properties.color,
 		wireframe: properties.wireframe,
-		map : properties.map
 	});
+     if(this.map != undefined){
+         this.lambertMaterial.map = this.map;
+         //this.material.needsUpdate = true;
+     }
 
 	THREE.Mesh.call(
 		this,
@@ -76,8 +79,11 @@ Table.prototype.toggleToPhong = function(wireframe) {
 		reflectivity: 0,
 		specular: 0x000000,
 		shininess: 0,
-		map: this.map
 	});
+    if(this.map != undefined){
+        this.material.map = this.map;
+        this.material.needsUpdate = true;
+    }
 };
 
 
@@ -85,8 +91,11 @@ Table.prototype.toggleToGouraud = function(wireframe) {
 	this.material = new THREE.MeshLambertMaterial({
 		color:this.color,
 		wireframe: wireframe,
-        map: this.map
     });
+    if(this.map != undefined){
+        this.material.map = this.map;
+        this.material.needsUpdate = true;
+    }
 };
 
 
@@ -100,6 +109,7 @@ Table.prototype.toggleToGouraud = function(wireframe) {
  * For more information on Mesh check three.js documentation
  */
 
+var cheerioTexture = new THREE.TextureLoader().load( 'Textures/cheeriotext.jpg' );
 
  /**
  * Class Constructor
@@ -114,6 +124,12 @@ function Cheerio(properties){
 	this.boundingSphereRadius =  properties.radius+ properties.tube+1;
 	this.color = properties.color;
 
+
+     this.map = cheerioTexture;
+     this.map.wrapS = THREE.RepeatWrapping;
+     this.map.wrapT = THREE.RepeatWrapping;
+     this.map.repeat.set(3,1);
+
 	var geometry = new THREE.TorusGeometry(
 		properties.radius,
 		properties.tube,
@@ -124,6 +140,7 @@ function Cheerio(properties){
 	var lambertMaterial = new THREE.MeshLambertMaterial({
 		color: properties.color,
 		wireframe: properties.wireframe,
+		map: this.map
 	});
 
 	var mesh = new THREE.Mesh( geometry, lambertMaterial);
@@ -157,15 +174,17 @@ Cheerio.prototype.toggleToPhong = function(wireframe) {
 		wireframe: wireframe,
 		reflectivity: 0,
 		specular: 0x000000,
-		shininess: 0
-	});
+		shininess: 0,
+		map: this.map
+    });
 };
 
 Cheerio.prototype.toggleToGouraud = function(wireframe) {
 	this.children[0].material = new THREE.MeshLambertMaterial({
 		color: this.color,
 		wireframe: wireframe,
-	});
+        map: this.map
+    });
 };
 
 
@@ -180,6 +199,9 @@ Cheerio.prototype.toggleToGouraud = function(wireframe) {
  */
 
 
+
+var orangeTexture = new THREE.TextureLoader().load( 'Textures/orngtext.jpg' );
+
  /**
  * Class Constructor
  * @param x position
@@ -187,7 +209,6 @@ Cheerio.prototype.toggleToGouraud = function(wireframe) {
  * @param z position
  * @constructor
  */
-
 function Orange(x, y, z)
 {
     'use strict';
@@ -199,8 +220,14 @@ function Orange(x, y, z)
     this.boundingSphereRadius = 23;
 	this.orange = new THREE.Object3D();
 
-	var orangeGeometry = new THREE.SphereGeometry(23, 15, 15, 0, 2 * Math.PI, 0, 2 * Math.PI);
-	var lambertMaterial = new THREE.MeshLambertMaterial({color: 0xcc6321});
+	this.map = orangeTexture;
+    this.map.wrapS = THREE.RepeatWrapping;
+    this.map.wrapT = THREE.RepeatWrapping;
+    this.map.repeat.set(1,1);
+
+
+    var orangeGeometry = new THREE.SphereGeometry(23, 15, 20, 0, 2 * Math.PI, 0, 2 * Math.PI);
+	var lambertMaterial = new THREE.MeshLambertMaterial({color: 0xcc6321,  map:this.map});
 	var orange = new THREE.Mesh(orangeGeometry,lambertMaterial);
 
 	var geometry = new THREE.CylinderGeometry(3, 3, 15, 20, 1, false, 0, 2 * Math.PI);
@@ -308,7 +335,8 @@ Orange.prototype.toggleToPhong = function(wireframe) {
 				wireframe: wireframe,
 				reflectivity: 0,
 				specular: 0x000000,
-				shininess: 30
+				shininess: 30,
+				map: node.material.map
 			});
 	});
 };
@@ -319,9 +347,13 @@ Orange.prototype.toggleToGouraud = function(wireframe) {
 			node.material = new THREE.MeshLambertMaterial({
 				color: node.material.color,
 				wireframe: wireframe,
+				map: node.material.map
 			});
 	});
 };
+
+
+var candleTexture = new THREE.TextureLoader().load( 'Textures/candletext.jpg' );
 
 function Candle(x, y, z)
 {
@@ -333,8 +365,13 @@ function Candle(x, y, z)
 	this.specular = 0x000000;
 	this.shininess = 30;
 
+    this.map = candleTexture;
+    this.map.wrapS = THREE.RepeatWrapping;
+    this.map.wrapT = THREE.RepeatWrapping;
+    this.map.repeat.set(1,1);
+
 	var candleGeometry = new THREE.CylinderGeometry(5, 5, 27, 20, 1, false, 0, 2 * Math.PI);
-	var candleMaterial = new THREE.MeshLambertMaterial({color: 0xbfb5a0});
+	var candleMaterial = new THREE.MeshLambertMaterial({color: 0xbfb5a0, map: this.map});
 	var candle = new THREE.Mesh(candleGeometry, candleMaterial);
 
 	var wickGeometry = new THREE.CylinderGeometry(1, 1, 5, 20, 1, false, 0, 2 * Math.PI);
@@ -369,7 +406,8 @@ Candle.prototype.toggleToPhong = function(wireframe) {
 				wireframe: wireframe,
 				reflectivity: 0,
 				specular: 0x000000,
-				shininess: 30
+				shininess: 30,
+				map: node.material.map
 			});
 	});
 };
@@ -380,6 +418,7 @@ Candle.prototype.toggleToGouraud = function(wireframe) {
 			node.material = new THREE.MeshLambertMaterial({
 				color: node.material.color,
 				wireframe: wireframe,
+				map: node.material.map
 			});
 	});
 };
@@ -400,6 +439,9 @@ Candle.prototype.toggleToGouraud = function(wireframe) {
  * @param z position
  * @constructor
  */
+
+ var butterTexture = new THREE.TextureLoader().load( 'Textures/buttertext.jpg' );
+
 function Butter(x, y, z)
 {
     PhysicObject.call(this);
@@ -413,13 +455,15 @@ function Butter(x, y, z)
 	this.specular = 0x000000;
 	this.shininess = 0;
 
+	this.map = butterTexture;
+
     this.type = 'Butter';
     var baseLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
     var baseGeometry = new THREE.BoxGeometry(42, 0.5, 56);
 
 	var base = new THREE.Mesh(baseGeometry, baseLambertMaterial);
 
-    var butterLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffd830})
+    var butterLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffd830, map: this.map})
     var butterGeometry = new THREE.BoxGeometry(32, 17, 47);
 
     var butterBar = new THREE.Mesh(butterGeometry, butterLambertMaterial);
@@ -452,7 +496,8 @@ Butter.prototype.toggleToPhong = function(wireframe) {
 				wireframe: wireframe,
 				reflectivity: 0,
 				specular: 0x000000,
-				shininess: 30
+				shininess: 30,
+				map: node.material.map
 			});
 	});
 };
@@ -462,7 +507,8 @@ Butter.prototype.toggleToGouraud = function(wireframe) {
 		if(node instanceof THREE.Mesh)
 			node.material = new THREE.MeshLambertMaterial({
 				color: node.material.color,
-				wireframe: wireframe
+				wireframe: wireframe,
+				map: node.material.map
 			});
 	});
 };
@@ -539,19 +585,19 @@ function createPauseCube(){
     var color = 0xffffff, intensity = 1, range = 200, decay = 2;
 
     light = new THREE.PointLight(color, intensity, range, decay);
-    light.position.set(-dimX/2 -5, dimY/2, dimZ/2 +5);
+    light.position.set(-dimX/2 /*-/*5*/, dimY/2, dimZ/2 /*+/*5*/);
     box.add(light);
 
     light = new THREE.PointLight(color, intensity, range, decay);
-    light.position.set(dimX/2 + 5 , dimY/2, -dimZ/2 - 5);
+    light.position.set(dimX/2 /*+ /*5*/ , dimY/2, -dimZ/2 /*- /*5*/);
     box.add(light);
 
     light = new THREE.PointLight(color, intensity, range, decay);
-    light.position.set(-dimX/2 -5 , dimY/2, -dimZ/2 -5);
+    light.position.set(-dimX/2 /*-/*5*/ , dimY/2, -dimZ/2 /*-/*5*/);
     box.add(light);
 
     light = new THREE.PointLight(color, intensity, range, decay);
-    light.position.set(dimX/2 +5, dimY/2, dimZ/2 + 5);
+    light.position.set(dimX/2 /*+/*5*/, dimY/2, dimZ/2 /*+ /*5*/);
     box.add(light);
 
 

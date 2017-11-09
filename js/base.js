@@ -76,6 +76,9 @@ function animate(){
 
     }else{
         pauseAnimation(delta);
+        renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+        renderer.setScissorTest (false);
+
         render();
     }
     requestAnimationFrame(animate);
@@ -100,7 +103,7 @@ function init(){
 
 	createScene();
     lightsHandler = new LightsHandler();
-    var texture = new THREE.TextureLoader().load( 'Textures/tcloth.jpg' );
+    var texture = new THREE.TextureLoader().load( 'Textures/prettyDark.jpg' );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     // texture.repeat.set(1,1);
@@ -132,7 +135,7 @@ function init(){
         radius: 7,
 		tube: 2.7,
 		radialSegments: 5,
-		tubularSegments: 10,
+		tubularSegments: 20,
 		arc: Math.PI * 2,
         color: 0xffffff,
         wireframe: false,

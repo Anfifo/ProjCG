@@ -170,10 +170,15 @@ function InputHandler(){
             if(!self.basicMaterial){
                 scene.traverse( function(node) {
                     if(node instanceof THREE.Mesh){
+                        var texture = node.material.map;
                         node.material = new THREE.MeshBasicMaterial({
                                         color: node.material.color,
-                                        wireframe: node.material.wireframe
+                                        wireframe: node.material.wireframe,
                         });
+                        if(texture){
+                            node.material.map = texture;
+                            node.material.needsUpdate = true;
+                        }
                     }
                 });
             }

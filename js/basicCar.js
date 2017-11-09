@@ -35,8 +35,7 @@ function BasicCar(x,y,z, properties){
     this.y = y;
     this.reflectivity = 0;
     this.specular = 0x000000;
-    this.shininness = 30
-    ;
+    this.shininness = 30;
     this.lookAt(new THREE.Vector3(0,0,0));
 
     if (properties !== undefined && properties !== null)
@@ -69,12 +68,16 @@ function BasicCar(x,y,z, properties){
     this.addCarWheels();
 
     this.lightStatus = 0;
-    this.light = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
-    this.light.position.set(this.x + this.carLength/2, this.y, this.z);
-    this.light.target.position.set(this.x +this.carLength, this.y, this.z);
-    this.add(this.light);
-    this.add(this.light.target);
-
+    this.rightLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
+    this.rightLight.position.set(this.x + this.carLength/2, this.y, this.z + this.carWidth/2);
+    this.rightLight.target.position.set(this.x +this.carLength, this.y, this.z + this.carWidth/2);
+    this.add(this.rightLight);
+    this.add(this.rightLight.target);
+    this.leftLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
+    this.leftLight.position.set(this.x + this.carLength/2, this.y, this.z - this.carWidth/2);
+    this.leftLight.target.position.set(this.x +this.carLength, this.y, this.z - this.carWidth/2);
+    this.add(this.leftLight);
+    this.add(this.leftLight.target);
 
 
 
@@ -191,31 +194,51 @@ BasicCar.prototype.addCarWheels = function(){
 
 BasicCar.prototype.toggleLights = function(){
 
-    if ( this.lightStatus === 2){
-        this.light.intensity = 0;
-        this.light.distance = 0;
-        this.lightStatus = 0;
+    if ( this.lightStatus === 3){
+        this.rightLight.intensity = 0;
+        this.rightLight.distance = 0;
+        this.leftLight.intensity = 0;
+        this.leftLight.distance = 0;
         this.backLight.intensity = 0;
         this.backLight.distance = 0;
+        this.lightStatus = 0;
         return null;
     }
 
     if( this.lightStatus === 0 ){
-        this.light.intensity = 1;
-        this.light.distance = 200;
+        this.rightLight.intensity = 1;
+        this.rightLight.distance = 200;
+        this.leftLight.intensity = 1;
+        this.leftLight.distance = 200;
         this.backLight.intensity = 1;
         this.backLight.distance = 50;
         this.lightStatus++;
         return null;
     }
 
-    if( this.lightStatus === 1){
-        this.light.intensity = 3;
-        this.light.distance = 500;
+    if( this.lightStatus === 1 ){
+
+        this.rightLight.intensity = 2;
+        this.rightLight.distance = 300;
+        this.leftLight.intensity = 2;
+        this.leftLight.distance = 300;
         this.backLight.intensity = 1;
         this.backLight.distance = 50;
         this.lightStatus++;
+        return null;
     }
+
+    if( this.lightStatus === 2){
+        this.rightLight.intensity = 3;
+        this.rightLight.distance = 500;
+        this.leftLight.intensity = 3;
+        this.leftLight.distance = 500;
+        this.backLight.intensity = 1;
+        this.backLight.distance = 50;
+        this.lightStatus++;
+        return null;
+    }
+
 };
 
 

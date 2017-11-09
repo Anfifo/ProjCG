@@ -1,10 +1,10 @@
 /**
  * Rotates a 2D Point
- * @param x position of the loops center
- * @param y position of the loops center
+ * @param cx position of the loops center
+ * @param cy position of the loops center
  * @param x position of the initial point  
  * @param y position of the initial point
- * @param rotation angle
+ * @param angle rotation
  * @return {Array} rotated point
  */
 function rotate(cx, cy, x, y, angle) {
@@ -114,10 +114,10 @@ InfinityTrack.prototype.draw_half_loop = function(cx, cy, x, y, delta_angle){
 
 /**
  * draws a straight line of cheerios
- * @param x position of the initial point
- * @param x position of the final point
- * @param slope of the line
- * @param y position of intersection with the y-axis
+ * @param xi position of the initial point
+ * @param xf position of the final point
+ * @param m of the line
+ * @param b position of intersection with the y-axis
  */
 InfinityTrack.prototype.draw_line = function(xi, xf, m, b){
 	for (var x = xi; x <= xf; x+= 50){
@@ -133,7 +133,14 @@ InfinityTrack.prototype.draw_line = function(xi, xf, m, b){
  * draws the starting line for the track
  */
 InfinityTrack.prototype.start_line = function(x,y,z){
-	properties = {
+
+    var texture = new THREE.TextureLoader().load( "Textures/race.jpg" );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+
+    texture.repeat.set(15,2);
+
+    var properties = {
         width: 80,
         height: 0.01,
         depth: 8,
@@ -143,7 +150,8 @@ InfinityTrack.prototype.start_line = function(x,y,z){
             x: x,
             y: y,
             z: z
-        }
+        },
+        map: texture
     };
 	var startingLine = new Table (properties);
 	this.starting_line.push(startingLine);
@@ -158,5 +166,5 @@ InfinityTrack.prototype.toggleToPhong = function(wireframe){
 	for(line in starting_line)
 		line.toogleToPhong(wireframe);
 
-}
+};
 
