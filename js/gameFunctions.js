@@ -7,6 +7,9 @@ var gameOverSignBox;
 function togglePause(){
     gameRunning = ! gameRunning;
 
+    if(gameOver)
+        return;
+
     if(gameRunning){
         cameraHandler.stopPauseCamera();
         if(pausedSignBox){
@@ -20,6 +23,21 @@ function togglePause(){
         scene.add(pausedSignBox);
     }
 }
+
+
+function endGame(){
+    gameOver = true;
+}
+
+function requestGameRestart(){
+    requestedRestart = true;
+}
+
+function restartGame(){
+    document.body.removeChild(renderer.domElement);
+    init();
+}
+
 
 
 function switchCamera(number){

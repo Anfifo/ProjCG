@@ -1,12 +1,14 @@
-var scene, renderer;
+var scene;
+var renderer;
 var animatables;
-var tableDimensions;
 var table;
 var startingLines;
 var cameraHandler;
 var lightsHandler;
 var animationClock;
 var gameRunning;
+var gameOver;
+var requestedRestart;
 
 function render(){
 	renderer.render(scene, cameraHandler.selectedCamera());
@@ -17,6 +19,9 @@ function pauseAnimation(delta){
     cameraHandler.pauseCamera.translateX(25 * delta);
 }
 
+function gameOverAnimation(){
+
+}
 
 
 function renderSplitScreen(){
@@ -50,7 +55,14 @@ function animate(){
     var delta = animationClock.getDelta();
     var tableDimensions = [table.getDimensions()[0], table.getDimensions()[2]];
 
-    if(gameRunning){
+    if(gameOver){
+        gameOverAnimation();
+        if(requestedRestart){
+            restartGame();
+            return;
+        }
+    }
+    else if(gameRunning){
         animatables.forEach(function(element){
             element.animate(possibleCollisions, delta);
             element.checkOutOfBounds(tableDimensions[0], tableDimensions[1]);
@@ -78,6 +90,7 @@ function init(){
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 
+	loadTextures();
     createScene();
 
     table = createTable();
@@ -97,6 +110,8 @@ function init(){
     animationClock = new THREE.Clock();
     animatables = [];
     gameRunning = true;
+    gameOver = false;
+    requestedRestart = false;
 
 
     car.returnToStart();

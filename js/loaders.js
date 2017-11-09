@@ -1,14 +1,21 @@
 
 
 // Textures
-var tableTexture   = new THREE.TextureLoader().load( 'Textures/prettyDark.jpg'  );
-var orangeTexture  = new THREE.TextureLoader().load( 'Textures/orngtext.jpg'    );
-var butterTexture  = new THREE.TextureLoader().load( 'Textures/buttertext.jpg'  );
-var candleTexture  = new THREE.TextureLoader().load( 'Textures/candletext.jpg'  );
-var pausedTexture  = new THREE.TextureLoader().load( 'Textures/paused2.jpg'     );
-var cheerioTexture = new THREE.TextureLoader().load( 'Textures/cheeriotext.jpg' );
+var tableTexture;
+var orangeTexture;
+var butterTexture;
+var candleTexture;
+var pausedTexture;
+var cheerioTexture;
 
-
+function loadTextures(){
+    tableTexture   = new THREE.TextureLoader().load( 'Textures/prettyDark.jpg'  );
+    orangeTexture  = new THREE.TextureLoader().load( 'Textures/orngtext.jpg'    );
+    butterTexture  = new THREE.TextureLoader().load( 'Textures/buttertext.jpg'  );
+    candleTexture  = new THREE.TextureLoader().load( 'Textures/candletext.jpg'  );
+    pausedTexture  = new THREE.TextureLoader().load( 'Textures/paused2.jpg'     );
+    cheerioTexture = new THREE.TextureLoader().load( 'Textures/cheeriotext.jpg' );
+}
 
 
 function createTable(){
@@ -24,11 +31,7 @@ function createTable(){
         //color: 0x9da4a8,
         color:0xdddddd,
         wireframe: false,
-        position: {
-            x: 0,
-            y: 0,
-            z: 0
-        },
+        position: { x: 0, y: 0, z: 0},
         map:texture
     };
     return new Table(properties);
@@ -103,14 +106,8 @@ function createTrack(){
         arc: Math.PI * 2,
         color: 0xffffff,
         wireframe: false,
-        position: {
-            x: 0,
-            y: 13,
-            z: 0
-        },
-        rotation: {
-            x: Math.PI/2
-        }
+        position: { x: 0, y: 13, z: 0},
+        rotation: { x: Math.PI/2 }
     };
 
     return new InfinityTrack(cheerioProperties);
