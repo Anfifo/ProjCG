@@ -7,7 +7,7 @@
 
  /**
  * Class Constructor
- * @param table dimensions
+ * @param dimensions
  * @constructor
  */
 function CameraHandler( dimensions ){
@@ -31,8 +31,6 @@ function CameraHandler( dimensions ){
  * @param z coordinate VRP
  */
 CameraHandler.prototype.OrthographicCamera = function(x, y, z) {
-
-	
 	var table_ratio = this.height/this.width;
 	var camera;
 
@@ -41,7 +39,6 @@ CameraHandler.prototype.OrthographicCamera = function(x, y, z) {
 	else{
 		this.window_ratio = 1 / this.window_ratio;
 		camera = new THREE.OrthographicCamera(-this.height*this.window_ratio, this.height*this.window_ratio, this.height, -this.height, 0.1, 100000);
-
 	}
 
 	camera.position.x = x;
@@ -59,7 +56,6 @@ CameraHandler.prototype.OrthographicCamera = function(x, y, z) {
  * @param z coordinate VRP
  */
 CameraHandler.prototype.createPerspectiveCamera = function(x,y,z) {
-
 
     var camera = new THREE.PerspectiveCamera(60, this.window_ratio, 1, 3000);
     camera.position.set(x, y, z);
@@ -84,9 +80,8 @@ CameraHandler.prototype.createCameraForObject = function(object){
  * @returns reference to the currently selected camera
  */
 CameraHandler.prototype.selectedCamera = function(){
-    if(this.paused){
+    if(this.paused)
         return this.pauseCamera;
-    }
 	return this.cameras[this.cameraNr];
 };
 
@@ -151,7 +146,15 @@ CameraHandler.prototype.splitScreenOn = function(){
 };
 
 CameraHandler.prototype.setSplitScreen = function(value){
-	this.splitScreen = value;
+
+	if(!value){
+        renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+        renderer.setScissorTest (false);
+	}
+
+
+
+    this.splitScreen = value;
 };
 
 CameraHandler.prototype.createPauseCamera = function(x, y, z){
@@ -165,7 +168,23 @@ CameraHandler.prototype.createPauseCamera = function(x, y, z){
 
 CameraHandler.prototype.selectPauseCamera = function(){
     this.paused = true;
+
+    if(this.splitScreenOn()){
+        renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+        renderer.setScissorTest (false);
+    }
+
 };
 CameraHandler.prototype.stopPauseCamera = function (){
-    this.paused = false;
+
+	this.paused = false;
 };
+
+
+function switchCamera(number){
+
+ if(cameraHandler.splitScreenOn())
+	 cameraHandler.resize();
+ cameraHandler.setSplitScreen(false);
+ cameraHandler.updateSelectedCamera(number);
+}

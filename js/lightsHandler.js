@@ -1,5 +1,5 @@
 
-function LightsHandler( dimensions ){
+function LightsHandler(){
 	this.directionalLight = new THREE.DirectionalLight( 0xefefef , 0.9);
 	this.directionalLight.position.set(0, 200, 0);
 	scene.add(this.directionalLight);

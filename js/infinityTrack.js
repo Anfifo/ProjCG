@@ -1,29 +1,3 @@
-/**
- * Rotates a 2D Point
- * @param cx position of the loops center
- * @param cy position of the loops center
- * @param x position of the initial point  
- * @param y position of the initial point
- * @param angle rotation
- * @return {Array} rotated point
- */
-function rotate(cx, cy, x, y, angle) {
-    var radians = (Math.PI / 180) * angle,
-        cos = Math.cos(radians),
-        sin = Math.sin(radians),
-        nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
-        ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
-    return [nx, ny];
-}
-
-/**
- * Finds the y coordinate for a point in a linear function
- * @param x postion
- * @return y position
- */
-function linear_function(m, b, x) {
-	return m*x + b;
-}
 
 
 /**
@@ -168,3 +142,36 @@ InfinityTrack.prototype.toggleToPhong = function(wireframe){
 
 };
 
+
+
+
+
+/**
+ * Rotates a 2D Point
+ * @param cx position of the loops center
+ * @param cy position of the loops center
+ * @param x position of the initial point
+ * @param y position of the initial point
+ * @param angle rotation
+ * @return {Array} rotated point
+ */
+function rotate(cx, cy, x, y, angle) {
+    var radians = (Math.PI / 180) * angle,
+        cos = Math.cos(radians),
+        sin = Math.sin(radians),
+        nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+        ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+    return [nx, ny];
+}
+
+
+/**
+ * Finds the y coordinate for a point in a linear function
+ * @param m
+ * @param b
+ * @param x
+ * @returns y coordinate for a point in a linear function
+ */
+function linear_function(m, b, x) {
+    return m*x + b;
+}

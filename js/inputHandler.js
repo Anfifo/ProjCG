@@ -69,220 +69,165 @@ function InputHandler(){
     pressedKeys[keyCodes.right] = false;
     pressedKeys[keyCodes.comma] = false;
 
-
     var car1;
     var car2;
 
-    this.addCarControls = function(carCtrls){
-        car1 = carCtrls;
-    };
-
-
-
-    this.onKeyDown = function (e){
-        'use strict';
-        pressedKeys[e.keyCode] = true;
-
-        if(car1 !== undefined && car1 !== null ){
-            self.executeCarControls();
-        }
-        if(car2 !== undefined && car2 !== null){
-            self.executeCar2Controls();
-        }
-
-        // toggle wireframe
-
-        if(pressedKeys[keyCodes.a]){
-            self.wireframeToggle = !self.wireframeToggle;
-            scene.traverse( function(node) {
-                if((node instanceof THREE.Mesh) ){
-                    node.material.wireframe = self.wireframeToggle;
-                }
-            });
-            table.material.wireframe = false;
-            // render();
-        }
-
-        //EASTER EGG create 2nd player car
-        if(pressedKeys[keyCodes.p]){
-
-            if(!car2){
-                car2 = createMovingCar(0,6.5,0, {color:0x42f44b});
-                cameraHandler.createCameraForObject(car2);
-                scene.add(car2);
-                car2.returnToStart();
-                animatables.push(car2);
-            }
-        }
-
-        if(pressedKeys[keyCodes._1]){
-            switchCamera(0);
-        }
-
-        if(pressedKeys[keyCodes._2]){
-            switchCamera(1);
-        }
-
-        if(pressedKeys[keyCodes._3]){
-            switchCamera(2);
-        }
-
-        if(pressedKeys[keyCodes._4]){
-            switchCamera(3);
-        }
-
-        if(pressedKeys[keyCodes._5]){
-           if(car2 !== null)
-            cameraHandler.setSplitScreen(true);       
-        }
-
-        if(pressedKeys[keyCodes.n]){
-            lightsHandler.dayNightTime();
-        }
-
-        if(pressedKeys[keyCodes.c]){
-            lightsHandler.switchCandles();
-        }
-
-        // Toggle Shading
-        if(pressedKeys[keyCodes.g]){
-
-            if(this.basicMaterial){
-                if(self.currentShading === 'Phong')
-                    self.currentShading = "Gouraud";
-                else
-                    self.currentShading = "Phong";
-            }
-           
-            else if(self.currentShading === 'Phong'){
-                self.currentShading = 'Gouraud';
-                toggleToGouraud(self.wireframeToggle);
-            }
-
-            else{
-                self.currentShading = 'Phong';
-                toggleToPhong(self.wireframeToggle);
-            }
-        }
-
-        //Toggle Illumination Calculation
-        if(pressedKeys[keyCodes.l]){
-            if(!self.basicMaterial){
-                scene.traverse( function(node) {
-                    if(node instanceof THREE.Mesh){
-                        var texture = node.material.map;
-                        node.material = new THREE.MeshBasicMaterial({
-                                        color: node.material.color,
-                                        wireframe: node.material.wireframe,
-                        });
-                        if(texture){
-                            node.material.map = texture;
-                            node.material.needsUpdate = true;
-                        }
-                    }
-                });
-            }
-            else if(self.currentShading === 'Phong')
-                toggleToPhong(self.wireframeToggle);
-
-            else
-                toggleToGouraud(self.wireframeToggle);
-
-            self.basicMaterial = !self.basicMaterial;
-
-        }
-        if(pressedKeys[keyCodes.comma]){
-
-            if(car2){
-                car2.lightStatus = car1.lightStatus;
-                car2.toggleLights();
-            }
-            car1.toggleLights();
-        }
-
-        if((pressedKeys[keyCodes.s] && !car2) || pressedKeys[keyCodes.enter]){
-            togglePause();
-        }
-    };
-
+    this.addCarControls = function(carCtrls){ car1 = carCtrls; };
 
 
     this.onKeyRelease = function (e){
         pressedKeys[e.keyCode] = false;
 
-        if(car1 !== undefined && car1 !== null ){
+        if(car1 !== undefined && car1 !== null )
             self.executeCarControls();
-        }
-        if(car2 !== undefined && car2 !== null){
+        if(car2 !== undefined && car2 !== null)
             self.executeCar2Controls();
-        }
     };
 
+    this.onKeyDown = function (e){
+        'use strict';
+        pressedKeys[e.keyCode] = true;
 
+        if(car1 !== undefined && car1 !== null )
+            self.executeCarControls();
 
+        if(car2 !== undefined && car2 !== null)
+            self.executeCar2Controls();
 
+        if(pressedKeys[keyCodes.a])
+            self.toggleWireFrame();
 
+        //EASTER EGG create 2nd player car
+        if(pressedKeys[keyCodes.p])
+            if(!car2)
+                self.createCar2();
+
+        if(pressedKeys[keyCodes._1])
+            switchCamera(0);
+        if(pressedKeys[keyCodes._2])
+            switchCamera(1);
+        if(pressedKeys[keyCodes._3])
+            switchCamera(2);
+        if(pressedKeys[keyCodes._4])
+            switchCamera(3);
+
+        if(pressedKeys[keyCodes._5])
+            if(car2 !== null)
+               cameraHandler.setSplitScreen(true);
+
+        if(pressedKeys[keyCodes.n])
+            lightsHandler.dayNightTime();
+
+        if(pressedKeys[keyCodes.c])
+            lightsHandler.switchCandles();
+
+        if(pressedKeys[keyCodes.g])
+            self.toggleShading();
+
+        if(pressedKeys[keyCodes.l])
+            self.toggleIllumination();
+
+        if(pressedKeys[keyCodes.comma]){
+            if(car2)
+                car2.toggleLights();
+            car1.toggleLights();
+        }
+
+        if((pressedKeys[keyCodes.s] && !car2) || pressedKeys[keyCodes.enter])
+            togglePause();
+    };
 
     this.executeCarControls = function(){
-        if (pressedKeys[keyCodes.up]){
-            car1.moveForward();
-        }
-        if (pressedKeys[keyCodes.down]){
-            car1.moveBackwards();
-        }
-        if (pressedKeys[keyCodes.left]){
-            car1.turnLeft();
-        }
-        if (pressedKeys[keyCodes.right]){
-            car1.turnRight();
-        }
+        if (pressedKeys[keyCodes.up]){ car1.moveForward();}
+        if (pressedKeys[keyCodes.down]){ car1.moveBackwards(); }
+        if (pressedKeys[keyCodes.left]){ car1.turnLeft(); }
+        if (pressedKeys[keyCodes.right]){ car1.turnRight(); }
 
-        if ( !pressedKeys[keyCodes.up] && !pressedKeys[keyCodes.down]){
-            car1.slowDown();
-        }
-
-        if (!pressedKeys[keyCodes.left] && !pressedKeys[keyCodes.right]){
-            car1.stopCurve();
-        }
+        if ( !pressedKeys[keyCodes.up] && !pressedKeys[keyCodes.down]){ car1.slowDown();}
+        if (!pressedKeys[keyCodes.left] && !pressedKeys[keyCodes.right]){ car1.stopCurve();}
     };
 
     this.executeCar2Controls = function(){
+        if (pressedKeys[keyCodes.e]){ car2.moveForward(); }
+        if (pressedKeys[keyCodes.d]){ car2.moveBackwards(); }
+        if (pressedKeys[keyCodes.s]){ car2.turnLeft(); }
+        if (pressedKeys[keyCodes.f]){ car2.turnRight(); }
 
-        if (pressedKeys[keyCodes.e]){
-            car2.moveForward();
-        }
-        if (pressedKeys[keyCodes.d]){
-            car2.moveBackwards();
-        }
-        if (pressedKeys[keyCodes.s]){
-            car2.turnLeft();
-        }
-        if (pressedKeys[keyCodes.f]){
-            car2.turnRight();
-        }
-
-        if ( !pressedKeys[keyCodes.e] && !pressedKeys[keyCodes.d]){
-            car2.slowDown();
-        }
-
-        if (!pressedKeys[keyCodes.s] && !pressedKeys[keyCodes.f]){
-            car2.stopCurve();
-        }
-
+        if (!pressedKeys[keyCodes.e] && !pressedKeys[keyCodes.d]){ car2.slowDown(); }
+        if (!pressedKeys[keyCodes.s] && !pressedKeys[keyCodes.f]){ car2.stopCurve(); }
     };
 
 
+    this.createCar2 = function(){
+        car2 = createMovingCar(0,6.5,0, {color:0x42f44b});
+        cameraHandler.createCameraForObject(car2);
+        scene.add(car2);
+        car2.returnToStart();
+        animatables.push(car2);
+        car2.lightStatus = car1.lightStatus;
+    };
+
 }
 
 
 
-function switchCamera(number){
 
-    if(cameraHandler.splitScreenOn())
-        cameraHandler.resize();
-    cameraHandler.setSplitScreen(false);
-    cameraHandler.updateSelectedCamera(number);
-}
+InputHandler.prototype.toggleWireFrame = function(){
+    var self = this;
+    self.wireframeToggle = !self.wireframeToggle;
+    scene.traverse( function(node) {
+        if((node instanceof THREE.Mesh) ){
+            node.material.wireframe = self.wireframeToggle;
+        }
+    });
+    table.material.wireframe = false;
+};
+
+InputHandler.prototype.toggleShading = function(){
+    var self = this;
+    if (this.basicMaterial){
+        if(self.currentShading === 'Phong')
+            self.currentShading = "Gouraud";
+        else
+            self.currentShading = "Phong";
+    }
+    else if(self.currentShading === 'Phong'){
+        self.currentShading = 'Gouraud';
+        toggleToGouraud(self.wireframeToggle);
+    }
+    else{
+        self.currentShading = 'Phong';
+        toggleToPhong(self.wireframeToggle);
+    }
+};
+
+InputHandler.prototype.toggleIllumination = function(){
+    var self = this;
+    if(!self.basicMaterial){
+        scene.traverse( function(node) {
+            if(node instanceof THREE.Mesh){
+                var texture = node.material.map;
+                node.material = new THREE.MeshBasicMaterial({
+                    color: node.material.color,
+                    wireframe: node.material.wireframe
+                });
+                if(texture){
+                    node.material.map = texture;
+                    node.material.needsUpdate = true;
+                }
+            }
+        });
+    }
+    else if(self.currentShading === 'Phong')
+        toggleToPhong(self.wireframeToggle);
+
+    else
+        toggleToGouraud(self.wireframeToggle);
+
+    self.basicMaterial = !self.basicMaterial;
+};
+
+
 
 function toggleToGouraud(wireframe){
     table.toggleToGouraud(false);
@@ -290,11 +235,11 @@ function toggleToGouraud(wireframe){
 
     for(var i = 0; i < startingLines.length; i++){
         startingLines[i].toggleToGouraud(wireframe);
-    } 
+    }
 
     animatables.forEach(function(element){
         element.toggleToGouraud(wireframe);
-     } );
+    } );
 }
 
 function toggleToPhong(wireframe){
@@ -307,24 +252,6 @@ function toggleToPhong(wireframe){
 
     animatables.forEach(function(element){
         element.toggleToPhong(wireframe);
-     } );
+    } );
 }
 
-var pausedSignBox;
-
-function togglePause(){
-    gameRunning = ! gameRunning;
-
-    if(gameRunning){
-        cameraHandler.stopPauseCamera();
-        if(pausedSignBox){
-            scene.remove(pausedSignBox);
-            pausedSignBox = undefined;
-        }
-    }
-    else{
-        cameraHandler.selectPauseCamera();
-        pausedSignBox = createPauseCube();
-        scene.add(pausedSignBox);
-    }
-}

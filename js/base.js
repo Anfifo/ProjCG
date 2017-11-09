@@ -1,13 +1,12 @@
 var scene, renderer;
-var animatables = [];
-var tableDimensions = [1000,500];
+var animatables;
+var tableDimensions;
 var table;
-var oranges = [];
-var startingLines = [];
+var startingLines;
 var cameraHandler;
 var lightsHandler;
-var animationClock = new THREE.Clock();
-var gameRunning = true;
+var animationClock;
+var gameRunning;
 
 function render(){
 	renderer.render(scene, cameraHandler.selectedCamera());
@@ -19,15 +18,6 @@ function pauseAnimation(delta){
 }
 
 
-
-setInterval(function() {
-	for (var i = 0; i < oranges.length; i++) {
-		if (oranges[i].speed + 20 < oranges[i].maxSpeed)
-			oranges[i].speed += 20;
-		else
-			oranges[i].speed += oranges[i].maxSpeed - oranges[i].speed;
-	}
-}, 10000);
 
 function renderSplitScreen(){
 	var height = window.innerHeight;
@@ -46,7 +36,6 @@ function renderSplitScreen(){
 	renderer.setScissor(width/2 + 10, 0, width/2, height);
 	renderer.setScissorTest (true);
 	cameraHandler.resizePerspectiveCamera(3, (width/2 - 10)/height);
-	render();
 }
 
 function createScene(){
@@ -59,6 +48,7 @@ function animate(){
 
 	var possibleCollisions = animatables;
     var delta = animationClock.getDelta();
+    var tableDimensions = [table.getDimensions()[0], table.getDimensions()[2]];
 
     if(gameRunning){
         animatables.forEach(function(element){
@@ -68,29 +58,18 @@ function animate(){
 
         if(cameraHandler.splitScreenOn())
             renderSplitScreen();
-        else{
-            renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
-            renderer.setScissorTest (false);
-            render();
-        }
 
     }else{
         pauseAnimation(delta);
-        renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
-        renderer.setScissorTest (false);
-
-        render();
     }
+    render();
     requestAnimationFrame(animate);
 }
 
-function onResize(dimensions) {
+function onResize() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
-
 	cameraHandler.resize();
 }
-
-
 
 
 
@@ -99,90 +78,40 @@ function init(){
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 
-	clock = new THREE.Clock();
+    createScene();
 
-	createScene();
-    lightsHandler = new LightsHandler();
-    var texture = new THREE.TextureLoader().load( 'Textures/prettyDark.jpg' );
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    // texture.repeat.set(1,1);
+    table = createTable();
 
-
-    var properties = {
-        width: 1000,
-        height: 20,
-        depth: 500,
-        //color: 0x9da4a8,
-        color:0xdddddd,
-        wireframe: false,
-        position: {
-            x: 0,
-            y: 0,
-            z: 0
-        },
-        map:texture
-    };
-
-    table = new Table(properties);
-	scene.add(table);
-    
-	cameraHandler = new CameraHandler(table.getDimensions());
-
-
-    
-	var cheerioProperties = {
-        radius: 7,
-		tube: 2.7,
-		radialSegments: 5,
-		tubularSegments: 20,
-		arc: Math.PI * 2,
-        color: 0xffffff,
-        wireframe: false,
-        position: {
-            x: 0,
-            y: 13,
-            z: 0
-        },
-        rotation: {
-        	x: Math.PI/2
-        }
-    };
-
-
-
-	var track = new InfinityTrack(cheerioProperties);
-	scene.add(track);
-  
-	//Car handling
-	var inputHandler = new InputHandler();
-
+    var track = createTrack();
     var butters = addButters();
+    var oranges = addOranges();
+    var inputHandler = new InputHandler();
+    lightsHandler = new LightsHandler();
+    cameraHandler = new CameraHandler(table.getDimensions());
     startingLines = track.getStartingLines();
-    
 
+    var car = createMovingCar(0,6.5,0);
 
-    //Posicao inicial = (-8, 6.5, 70)
-	var car = createMovingCar(0,6.5,0);
-    car.returnToStart();
     cameraHandler.createCameraForObject(car);
-    scene.add(car);
+    inputHandler.addCarControls(car);
+    animationClock = new THREE.Clock();
+    animatables = [];
+    gameRunning = true;
 
-	inputHandler.addCarControls(car);
-    oranges = addOranges();
+
+    car.returnToStart();
+
+    scene.add(car);
+    scene.add(table);
+    scene.add(track);
 
     animatables.push(car);
     animatables = animatables.concat(track.getCheerios());
     animatables = animatables.concat(butters);
     animatables = animatables.concat(oranges);
 
-
- 
-	var dim = table.getDimensions();
     window.addEventListener("resize", function(dim){onResize(dim)});
-
 	window.addEventListener("keydown", inputHandler.onKeyDown);
 	window.addEventListener("keyup", inputHandler.onKeyRelease);
 	animate();
-
 }

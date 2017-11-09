@@ -67,25 +67,8 @@ function BasicCar(x,y,z, properties){
     this.addCarRoof();
     this.addCarWheels();
 
-    this.lightStatus = 0;
-    this.rightLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
-    this.rightLight.position.set(this.x + this.carLength/2, this.y, this.z + this.carWidth/2);
-    this.rightLight.target.position.set(this.x +this.carLength, this.y, this.z + this.carWidth/2);
-    this.add(this.rightLight);
-    this.add(this.rightLight.target);
-    this.leftLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
-    this.leftLight.position.set(this.x + this.carLength/2, this.y, this.z - this.carWidth/2);
-    this.leftLight.target.position.set(this.x +this.carLength, this.y, this.z - this.carWidth/2);
-    this.add(this.leftLight);
-    this.add(this.leftLight.target);
+    this.addCarLights();
 
-
-
-    this.backLight = new THREE.SpotLight(0xff0000, 0, 0, Math.PI+Math.PI/8, 0.7, 10);
-    this.backLight.position.set(this.x - this.carLength/2, this.y, this.z);
-    this.backLight.target.position.set(this.x - this.carLength, this.y, this.z);
-    this.add(this.backLight);
-    this.add(this.backLight.target);
 }
 
 
@@ -173,7 +156,7 @@ BasicCar.prototype.addCarWheels = function(){
 
     var wheelPositions = [
         [this.x + wheelX, this.y - wheelY, this.z + wheelZ], // front right wheel
-        [this.x - wheelX, this.y - wheelY, this.z + wheelZ], // back rigth wheel
+        [this.x - wheelX, this.y - wheelY, this.z + wheelZ], // back right wheel
         [this.x - wheelX, this.y - wheelY, this.z - wheelZ], // back left wheel
         [this.x + wheelX, this.y - wheelY, this.z - wheelZ]  // front left wheel
     ];
@@ -190,6 +173,28 @@ BasicCar.prototype.addCarWheels = function(){
 
 
 
+BasicCar.prototype.addCarLights = function(){
+
+    this.lightStatus = 0;
+    this.rightLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
+    this.rightLight.position.set(this.x + this.carLength/2, this.y, this.z + this.carWidth/2);
+    this.rightLight.target.position.set(this.x +this.carLength, this.y, this.z + this.carWidth/2);
+    this.add(this.rightLight);
+    this.add(this.rightLight.target);
+
+    this.leftLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
+    this.leftLight.position.set(this.x + this.carLength/2, this.y, this.z - this.carWidth/2);
+    this.leftLight.target.position.set(this.x +this.carLength, this.y, this.z - this.carWidth/2);
+    this.add(this.leftLight);
+    this.add(this.leftLight.target);
+
+
+    this.backLight = new THREE.SpotLight(0xff0000, 0, 0, Math.PI+Math.PI/8, 0.7, 10);
+    this.backLight.position.set(this.x - this.carLength/2, this.y, this.z);
+    this.backLight.target.position.set(this.x - this.carLength, this.y, this.z);
+    this.add(this.backLight);
+    this.add(this.backLight.target);
+};
 
 
 BasicCar.prototype.toggleLights = function(){
