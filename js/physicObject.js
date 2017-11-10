@@ -139,10 +139,12 @@ function PhysicObject() {
         }
         // Orange collision sends car to Start
         if (object.type === "Orange" && this.type === "Car") {
+            removeLife();
             this.returnToStart();
             return;
         }
         if (object.type === "Car" && this.type === "Orange") {
+            removeLife();
             object.returnToStart();
             return;
         }

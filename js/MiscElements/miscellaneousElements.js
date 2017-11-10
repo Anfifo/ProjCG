@@ -1,10 +1,10 @@
 
 
 
-function createPauseCube(){
+function createPauseCube(texture){
     var box = new THREE.Object3D();
 
-    var texture = pausedTexture;
+    
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
 

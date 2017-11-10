@@ -49,6 +49,7 @@ function BasicCar(x,y,z, properties){
     this.carWidth = 5;
     this.roofLength = 3;
 
+
     this.roofHeight = this.carBlockHeight + this.roofLength/2;
     this.windowPosition = this.roofLength/2 + this.carBlockHeight;
     this.wheelPosition = this.roofLength/2 + this.carBlockHeight;
@@ -284,6 +285,27 @@ BasicCar.prototype.toggleToGouraud = function(wireframe){
         this.wheels[i].traverse( function(node){
             if(node instanceof THREE.Mesh)
                 node.material = new THREE.MeshLambertMaterial({
+                    color: 0xb3b3cc, wireframe: node.material.wireframe});
+        });
+    }
+   
+};
+
+BasicCar.prototype.toggleToBasic = function(wireframe){
+    var i;
+    for (i = 0; i < this.body.length; i++){
+        this.body[i].material = new THREE.MeshBasicMaterial({ 
+            color: this.carColor, wireframe: wireframe});
+    }
+    for (i = 0; i < this.windows.length; i++){
+        this.windows[i].material = new THREE.MeshBasicMaterial({ 
+            color: 0xcce6ff, transparent: true, opacity: 0.8, wireframe:wireframe});
+            
+    }
+    for (i = 0; i < this.wheels.length; i++){
+        this.wheels[i].traverse( function(node){
+            if(node instanceof THREE.Mesh)
+                node.material = new THREE.MeshBasicMaterial({
                     color: 0xb3b3cc, wireframe: node.material.wireframe});
         });
     }

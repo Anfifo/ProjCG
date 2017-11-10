@@ -1,4 +1,5 @@
 var scene;
+var gameStatusScene;
 var renderer;
 var animatables;
 var table;
@@ -11,7 +12,22 @@ var gameOver;
 var requestedRestart;
 
 function render(){
-	renderer.render(scene, cameraHandler.selectedCamera());
+    var height = window.innerHeight;
+    var width = window.innerWidth;
+
+
+    renderer.setViewport(0, 0, width, height/15);
+    renderer.setScissor(0, 0, width, height/15);
+    renderer.setScissorTest (true);
+
+	renderer.render(gameStatusScene, cameraHandler.getGameStatusCamera());
+
+    renderer.setViewport(0, height/15, width, 14*height/15);
+    renderer.setScissor(0 , height/15, width, 14*height/15);
+    renderer.setScissorTest (true);
+
+    renderer.render(scene, cameraHandler.selectedCamera());
+
 }
 
 function pauseAnimation(delta){
@@ -33,7 +49,7 @@ function renderSplitScreen(){
 	renderer.setScissor(0, 0, width/2 - 10, height);
 	renderer.setScissorTest (true);
 	cameraHandler.resizePerspectiveCamera(2, (width/2 - 10)/height);
-	render();
+	renderer.render(scene, cameraHandler.selectedCamera());
 
 	cameraHandler.updateSelectedCamera(3);
 
@@ -41,11 +57,15 @@ function renderSplitScreen(){
 	renderer.setScissor(width/2 + 10, 0, width/2, height);
 	renderer.setScissorTest (true);
 	cameraHandler.resizePerspectiveCamera(3, (width/2 - 10)/height);
+    renderer.render(scene, cameraHandler.selectedCamera());
+    //render();*/
 }
 
 function createScene(){
 	scene = new THREE.Scene();
-	scene.add(new THREE.AxisHelper(10));
+    gameStatusScene = new THREE.Scene();
+	//scene.add(new THREE.AxisHelper(10));
+    //gameStatusScene.add(new THREE.AxisHelper(1000));
 }
 
 
@@ -56,7 +76,7 @@ function animate(){
     var tableDimensions = [table.getDimensions()[0], table.getDimensions()[2]];
 
     if(gameOver){
-        gameOverAnimation();
+        pauseAnimation(delta);
         if(requestedRestart){
             restartGame();
             return;
@@ -88,10 +108,13 @@ function onResize() {
 function init(){
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000,1);
 	document.body.appendChild(renderer.domElement);
 
 	loadTextures();
     createScene();
+
+    restoreLives();
 
     table = createTable();
 

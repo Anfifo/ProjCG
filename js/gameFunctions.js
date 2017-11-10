@@ -1,5 +1,6 @@
 var pausedSignBox;
 var gameOverSignBox;
+var lives = [];
 
 
 
@@ -19,7 +20,7 @@ function togglePause(){
     }
     else{
         cameraHandler.selectPauseCamera();
-        pausedSignBox = createPauseCube();
+        pausedSignBox = createPauseCube(pausedTexture);
         scene.add(pausedSignBox);
     }
 }
@@ -36,6 +37,29 @@ function requestGameRestart(){
 function restartGame(){
     document.body.removeChild(renderer.domElement);
     init();
+}
+
+function restoreLives(){
+    var x = 155;
+    for(var i = 0; i < 1; i++, x-= 15){
+
+        var life = new BasicCar(x,-3,0);
+        life.scale.set(3,3,3);
+        life.toggleToBasic(false);
+        gameStatusScene.add(life);
+        this.lives.push(life);
+    }
+}
+
+function removeLife(){
+    var lifeLost = this.lives.pop();
+    gameStatusScene.remove(lifeLost);
+    if(!lives.length){
+        endGame();
+        cameraHandler.selectPauseCamera();
+        pausedSignBox = createPauseCube(gameOverTexture);
+        scene.add(pausedSignBox);
+    }
 }
 
 

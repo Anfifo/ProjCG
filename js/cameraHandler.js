@@ -11,8 +11,8 @@
  * @constructor
  */
 function CameraHandler( dimensions ){
-    this.height = dimensions[2]/2 + 100;
-	this.width = dimensions[0]/2 + 100;
+    this.height = dimensions[2]/2 + 50;
+	this.width = dimensions[0]/2 + 50;
 	this.window_ratio = window.innerHeight/window.innerWidth;
 	this.cameras = [];
 	this.OrthographicCamera(0, 70, 0);
@@ -22,6 +22,8 @@ function CameraHandler( dimensions ){
 
 	this.paused = false;
 	this.pauseCamera = this.createPauseCamera(450,100,100);
+
+	this.gameStatusCamera = this.createGameStatusCamera(0,0,0);
 }
 
 /**
@@ -42,7 +44,7 @@ CameraHandler.prototype.OrthographicCamera = function(x, y, z) {
 	}
 
 	camera.position.x = x;
-	camera.position.y = y;
+	camera.position.y = y ;
 	camera.position.z = z;
 
 	camera.lookAt(scene.position);
@@ -65,6 +67,25 @@ CameraHandler.prototype.createPerspectiveCamera = function(x,y,z) {
     return camera;
 };
 
+CameraHandler.prototype.createGameStatusCamera = function(x,y,z) {
+
+    var table_ratio = this.height/this.width;
+	var camera;
+
+	if(this.window_ratio > table_ratio)
+		camera = new THREE.OrthographicCamera(-this.width, this.width, this.width*this.window_ratio/60, -this.width*this.window_ratio/60, 0.1, 100000);
+	else{
+		this.window_ratio = 1 / this.window_ratio;
+		camera = new THREE.OrthographicCamera(-this.height*this.window_ratio, this.height*this.window_ratio, this.height, -this.height, 0.1, 100000);
+	}
+
+	camera.position.x = 0;
+	camera.position.y = 0;
+	camera.position.z = 100;
+
+	camera.lookAt(scene.position);
+	return camera;
+};
 /**
  * creates a camera that folows the given object
  * @param object
@@ -84,6 +105,15 @@ CameraHandler.prototype.selectedCamera = function(){
         return this.pauseCamera;
 	return this.cameras[this.cameraNr];
 };
+
+/**
+ * @returns reference to the currently selected camera
+ */
+CameraHandler.prototype.getGameStatusCamera = function(){
+   
+	return this.gameStatusCamera;
+};
+
 
 /**
  * updates the selected camera
@@ -133,9 +163,9 @@ CameraHandler.prototype.resize = function(){
 };
 
 
-CameraHandler.prototype.resizePerspectiveCamera = function(cameraNr, aspect_ratio){
+CameraHandler.prototype.resizePerspectiveCamera = function(cameraNr){
 	if(cameraNr < this.cameras.length){
-		this.cameras[cameraNr].aspect = aspect_ratio;
+		this.cameras[cameraNr].aspect = renderer.getSize().width/renderer.getSize().height;
 		this.cameras[cameraNr].updateProjectionMatrix();
 	}
 

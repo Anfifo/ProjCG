@@ -33,6 +33,7 @@ function InputHandler(){
         l: 76,
         n: 78,
         p: 80,
+        r: 82,
         s: 83,
         t: 84,
         w: 87,
@@ -60,6 +61,7 @@ function InputHandler(){
     pressedKeys[keyCodes.l]     = false;
     pressedKeys[keyCodes.n]     = false;
     pressedKeys[keyCodes.p]     = false;
+    pressedKeys[keyCodes.r]     = false;
     pressedKeys[keyCodes.s]     = false;
     pressedKeys[keyCodes.t]     = false;
     pressedKeys[keyCodes.w]     = false;
@@ -135,6 +137,10 @@ function InputHandler(){
 
         if((pressedKeys[keyCodes.s] && !car2) || pressedKeys[keyCodes.enter])
             togglePause();
+        if(pressedKeys[keyCodes.r]){
+            if(gameOver)
+                requestGameRestart();
+        }
     };
 
     this.executeCarControls = function(){
