@@ -1,6 +1,5 @@
 var pausedSignBox;
-var gameOverSignBox;
-var lives = [];
+var lives;
 
 
 
@@ -36,11 +35,17 @@ function requestGameRestart(){
 
 function restartGame(){
     document.body.removeChild(renderer.domElement);
+
+    window.removeEventListener("resize", onResize);
+    window.removeEventListener("keydown", inputHandler.onKeyDown);
+    window.removeEventListener("keyup", inputHandler.onKeyRelease);
+
     init();
 }
 
 function restoreLives(){
     var x = 155;
+    lives = [];
     for(var i = 0; i < 1; i++, x-= 15){
 
         var life = new BasicCar(x,-3,0);

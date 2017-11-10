@@ -137,6 +137,7 @@ function InputHandler(){
 
         if((pressedKeys[keyCodes.s] && !car2) || pressedKeys[keyCodes.enter])
             togglePause();
+
         if(pressedKeys[keyCodes.r]){
             if(gameOver)
                 requestGameRestart();

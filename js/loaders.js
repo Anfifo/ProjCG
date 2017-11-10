@@ -6,16 +6,17 @@ var orangeTexture;
 var butterTexture;
 var candleTexture;
 var pausedTexture;
+var gameOverTexture;
 var cheerioTexture;
 
 function loadTextures(){
-    tableTexture   = new THREE.TextureLoader().load( 'Textures/prettyBlueChess.png'  );
-    orangeTexture  = new THREE.TextureLoader().load( 'Textures/orngtext.jpg'    );
-    butterTexture  = new THREE.TextureLoader().load( 'Textures/buttertext.jpg'  );
-    candleTexture  = new THREE.TextureLoader().load( 'Textures/candletext.jpg'  );
-    pausedTexture  = new THREE.TextureLoader().load( 'Textures/paused2.jpg'     );
-    gameOverTexture  = new THREE.TextureLoader().load( 'Textures/gameOver.jpg'     );
-    cheerioTexture = new THREE.TextureLoader().load( 'Textures/cheeriotext.jpg' );
+    tableTexture    = new THREE.TextureLoader().load( 'Textures/prettyBlueChess.png' );
+    orangeTexture   = new THREE.TextureLoader().load( 'Textures/orngtext.jpg'        );
+    butterTexture   = new THREE.TextureLoader().load( 'Textures/buttertext.jpg'      );
+    candleTexture   = new THREE.TextureLoader().load( 'Textures/candletext.jpg'      );
+    pausedTexture   = new THREE.TextureLoader().load( 'Textures/paused2.jpg'         );
+    cheerioTexture  = new THREE.TextureLoader().load( 'Textures/cheeriotext.jpg'     );
+    gameOverTexture = new THREE.TextureLoader().load( 'Textures/gameOver.jpg'        );
 }
 
 

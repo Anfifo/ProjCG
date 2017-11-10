@@ -4,6 +4,7 @@ var renderer;
 var animatables;
 var table;
 var startingLines;
+var inputHandler;
 var cameraHandler;
 var lightsHandler;
 var animationClock;
@@ -35,8 +36,12 @@ function pauseAnimation(delta){
     cameraHandler.pauseCamera.translateX(25 * delta);
 }
 
-function gameOverAnimation(){
-
+function gameOverAnimation(delta){
+    var randomUp = Math.floor(Math.random() * animatables.length);
+    var distance = 100;
+    animatables[randomUp].position.y+=(distance*delta);
+    animatables[randomUp].rotateZ((Math.PI/30)*Math.random());
+    animatables[randomUp].rotateX((Math.PI/30)*Math.random());
 }
 
 
@@ -77,6 +82,7 @@ function animate(){
 
     if(gameOver){
         pauseAnimation(delta);
+        gameOverAnimation(delta);
         if(requestedRestart){
             restartGame();
             return;
@@ -121,7 +127,7 @@ function init(){
     var track = createTrack();
     var butters = addButters();
     var oranges = addOranges();
-    var inputHandler = new InputHandler();
+    inputHandler = new InputHandler();
     lightsHandler = new LightsHandler();
     cameraHandler = new CameraHandler(table.getDimensions());
     startingLines = track.getStartingLines();
@@ -148,7 +154,7 @@ function init(){
     animatables = animatables.concat(butters);
     animatables = animatables.concat(oranges);
 
-    window.addEventListener("resize", function(dim){onResize(dim)});
+    window.addEventListener("resize", onResize);
 	window.addEventListener("keydown", inputHandler.onKeyDown);
 	window.addEventListener("keyup", inputHandler.onKeyRelease);
 	animate();

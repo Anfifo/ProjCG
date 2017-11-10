@@ -33,17 +33,17 @@ function Butter(x, y, z)
 
     this.type = 'Butter';
     var baseLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
-    var baseGeometry = new THREE.BoxGeometry(42, 0.5, 56);
+    var baseGeometry = new THREE.BoxGeometry(42, 1, 56);
 
     var base = new THREE.Mesh(baseGeometry, baseLambertMaterial);
 
     var butterLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffd830, map: this.map})
-    var butterGeometry = new THREE.BoxGeometry(32, 17, 47);
+    var butterGeometry = new THREE.BoxGeometry(32, 15, 47);
 
     var butterBar = new THREE.Mesh(butterGeometry, butterLambertMaterial);
     base.position.set(0, -5, 0);
 
-    butterBar.position.set(0, 0, 0);
+    butterBar.position.set(0, 4, 0);
     this.add(base);
     this.add(butterBar);
 
