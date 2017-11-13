@@ -39,7 +39,7 @@ function pauseAnimation(delta){
 function gameOverAnimation(delta){
     var randomUp = Math.floor(Math.random() * animatables.length);
     var distance = 100;
-    animatables[randomUp].position.y+=(distance*delta);
+    animatables[randomUp].position.y += (distance*delta);
     animatables[randomUp].rotateZ((Math.PI/30)*Math.random());
     animatables[randomUp].rotateX((Math.PI/30)*Math.random());
 }

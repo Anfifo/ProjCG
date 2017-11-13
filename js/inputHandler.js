@@ -263,7 +263,6 @@ function toggleToPhong(wireframe){
 }
 
 function switchCamera(number){
-
     if(cameraHandler.splitScreenOn())
         cameraHandler.resize();
     cameraHandler.setSplitScreen(false);
