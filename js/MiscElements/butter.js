@@ -43,7 +43,7 @@ function Butter(x, y, z)
     var butterBar = new THREE.Mesh(butterGeometry, butterLambertMaterial);
     base.position.set(0, -5, 0);
 
-    butterBar.position.set(0, 4, 0);
+    butterBar.position.set(0, 3, 0);
     this.add(base);
     this.add(butterBar);
 
