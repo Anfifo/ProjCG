@@ -44,7 +44,7 @@ function restartGame(){
 }
 
 function restoreLives(){
-    var x = 155;
+    var x = 28;
     lives = [];
     for(var i = 0; i < 5; i++, x-= 15){
 
