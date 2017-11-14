@@ -22,19 +22,19 @@ function createPauseCube(texture){
 
     var color = 0xffffff, intensity = 1, range = 200, decay = 2;
 
-    light = new THREE.PointLight(color*Math.random(), intensity, range, decay);
+    light = new THREE.PointLight(color, intensity, range, decay);
     light.position.set(-dimX/2 -5, dimY/2, dimZ/2 + 5);
     box.add(light);
 
-    light = new THREE.PointLight(color*Math.random(), intensity, range, decay);
+    light = new THREE.PointLight(color, intensity, range, decay);
     light.position.set(dimX/2 + 5 , dimY/2, -dimZ/2 -5);
     box.add(light);
 
-    light = new THREE.PointLight(color*Math.random(), intensity, range, decay);
+    light = new THREE.PointLight(color, intensity, range, decay);
     light.position.set(-dimX/2 -5 , dimY/2, -dimZ/2 - 5);
     box.add(light);
 
-    light = new THREE.PointLight(color*Math.random(), intensity, range, decay);
+    light = new THREE.PointLight(color, intensity, range, decay);
     light.position.set(dimX/2 +5, dimY/2, dimZ/2 + 5);
     box.add(light);
 

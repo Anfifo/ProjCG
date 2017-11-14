@@ -30,6 +30,7 @@ function InputHandler(){
         e: 69,
         f: 70,
         g: 71,
+        h: 72,
         l: 76,
         n: 78,
         p: 80,
@@ -58,6 +59,7 @@ function InputHandler(){
     pressedKeys[keyCodes.e]     = false;
     pressedKeys[keyCodes.f]     = false;
     pressedKeys[keyCodes.g]     = false;
+    pressedKeys[keyCodes.h]     = false;
     pressedKeys[keyCodes.l]     = false;
     pressedKeys[keyCodes.n]     = false;
     pressedKeys[keyCodes.p]     = false;
@@ -125,6 +127,9 @@ function InputHandler(){
 
         if(pressedKeys[keyCodes.g])
             self.toggleShading();
+
+        if (pressedKeys[keyCodes.h])
+            car1.toggleMediumLights();
 
         if(pressedKeys[keyCodes.l])
             self.toggleIllumination();
