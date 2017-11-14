@@ -29,7 +29,8 @@ function Table(properties){
     this.geometry = new THREE.BoxGeometry(
         properties.width,
         properties.height,
-        properties.depth
+        properties.depth,
+        25,25,50
     );
     /*this.basicMaterial = new THREE.MeshBasicMaterial({
         color: properties.color,

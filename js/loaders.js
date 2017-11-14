@@ -86,7 +86,8 @@ function addOranges(){
     scene.add(oranges[2]);
 
     setInterval(function() {
-        for (var i = 0; i < oranges.length; i++) {
+        if(gameRunning)
+            for (var i = 0; i < oranges.length; i++) {
             if (oranges[i].speed + 20 < oranges[i].maxSpeed)
                 oranges[i].speed += 20;
             else

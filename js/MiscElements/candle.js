@@ -10,6 +10,7 @@ function Candle(x, y, z)
     this.reflectivity = 0;
     this.specular = 0x000000;
     this.shininess = 30;
+    this.candleIntensity = 1;
 
     this.map = candleTexture;
     this.map.wrapS = THREE.RepeatWrapping;
@@ -25,7 +26,7 @@ function Candle(x, y, z)
     var wick = new THREE.Mesh(wickGeometry, wickMaterial);
     wick.position.set(0, 15, 0);
 
-    this.light = new THREE.PointLight(0xfff9be, 1, 400, 2);
+    this.light = new THREE.PointLight(0xfff9be,this.candleIntensity, 400, 2);
 
     this.light.position.set(0, 20, 0);
 

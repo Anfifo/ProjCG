@@ -179,13 +179,13 @@ BasicCar.prototype.addCarWheels = function(){
 BasicCar.prototype.addCarLights = function(){
 
     this.lightStatus = 0;
-    this.rightLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
+    this.rightLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI/2, 0.7, 2);
     this.rightLight.position.set(this.x + this.carLength/2, this.y, this.z + this.carWidth/2);
     this.rightLight.target.position.set(this.x +this.carLength, this.y, this.z + this.carWidth/2);
     this.add(this.rightLight);
     this.add(this.rightLight.target);
 
-    this.leftLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI+Math.PI/8, 0.7, 2);
+    this.leftLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI/2, 0.7, 2);
     this.leftLight.position.set(this.x + this.carLength/2, this.y, this.z - this.carWidth/2);
     this.leftLight.target.position.set(this.x +this.carLength, this.y, this.z - this.carWidth/2);
     this.add(this.leftLight);
@@ -247,6 +247,16 @@ BasicCar.prototype.toggleLights = function(){
         return null;
     }
 
+};
+
+BasicCar.prototype.toggleMediumLights = function() {
+    if (this.lightStatus === 2){
+        this.lightStatus = 3;
+        this.toggleLights();
+    }else{
+        this.lightStatus = 1;
+        this.toggleLights();
+    }
 };
 
 

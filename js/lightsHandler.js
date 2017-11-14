@@ -63,7 +63,7 @@ LightsHandler.prototype.switchCandles = function(){
 		}
 	} else {
 		for(candle of this.candles) {
-			candle.light.intensity = 1.5;
+			candle.light.intensity = candle.candleIntensity;
 			candle.lightHelper.visible = true;
 			this.candlesIgnited = true;
 		}
