@@ -70,6 +70,8 @@ function BasicCar(x,y,z, properties){
 
     this.addCarLights();
 
+    this.scale.set(3,3,3);
+
 }
 
 

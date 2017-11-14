@@ -36,7 +36,7 @@ function MovingCar(x, y, z, properties) {
     this.rotationVector = new THREE.Vector3(0, 1, 0);
     var xVector = new THREE.Vector3(1,0,0);
 
-    this.scale.set(3,3,3);
+    
 
     this.stuckWithPreviousCollision = function (distance, vector, possibleCollisions){
         var temp = this.findCollisions(possibleCollisions);

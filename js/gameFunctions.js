@@ -44,12 +44,12 @@ function restartGame(){
 }
 
 function restoreLives(){
-    var x = 155;
+    var x = 28;
     lives = [];
-    for(var i = 0; i < 1; i++, x-= 15){
+    for(var i = 0; i < 5; i++, x-= 15){
 
         var life = new BasicCar(x,-3,0);
-        life.scale.set(3,3,3);
+        //life.scale.set(3,3,3);
         life.toggleToBasic(false);
         gameStatusScene.add(life);
         this.lives.push(life);

@@ -69,21 +69,19 @@ CameraHandler.prototype.createPerspectiveCamera = function(x,y,z) {
 
 CameraHandler.prototype.createGameStatusCamera = function(x,y,z) {
 
-    var table_ratio = this.height/this.width;
-	var camera;
+	var height = 30/2;
+	console.log(height*2);
+	var width = 165;
+	var ratio = window.innerWidth/(window.innerHeight/15);
 
-	if(this.window_ratio > table_ratio)
-		camera = new THREE.OrthographicCamera(-this.width, this.width, this.width*this.window_ratio/60, -this.width*this.window_ratio/60, 0.1, 100000);
-	else{
-		this.window_ratio = 1 / this.window_ratio;
-		camera = new THREE.OrthographicCamera(-this.height*this.window_ratio, this.height*this.window_ratio, this.height, -this.height, 0.1, 100000);
-	}
+	
+	var camera = new THREE.OrthographicCamera(-(height*2*ratio) + width, width, height, -height, 0.1, 100000);
 
 	camera.position.x = 0;
 	camera.position.y = 0;
 	camera.position.z = 100;
 
-	camera.lookAt(scene.position);
+	camera.lookAt(gameStatusScene.position);
 	return camera;
 };
 /**
@@ -141,6 +139,7 @@ CameraHandler.prototype.resize = function(){
         this.pauseCamera.updateProjectionMatrix();
     }
 
+    this.gameStatusCamera = this.createGameStatusCamera(0,0,100);
 
 	if(window.innerHeight > 0 && window.innerWidth > 0){
 		if(this.window_ratio > table_ratio){
