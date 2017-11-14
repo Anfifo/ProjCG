@@ -114,7 +114,7 @@ function onResize() {
 function init(){
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000,1);
+    //renderer.setViewport(0, window.innerHeight/15, window.innerWidth, 14*window.innerHeight/15);
 	document.body.appendChild(renderer.domElement);
 
 	loadTextures();
@@ -157,5 +157,6 @@ function init(){
     window.addEventListener("resize", onResize);
 	window.addEventListener("keydown", inputHandler.onKeyDown);
 	window.addEventListener("keyup", inputHandler.onKeyRelease);
+    cameraHandler.resize();
 	animate();
 }

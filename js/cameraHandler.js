@@ -13,7 +13,7 @@
 function CameraHandler( dimensions ){
     this.height = dimensions[2]/2 + 50;
 	this.width = dimensions[0]/2 + 50;
-	this.window_ratio = window.innerHeight/window.innerWidth;
+	this.window_ratio = renderer.getSize().height/renderer.getSize().width;
 	this.cameras = [];
 	this.OrthographicCamera(0, 70, 0);
 	this.createPerspectiveCamera(0, 500, 700);
@@ -67,15 +67,28 @@ CameraHandler.prototype.createPerspectiveCamera = function(x,y,z) {
     return camera;
 };
 
+CameraHandler.prototype.createPauseCamera = function(x, y, z){
+
+    var camera = new THREE.PerspectiveCamera(60, this.window_ratio, 1, 3000);
+    camera.position.set(x, y, z);
+    camera.lookAt(scene.position);
+
+    return camera;
+};
+
 CameraHandler.prototype.createGameStatusCamera = function(x,y,z) {
 
 	var height = 30/2;
 	console.log(height*2);
 	var width = 165;
 	var ratio = window.innerWidth/(window.innerHeight/15);
+	var camera;
 
-	
-	var camera = new THREE.OrthographicCamera(-(height*2*ratio) + width, width, height, -height, 0.1, 100000);
+	if(window.innerWidth/window.innerHeight > 1)
+		camera = new THREE.OrthographicCamera(-(height*2*ratio) + width, width, height, -height, 0.1, 100000);
+
+	else
+		camera = new THREE.OrthographicCamera(-width, width, width/ratio, -width/ratio, 0.1, 100000);
 
 	camera.position.x = 0;
 	camera.position.y = 0;
@@ -127,20 +140,39 @@ CameraHandler.prototype.updateSelectedCamera = function(cameraNr){
 CameraHandler.prototype.resize = function(){
 	this.window_ratio = renderer.getSize().height/renderer.getSize().width;
     var table_ratio = this.height/this.width;
-    console.log(this.window_ratio);
 
+
+    //Resize prespective camera and car camera
  	for(var i = 1; i < this.cameras.length; i++){
 	 	this.cameras[i].aspect = 1 / this.window_ratio;
 		this.cameras[i].updateProjectionMatrix();
-		console.log(i);
 	}
-	if (this.pauseCamera){
-        this.pauseCamera.aspect = 1 / this.window_ratio;
-        this.pauseCamera.updateProjectionMatrix();
+
+	//Resize pause/game over camera
+    this.pauseCamera.aspect = 1 / this.window_ratio;
+    this.pauseCamera.updateProjectionMatrix();
+    
+    //Resize camera for lives
+    lives_ratio = (window.innerWidth/(window.innerHeight/15));
+
+    if(window.innerWidth/window.innerHeight > 1){
+    	this.gameStatusCamera.left = -(15*2*lives_ratio) + 165;
+    	this.gameStatusCamera.right = 165;
+    	this.gameStatusCamera.top = 15;
+    	this.gameStatusCamera.bottom = -15;
     }
 
-    this.gameStatusCamera = this.createGameStatusCamera(0,0,100);
+	else{
+		this.gameStatusCamera.left = -165;
+    	this.gameStatusCamera.right = 165;
+    	this.gameStatusCamera.top = 165/lives_ratio;
+    	this.gameStatusCamera.bottom = -165/lives_ratio;
 
+	}
+
+    this.gameStatusCamera.updateProjectionMatrix();
+
+    //Resize ortho camera
 	if(window.innerHeight > 0 && window.innerWidth > 0){
 		if(this.window_ratio > table_ratio){
 			this.cameras[0].left = -this.width;
@@ -186,14 +218,6 @@ CameraHandler.prototype.setSplitScreen = function(value){
     this.splitScreen = value;
 };
 
-CameraHandler.prototype.createPauseCamera = function(x, y, z){
-
-    var camera = new THREE.PerspectiveCamera(60, this.window_ratio, 1, 3000);
-    camera.position.set(x, y, z);
-    camera.lookAt(scene.position);
-
-    return camera;
-};
 
 CameraHandler.prototype.selectPauseCamera = function(){
     this.paused = true;
