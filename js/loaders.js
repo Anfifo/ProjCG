@@ -20,6 +20,16 @@ function loadTextures(){
 }
 
 
+function createCandles(){
+    var texture = candleTexture;
+
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(1,1);
+
+    lightsHandler.createCandles(texture);
+}
+
 function createTable(){
     var texture = tableTexture;
     texture.wrapS = THREE.RepeatWrapping;
@@ -42,28 +52,30 @@ function createTable(){
 
 
 function addButters(){
+
+    var texture = butterTexture;
     var butters = [];
 
-    var butter = new Butter(-400, 15, 150);
+    var butter = new Butter(-400, 15, 150, texture);
     scene.add(butter);
     butters.push(butter);
 
-    butter = new Butter(0, 15, -150);
+    butter = new Butter(0, 15, -150, texture);
     butter.rotation.y = Math.PI/2;
     scene.add(butter);
     butters.push(butter);
 
-    butter = new Butter(400, 15, -150);
+    butter = new Butter(400, 15, -150, texture);
     butter.rotation.y = Math.PI/2;
     scene.add(butter);
     butters.push(butter);
 
-    butter = new Butter(-80, 15, 200);
+    butter = new Butter(-80, 15, 200, texture);
     butter.rotation.y = -Math.PI/2;
     scene.add(butter);
     butters.push(butter);
 
-    butter = new Butter(-440, 15, -60);
+    butter = new Butter(-440, 15, -60, texture);
     butter.rotation.y = -Math.PI;
     scene.add(butter);
     butters.push(butter);
@@ -72,17 +84,21 @@ function addButters(){
 }
 
 
-
-
 function addOranges(){
+
+    var mapTexture = orangeTexture;
+    mapTexture.wrapS = THREE.RepeatWrapping;
+    mapTexture.wrapT = THREE.RepeatWrapping;
+    mapTexture.repeat.set(1,1);
+
     var oranges = [];
-    oranges[0] = new Orange(80, 33, 200 );
+    oranges[0] = new Orange(80, 33, 200, mapTexture);
     scene.add(oranges[0]);
 
-    oranges[1] = new Orange(400,33,125);
+    oranges[1] = new Orange(400,33,125, mapTexture);
     scene.add(oranges[1]);
 
-    oranges[2] = new Orange(-370,33, -180);
+    oranges[2] = new Orange(-370,33, -180, mapTexture);
     scene.add(oranges[2]);
 
     setInterval(function() {
@@ -100,6 +116,10 @@ function addOranges(){
 
 
 function createTrack(){
+    var mapText = cheerioTexture;
+    mapText.wrapS = THREE.RepeatWrapping;
+    mapText.wrapT = THREE.RepeatWrapping;
+    mapText.repeat.set(3,1);
 
     var cheerioProperties = {
         radius: 7,
@@ -110,7 +130,8 @@ function createTrack(){
         color: 0xffffff,
         wireframe: false,
         position: { x: 0, y: 13, z: 0},
-        rotation: { x: Math.PI/2 }
+        rotation: { x: Math.PI/2 },
+        map: mapText
     };
 
     return new InfinityTrack(cheerioProperties);

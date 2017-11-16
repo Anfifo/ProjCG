@@ -56,8 +56,9 @@ function restoreLives(){
     }
 }
 
-function removeLife(){
+function removeLife(car){
     var lifeLost = this.lives.pop();
+    car.timeSinceLastDeath = 0;
     gameStatusScene.remove(lifeLost);
     if(!lives.length){
         endGame();

@@ -16,7 +16,7 @@
  */
 
 
-function Butter(x, y, z)
+function Butter(x, y, z, texture)
 {
     PhysicObject.call(this);
 
@@ -29,7 +29,7 @@ function Butter(x, y, z)
     this.specular = 0x000000;
     this.shininess = 0;
 
-    this.map = butterTexture;
+    this.map = texture;
 
     this.type = 'Butter';
     var baseLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});

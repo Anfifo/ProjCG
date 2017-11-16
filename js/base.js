@@ -1,13 +1,18 @@
 var scene;
 var gameStatusScene;
 var renderer;
+
 var animatables;
+
 var table;
 var startingLines;
+
 var inputHandler;
 var cameraHandler;
 var lightsHandler;
+
 var animationClock;
+
 var gameRunning;
 var gameOver;
 var requestedRestart;
@@ -15,7 +20,6 @@ var requestedRestart;
 function render(){
     var height = window.innerHeight;
     var width = window.innerWidth;
-
 
     renderer.setViewport(0, 0, width, height/15);
     renderer.setScissor(0, 0, width, height/15);
@@ -131,6 +135,7 @@ function init(){
     lightsHandler = new LightsHandler();
     cameraHandler = new CameraHandler(table.getDimensions());
     startingLines = track.getStartingLines();
+    createCandles();
 
     var car = createMovingCar(0,6.5,0);
 

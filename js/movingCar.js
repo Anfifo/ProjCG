@@ -34,7 +34,11 @@ function MovingCar(x, y, z, properties) {
 	this.slowFactor = 100;
 	this.translationVector = new THREE.Vector3(1,0,0);
     this.rotationVector = new THREE.Vector3(0, 1, 0);
+    this.startX = 340;
+    this.startY = 0;
+    this.startZ = -50;
     var xVector = new THREE.Vector3(1,0,0);
+    this.timeSinceLastDeath = 0;
 
     
 
@@ -51,6 +55,12 @@ function MovingCar(x, y, z, properties) {
         }
         return false;
 	};
+
+
+    this.animate = function (possibleCollisions, delta) {
+        this.timeSinceLastDeath += delta;
+        this.updateMovement(possibleCollisions, delta);
+    };
 
 
     this.calculateTranslation = function (timeSinceLastUpdate){
@@ -179,6 +189,17 @@ function MovingCar(x, y, z, properties) {
 
 	this.processOutOfBounds = function(){
 		this.returnToStart();
+	};
+
+	this.isAtStart = function(){
+		return (this.position.x === this.startX &&
+				this.position.y === this.startY &&
+				this.position.z === this.startZ)
+	};
+
+	this.canDie = function(){
+
+		return this.timeSinceLastDeath > 3;
 	}
 }
 
@@ -194,7 +215,7 @@ MovingCar.prototype = Object.create(BasicCar.prototype);
 MovingCar.prototype.constructor = MovingCar;
 
 MovingCar.prototype.returnToStart = function(){
-	this.position.set(340,0, -50);
+	this.position.set(this.startX,this.startY, this.startZ);
 	this.lookAt(new THREE.Vector3(0,0,0));
 	this.speed = 0;
 	this.acceleration = 0;

@@ -1,7 +1,7 @@
 
 
 
-function Candle(x, y, z)
+function Candle(x, y, z, texture)
 {
     THREE.Object3D.call(this);
 
@@ -12,10 +12,7 @@ function Candle(x, y, z)
     this.shininess = 30;
     this.candleIntensity = 1;
 
-    this.map = candleTexture;
-    this.map.wrapS = THREE.RepeatWrapping;
-    this.map.wrapT = THREE.RepeatWrapping;
-    this.map.repeat.set(1,1);
+    this.map = texture;
 
     var candleGeometry = new THREE.CylinderGeometry(5, 5, 27, 20, 1, false, 0, 2 * Math.PI);
     var candleMaterial = new THREE.MeshLambertMaterial({color: 0xbfb5a0, map: this.map});

@@ -21,12 +21,6 @@ function Cheerio(properties){
     this.boundingSphereRadius =  properties.radius+ properties.tube+1;
     this.color = properties.color;
 
-
-    this.map = cheerioTexture;
-    this.map.wrapS = THREE.RepeatWrapping;
-    this.map.wrapT = THREE.RepeatWrapping;
-    this.map.repeat.set(3,1);
-
     var geometry = new THREE.TorusGeometry(
         properties.radius,
         properties.tube,
@@ -37,7 +31,7 @@ function Cheerio(properties){
     var lambertMaterial = new THREE.MeshLambertMaterial({
         color: properties.color,
         wireframe: properties.wireframe,
-        map: this.map
+        map: properties.map
     });
 
     var mesh = new THREE.Mesh( geometry, lambertMaterial);

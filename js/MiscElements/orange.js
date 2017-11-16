@@ -14,7 +14,7 @@
  * @param z position
  * @constructor
  */
-function Orange(x, y, z)
+function Orange(x, y, z, textureMap)
 {
     'use strict';
 
@@ -24,12 +24,7 @@ function Orange(x, y, z)
     this.type = 'Orange';
     this.boundingSphereRadius = 23;
     this.orange = new THREE.Object3D();
-
-    this.map = orangeTexture;
-    this.map.wrapS = THREE.RepeatWrapping;
-    this.map.wrapT = THREE.RepeatWrapping;
-    this.map.repeat.set(1,1);
-
+    this.map = textureMap;
 
     var orangeGeometry = new THREE.SphereGeometry(23, 15, 20, 0, 2 * Math.PI, 0, 2 * Math.PI);
     var lambertMaterial = new THREE.MeshLambertMaterial({color: 0xcc6321,  map:this.map});
@@ -85,8 +80,19 @@ function Orange(x, y, z)
 
     this.hideShow = function(height,width) {
         this.visible = false;
-        this.direction.x = randomPosition(1);
-        this.direction.z = randomPosition(1);
+        //
+        // this.direction.x = randomPosition(1);
+        // this.direction.z = randomPosition(1);
+        //
+        if(!gameRunning){
+            var timeout = Math.random() * 5000;
+            setTimeout(function () {
+                self.hideShow(width / 4, height / 4);
+            }, timeout);
+            return;
+        }
+
+
         this.position.x = randomPosition(width/2);
         this.position.z = randomPosition(height/2);
 
@@ -110,11 +116,13 @@ function Orange(x, y, z)
             this.visible = false;
             var timeout = Math.random() * 5000;
             setTimeout(function () {
-                self.hideShow(width / 4, height / 4);
+                    self.hideShow(width / 4, height / 4);
             }, timeout);
         }
     }
 }
+
+
 /**
  * adds to Orange class all method and attributes from THRE.Object3D
  */
