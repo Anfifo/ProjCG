@@ -40,7 +40,7 @@ function MovingCar(x, y, z, properties) {
     var xVector = new THREE.Vector3(1,0,0);
     this.timeSinceLastDeath = 0;
 
-    
+
 
     this.stuckWithPreviousCollision = function (distance, vector, possibleCollisions){
         var temp = this.findCollisions(possibleCollisions);
@@ -188,6 +188,7 @@ function MovingCar(x, y, z, properties) {
 
 
 	this.processOutOfBounds = function(){
+		removeLife(this);
 		this.returnToStart();
 	};
 
