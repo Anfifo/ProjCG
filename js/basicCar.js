@@ -179,20 +179,30 @@ BasicCar.prototype.addCarWheels = function(){
 BasicCar.prototype.addCarLights = function(){
 
     this.lightStatus = 0;
-    this.rightLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI/2, 0.7, 2);
+    var colour = 0xfdfbd8;
+    var distance = 0;
+    var intensity = 0;
+    var penumbra = 0.7;
+    var decay = 2;
+    var angle = Math.PI/2;
+
+
+    //SpotLight( color, intensity, distance, angle, penumbra, decay )
+    this.rightLight = new THREE.SpotLight(colour, intensity, distance, angle, penumbra, decay);
     this.rightLight.position.set(this.x + this.carLength/2, this.y, this.z + this.carWidth/2);
     this.rightLight.target.position.set(this.x +this.carLength, this.y, this.z + this.carWidth/2);
     this.add(this.rightLight);
     this.add(this.rightLight.target);
 
-    this.leftLight = new THREE.SpotLight(0xfdfbd8, 0, 0, Math.PI/2, 0.7, 2);
+    this.leftLight = new THREE.SpotLight(colour, intensity, distance, angle, penumbra, decay);
     this.leftLight.position.set(this.x + this.carLength/2, this.y, this.z - this.carWidth/2);
     this.leftLight.target.position.set(this.x +this.carLength, this.y, this.z - this.carWidth/2);
     this.add(this.leftLight);
     this.add(this.leftLight.target);
 
 
-    this.backLight = new THREE.SpotLight(0xff0000, 0, 0, Math.PI+Math.PI/8, 0.7, 10);
+    // EXTRA: BACKLIGHT
+    this.backLight = new THREE.SpotLight(0xff0000, 0, 0, Math.PI + Math.PI/8, 0.7, 10);
     this.backLight.position.set(this.x - this.carLength/2, this.y, this.z);
     this.backLight.target.position.set(this.x - this.carLength, this.y, this.z);
     this.add(this.backLight);
@@ -201,62 +211,66 @@ BasicCar.prototype.addCarLights = function(){
 
 
 BasicCar.prototype.toggleLights = function(){
+    var maxIntensity = 3;
+    var medIntensity = 2;
+    var minIntensity = 1;
 
-    if ( this.lightStatus === 3){
+    var maxDistance = 500;
+    var medDistance = 300;
+    var minDistance = 200;
+
+    if ( this.lightStatus === 3){ // put Off
         this.rightLight.intensity = 0;
         this.rightLight.distance = 0;
         this.leftLight.intensity = 0;
         this.leftLight.distance = 0;
+
         this.backLight.intensity = 0;
         this.backLight.distance = 0;
         this.lightStatus = 0;
         return null;
-    }
 
-    if( this.lightStatus === 0 ){
-        this.rightLight.intensity = 1;
-        this.rightLight.distance = 200;
-        this.leftLight.intensity = 1;
-        this.leftLight.distance = 200;
+    }else{
         this.backLight.intensity = 1;
         this.backLight.distance = 50;
+    }
+
+    if( this.lightStatus === 0 ){ // put Min
+        this.rightLight.intensity = minIntensity;
+        this.rightLight.distance = minDistance;
+        this.leftLight.intensity = minIntensity;
+        this.leftLight.distance = minDistance;
         this.lightStatus++;
         return null;
     }
 
-    if( this.lightStatus === 1 ){
+    if( this.lightStatus === 1 ){ // put Med
 
-        this.rightLight.intensity = 2;
-        this.rightLight.distance = 300;
-        this.leftLight.intensity = 2;
-        this.leftLight.distance = 300;
-        this.backLight.intensity = 1;
-        this.backLight.distance = 50;
+        this.rightLight.intensity = medIntensity;
+        this.rightLight.distance = medDistance;
+        this.leftLight.intensity = medIntensity;
+        this.leftLight.distance = medDistance;
         this.lightStatus++;
         return null;
     }
 
-    if( this.lightStatus === 2){
-        this.rightLight.intensity = 3;
-        this.rightLight.distance = 500;
-        this.leftLight.intensity = 3;
-        this.leftLight.distance = 500;
-        this.backLight.intensity = 1;
-        this.backLight.distance = 50;
+    if( this.lightStatus === 2){ // put max
+        this.rightLight.intensity = maxIntensity;
+        this.rightLight.distance = maxDistance;
+        this.leftLight.intensity = maxIntensity;
+        this.leftLight.distance = maxDistance;
         this.lightStatus++;
         return null;
     }
-
 };
 
 BasicCar.prototype.toggleMediumLights = function() {
     if (this.lightStatus === 2){
         this.lightStatus = 3;
-        this.toggleLights();
     }else{
         this.lightStatus = 1;
-        this.toggleLights();
     }
+    this.toggleLights();
 };
 
 

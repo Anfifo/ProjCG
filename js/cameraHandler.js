@@ -23,7 +23,7 @@ function CameraHandler( dimensions ){
 	this.paused = false;
 	this.pauseCamera = this.createPauseCamera(450,100,100);
 
-	this.gameStatusCamera = this.createGameStatusCamera(0,0,0);
+	this.gameStatusCamera = this.createGameStatusCamera(0,0,100);
 }
 
 /**
@@ -79,20 +79,19 @@ CameraHandler.prototype.createPauseCamera = function(x, y, z){
 CameraHandler.prototype.createGameStatusCamera = function(x,y,z) {
 
 	var height = 30/2;
-	console.log(height*2);
 	var width = 165;
 	var ratio = window.innerWidth/(window.innerHeight/15);
 	var camera;
 
-	if(window.innerWidth/window.innerHeight > 1)
+	if( window.innerWidth/window.innerHeight > 1)
 		camera = new THREE.OrthographicCamera(-(height*2*ratio) + width, width, height, -height, 0.1, 100000);
 
 	else
 		camera = new THREE.OrthographicCamera(-width, width, width/ratio, -width/ratio, 0.1, 100000);
 
-	camera.position.x = 0;
-	camera.position.y = 0;
-	camera.position.z = 100;
+	camera.position.x = x;
+	camera.position.y = y;
+	camera.position.z = z;
 
 	camera.lookAt(gameStatusScene.position);
 	return camera;

@@ -116,7 +116,7 @@ function InputHandler(){
             switchCamera(3);
 
         if(pressedKeys[keyCodes._5])
-            if(car2 !== null)
+            //if(car2 !== null)
                cameraHandler.setSplitScreen(true);
 
         if(pressedKeys[keyCodes.n])

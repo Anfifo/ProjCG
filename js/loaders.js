@@ -23,8 +23,8 @@ function loadTextures(){
 function createCandles(){
     var texture = candleTexture;
 
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
+    texture.wrapS = THREE.RepeatWrapping; //  This defines how the texture is wrapped horizontally and corresponds to U in UV mapping.
+    texture.wrapT = THREE.RepeatWrapping; //  This defines how the texture is wrapped vertically and corresponds to V in UV mapping.
     texture.repeat.set(1,1);
 
     lightsHandler.createCandles(texture);

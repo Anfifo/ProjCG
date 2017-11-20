@@ -18,6 +18,10 @@ var gameOver;
 var requestedRestart;
 
 function render(){
+
+    if(cameraHandler.splitScreenOn())
+        return;
+
     var height = window.innerHeight;
     var width = window.innerWidth;
 
@@ -98,8 +102,9 @@ function animate(){
             element.checkOutOfBounds(tableDimensions[0], tableDimensions[1]);
         } );
 
-        if(cameraHandler.splitScreenOn())
+        if(cameraHandler.splitScreenOn()) {
             renderSplitScreen();
+        }
 
     }else{
         pauseAnimation(delta);
@@ -118,7 +123,6 @@ function onResize() {
 function init(){
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
-    //renderer.setViewport(0, window.innerHeight/15, window.innerWidth, 14*window.innerHeight/15);
 	document.body.appendChild(renderer.domElement);
 
 	loadTextures();
