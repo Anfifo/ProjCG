@@ -193,9 +193,9 @@ CameraHandler.prototype.resize = function(){
 };
 
 
-CameraHandler.prototype.resizePerspectiveCamera = function(cameraNr){
+CameraHandler.prototype.resizePerspectiveCamera = function(cameraNr, ratio){
 	if(cameraNr < this.cameras.length){
-		this.cameras[cameraNr].aspect = renderer.getSize().width/renderer.getSize().height;
+		this.cameras[cameraNr].aspect = ratio;
 		this.cameras[cameraNr].updateProjectionMatrix();
 	}
 

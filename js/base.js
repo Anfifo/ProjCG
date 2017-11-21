@@ -71,7 +71,7 @@ function renderSplitScreen(){
 	renderer.setScissorTest (true);
 	cameraHandler.resizePerspectiveCamera(3, (width/2 - 10)/height);
     renderer.render(scene, cameraHandler.selectedCamera());
-    //render();*/
+
 }
 
 function createScene(){
@@ -128,7 +128,7 @@ function init(){
 	loadTextures();
     createScene();
 
-    restoreLives();
+    restoreLives(2);
 
     table = createTable();
 

@@ -43,10 +43,10 @@ function restartGame(){
     init();
 }
 
-function restoreLives(){
+function restoreLives(nrOfLives){
     var x = 28;
     lives = [];
-    for(var i = 0; i < 5; i++, x-= 15){
+    for(var i = 0; i < nrOfLives; i++, x-= 15){
 
         var life = new BasicCar(x,-3,0);
         //life.scale.set(3,3,3);
